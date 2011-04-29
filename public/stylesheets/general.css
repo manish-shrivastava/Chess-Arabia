@@ -1,0 +1,67 @@
+html {overflow-y: scroll;} 
+
+*{
+  padding: 0;
+  margin: 0;
+  font-family: arial;
+}
+
+.hidden{
+  display: none;
+}
+
+body{
+  background-color: #999;
+}
+
+a{
+  text-decoration: none;
+  color: black;
+}
+
+ul{
+  list-style: none;
+}
+
+.clearer{
+  clear: both;
+}
+
+#wrapper{
+  width: 960px;
+  margin: auto;
+  margin-top: 10px;
+  border: 1px solid black;
+  height: 800px;
+  background-color: white;
+}
+
+.title{
+  margin-top: 140px;
+  text-align: center;
+  font-size: 75px;
+  color: #222;
+  font-family: 'Architects Daughter', arial, serif;
+}
+
+.menu{
+  text-align: center;
+  color: #777;
+}
+
+.menu a{
+  color: #1F2263;  
+}
+
+.about{
+  text-align: right;
+  padding: 10px;
+  margin-top: 30px;
+  font-family: 'Kreon', arial, serif;
+  background-color: #EFEFEF;
+}
+
+.about a{
+  color: blue;
+  font-family: 'Kreon', arial, serif;
+}

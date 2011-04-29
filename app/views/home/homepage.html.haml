@@ -1,0 +1,18 @@
+
+.title
+  ChessArabia
+  
+.menu
+  [
+  = link_to 'New Game', games_path, :method => "post"
+  |
+  = link_to 'Play Against Computer', play_with_computer_games_path, :method => "post"
+  |
+  = link_to 'Games Room', games_path
+  ]
+
+.about
+  Developed By
+  %a{:href => "http://twitter.com/OmarQunsul", :target => "_blank"}= "Omar Qunsul"
+
+%img{:src => "/images/knight.png", :style => "position: relative; left: 30px; width: 100px; left: 165px; top: -216px"}

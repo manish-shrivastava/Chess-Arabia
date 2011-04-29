@@ -1,0 +1,128 @@
+#board_out{
+  padding: 20px;
+  border-radius: 15px;
+  width: 420px;
+  position: relative;
+  margin: auto;
+  top: 30px;
+  border: 1px solid black;
+  background-color: #FDFDFD;
+}
+
+#board_container{
+  width: 415px;
+  height: 410px;
+  position: relative;  
+}
+
+#board{
+  text-align: left;
+  position: absolute;
+  margin: auto;
+  width: 380px;
+  height: 380px;
+  border: none;
+  top: 22px;
+  left: 20px;
+}
+
+#board_container #characters_top{
+  height: 22px;
+  top: 0px;
+  position: absolute;
+  width: 376px;
+  margin-left: 10px;
+  left: 10px;
+}
+
+#board_container #numbers_left{
+  left: 0px;
+  position: absolute;
+  height: 376px;
+  top: 22px;
+}
+
+#board_container #characters_top .char{
+  width: 47px;
+  border: none;
+  height: 20px;
+  display: inline;
+  float: left;
+  text-align: center;
+}
+
+#board_container #numbers_left .num{
+  height: 30px;
+  width: 20px;
+  text-align: center;
+  padding-top: 17px;
+}
+
+.cell{
+  position: absolute;
+  width: 45px;
+  height: 45px;
+}
+
+.cell.black{
+  background-color: #D18B47;
+  border: 1px solid #D18B47;
+}
+
+.cell.white{
+  background-color: #FFDAB8;
+  border: 1px solid #FFDAB8;
+}
+
+.piece{
+  position: absolute;
+  border: 1px solid transparent;
+  width: 47px;
+  height: 47px;
+}
+
+.cell.last_moved{
+  border: 1px solid blue !important;
+}
+
+.cell.last_moved_from{
+  border: 1px solid blue !important;
+}
+
+.piece.hoverable:hover{
+  border: 1px solid #111111;
+  background-color: #454545;
+}
+
+#players_panel{
+  width: 600px;
+  margin: auto;
+  margin-top: 55px;
+  border: 1px solid black;
+  text-align: center;
+}
+
+#players_panel .t{
+  border-bottom: 1px solid black;
+}
+
+#players_panel .player_name{
+  height: 40px;
+  line-height: 40px;
+}
+
+#players_panel .player_name a{
+  color: blue;
+}
+
+.player_info{
+  background-color: #EEE;
+  height: 100%;
+  width: 50%;
+  float: left;
+}
+
+#black_panel{
+  background-color: #444;
+  color: white;
+}

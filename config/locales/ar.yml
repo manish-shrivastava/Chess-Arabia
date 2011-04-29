@@ -1,0 +1,21 @@
+ar:
+  computer: "الكمبيوتر"
+
+  main_tabs:
+    home_page: "الصفحة الرئيسية"
+    games: "الالعاب"
+    about: "عن الموقع"
+    top_players: "افضل اللاعبين"
+    guest: "%{player_name} (زائر)"
+    sign_up: "لاعب جديد"
+    sign_in: "تسجيل الدخول"
+    sign_out: "تسجيل الخروج"
+    game_id: "اللعبة (%{id})"
+
+  games:
+    show:
+      sit_here: "اجلس هنا"
+      no_body: "لا احد"
+      eaten_pieces: "القطع المأكولة"
+      chat: "الدردشة"
+      computer_sit_here: "العب ضد الكمبيوتر"

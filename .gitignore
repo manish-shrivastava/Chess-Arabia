@@ -1,0 +1,10 @@
+coverage
+*~
+.DS_Store
+cron.log
+db/schema.rb
+tmp/
+*.log
+vendor/cache
+config/database.yml
+Gemfile.lock

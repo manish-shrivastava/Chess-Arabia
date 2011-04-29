@@ -1,0 +1,32 @@
+%h2= "تسجيل لاعب جديد"
+
+= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
+  = devise_error_messages!
+  %ul.form
+    %li.element
+      = f.label 'اسم اللاعب'
+      = f.text_field :name
+    %li.element
+      = f.label 'البريد الإلكتروني'
+      = f.text_field :email
+    %li.element
+      = f.label 'كلمة السر'
+      = f.password_field :password
+    %li.element
+      = f.label 'تأكيد كلمة السر'
+      = f.password_field :password_confirmation
+    %li.element
+      = f.label 'الدولة'
+      = f.select :country, Countries.map(&:reverse).sort{|a, b| a.first <=> b.first }, {}, :class => "rtl"
+    %li.button
+      = f.submit "تسجيل لاعب جديد"
+
+%h2= "تسجيل الدخول بواسطة جوجل"
+= form_for('user', :as => 'user', :url => session_path('user'), :html => { :id => "google_login_form" }) do |f|
+  %ul.form
+    = hidden_field_tag 'user[identity_url]', 'https://www.google.com/accounts/o8/id'
+    %li.button
+      = f.submit 'الدخول بواسطة جوجل'
+
+/
+  = render :partial => "devise/shared/links"

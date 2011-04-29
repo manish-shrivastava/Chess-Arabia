@@ -1,0 +1,24 @@
+%h2= "تسجيل الدخول"
+
+= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
+  %ul.form
+    %li.element
+      = f.label 'البريد الإلكتروني'
+      = f.text_field :email
+    
+    %li.element
+      = f.label 'كلمة السر'
+      = f.password_field :password
+
+    - if devise_mapping.rememberable?    
+      %li.button
+        = f.check_box :remember_me
+        = f.label 'تذكرتي'
+
+  = f.submit "تسجيل الدخول"
+
+
+%h2= "تسجيل الدخول بواسطة جوجل"
+= form_for('user', :as => 'user', :url => session_path('user'), :html => { :id => "google_login_form" }) do |f|
+  = hidden_field_tag 'user[identity_url]', 'https://www.google.com/accounts/o8/id'
+  = f.submit 'الدخول بواسطة جوجل'

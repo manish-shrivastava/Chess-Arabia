@@ -1,0 +1,30 @@
+!!! Strict
+%html
+  %head
+    <link rel="shortcut icon" href="/images/icon.ico" type="image/x-icon">
+    - if Rails.env != 'development'
+      <link href='http://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+      <link href='http://fonts.googleapis.com/css?family=Kreon' rel='stylesheet' type='text/css'>
+    %title= "Chess Arabia"
+    <meta content='شطرنج، عربي، عربية، الشطرنج، العاب، مجانا، العب مجانا، ملك، رقعة، رقعة الشطرنج، الوزير، القلعة، كسباروف، خطط شطرنج' name='keywords'>
+    <meta content='العب شطرنج مجانا' name='description'>
+    = stylesheet_link_tag 'general.css'
+    %meta{:name => 'csrf-param', :content => 'authenticity_token'}/
+    %meta{:name => 'csrf-token', :content => form_authenticity_token}/
+    = javascript_include_tag 'jquery-1.4.3.min.js'
+    = javascript_include_tag 'rails_jquery.js'
+    = javascript_include_tag 'application.js' 
+    = javascript_include_tag 'jquery.json-2.2.min.js'
+    = javascript_include_tag 'underscore.js'
+    = javascript_include_tag 'jquery-ui-1.8.4.custom.min.js'
+    = yield :header
+    %script{:type => "text/javascript"}
+      :erb
+        player_name = <%= @player_name.to_json %>;
+        guest = <%= @guest.to_json %>;
+        locale = <%= I18n.locale.to_json %>;  
+  %body
+    #wrapper
+      = yield
+      .clearer
+              
