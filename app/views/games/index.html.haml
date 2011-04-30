@@ -1,3 +1,6 @@
+-content_for :header do
+  = stylesheet_link_tag 'games_index.css'
+
 .title
   ChessArabia
   
@@ -9,3 +12,7 @@
   |
   = link_to 'Games Room', games_path
   ]
+
+.games
+  - @games.each do |game|
+    .game{ :id => "game_#{game.id}" }

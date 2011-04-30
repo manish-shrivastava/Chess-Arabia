@@ -9,6 +9,7 @@
     <meta content='شطرنج، عربي، عربية، الشطرنج، العاب، مجانا، العب مجانا، ملك، رقعة، رقعة الشطرنج، الوزير، القلعة، كسباروف، خطط شطرنج' name='keywords'>
     <meta content='العب شطرنج مجانا' name='description'>
     = stylesheet_link_tag 'general.css'
+    = stylesheet_link_tag 'forms.css'
     %meta{:name => 'csrf-param', :content => 'authenticity_token'}/
     %meta{:name => 'csrf-token', :content => form_authenticity_token}/
     = javascript_include_tag 'jquery-1.4.3.min.js'
@@ -25,6 +26,14 @@
         locale = <%= I18n.locale.to_json %>;  
   %body
     #wrapper
+      #top_menu
+        %a{ :href => "/" }= "Homepage"
+        %a{ :href => "/games" }= "Games Room"
+        - unless current_user
+          %a{ :href => new_user_session_path }= "Sign in"
+          %a{ :href => new_user_registration_path }= "Sign Up"
+        - else
+          %a{ :href => edit_player_path(current_user) }= current_user.name
       = yield
       .clearer
               

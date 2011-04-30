@@ -1,10 +1,11 @@
 function msg_received(msg){
   if (msg.make_move){
-    make_moves([msg.make_move], true);
-    game_state = msg.game_state;
-    current_turn = game_state.turn;
-    next_moves = game_state.next_moves;
-    if (game_state.winner){ game_finished(game_state.winner); }
+    make_move(msg.make_move, function(){
+      game_state = msg.game_state;
+      current_turn = game_state.turn;
+      next_moves = game_state.next_moves;
+      if (game_state.winner){ game_finished(game_state.winner, true); }    
+    });
   }
   else if (msg.msg_type == 'player_joined'){
     if (msg.seat == 'W'){
@@ -13,17 +14,24 @@ function msg_received(msg){
       $('#black_panel .player_name').html(msg.player_name);
     }
     if (msg.started == '1'){
-      game_started();
+      game_started(true);
     }
   }
 }
 
-function game_started(){
+function game_started(now){
+  // Event Handler
+  // now means Just Started
   started = 1;
 }
 
-function game_finished(winner){
+function game_finished(winner, now){
+  // Event Handler
+  // now means Just Finished
   finished = winner;
+  if (now){
+    alert("Just Finished");
+  }
 }
 
 $(function(){
@@ -46,8 +54,15 @@ $(function(){
   }
   if (current_turn == 'replaceW' && player_seat == 'W'){ show_replace_white() }
   if (current_turn == 'replaceB' && player_seat == 'B'){ show_replace_black() }
-})
 
+
+  if (started){
+    game_started(false); 
+  } 
+  if (finished){
+    game_finished(finished, false); 
+  }  
+});
 
 function black(){
   return player_seat == 'B';
@@ -178,36 +193,21 @@ function legal(from, to){
   return r;
 }
 
-function make_moves(moves, remote){
-  new_remote_moves = moves;
-  make_next_move(remote);
-  if (remote) start_move_timer(21);
+/*
+function make_moves(moves, callback){
+  // callback to be called after making the last move
+  new_moves = moves;
+  make_next_move(callback);
 }
 
-function start_move_timer(start){
-  return; // Not working now
-  move_timer = start;
-  refresh_move_timer();
-}
-
-function make_next_move(){
-  if (new_remote_moves.length > 0){
-    move = new_remote_moves.shift();
-    make_move(move, make_next_move);
+function make_next_move(callback){
+  // callback to be called after making the last move
+  if (new_moves.length > 0){
+    move = new_moves.shift();
+    make_move(move, function(){make_next_move);
   }
 }
-
-function make_replace_move(move){
-  // Runs on Both Sides
-  from = move['from'];
-  to = move['to']
-  piece1 = move['piece1'];
-  piece2 = move['piece2'];
-  replace_piece = move['replace_piece'];
-  cells[to[0]][to[1]] = replace_piece;
-  pieces[to[0]][to[1]].removeClass(piece1);
-  pieces[to[0]][to[1]].addClass(replace_piece);
-}
+*/
 
 function make_move(move, callback){
   from = move['from'];
@@ -235,6 +235,18 @@ function make_move(move, callback){
     }
     callback();
   });
+}
+
+function make_replace_move(move){
+  // Runs on Both Sides
+  from = move['from'];
+  to = move['to']
+  piece1 = move['piece1'];
+  piece2 = move['piece2'];
+  replace_piece = move['replace_piece'];
+  cells[to[0]][to[1]] = replace_piece;
+  pieces[to[0]][to[1]].removeClass(piece1);
+  pieces[to[0]][to[1]].addClass(replace_piece);
 }
 
 function make_special_move(move){

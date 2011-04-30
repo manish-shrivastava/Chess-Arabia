@@ -1,0 +1,27 @@
+.title{
+  margin-top: 40px;
+  text-align: center;
+  font-size: 50px;
+  color: #222;
+  font-family: 'Architects Daughter', arial, serif;
+}
+
+.menu{
+  text-align: center;
+  color: #777;
+}
+
+.menu a{
+  color: #1F2263;  
+}
+
+.games{
+  margin: 30px 20px;
+}
+
+.game{
+  width: 35%;
+  height: 120px;
+  border: 1px solid #444;
+  float: left;
+}

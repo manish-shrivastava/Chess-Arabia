@@ -1,0 +1,16 @@
+.title{
+  margin-top: 140px;
+  text-align: center;
+  font-size: 75px;
+  color: #222;
+  font-family: 'Architects Daughter', arial, serif;
+}
+
+.menu{
+  text-align: center;
+  color: #777;
+}
+
+.menu a{
+  color: #1F2263;  
+}

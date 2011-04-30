@@ -12,6 +12,7 @@ html {overflow-y: scroll;}
 
 body{
   background-color: #999;
+  background-image: url('/images/back.jpg');
 }
 
 a{
@@ -36,23 +37,6 @@ ul{
   background-color: white;
 }
 
-.title{
-  margin-top: 140px;
-  text-align: center;
-  font-size: 75px;
-  color: #222;
-  font-family: 'Architects Daughter', arial, serif;
-}
-
-.menu{
-  text-align: center;
-  color: #777;
-}
-
-.menu a{
-  color: #1F2263;  
-}
-
 .about{
   text-align: right;
   padding: 10px;
@@ -64,4 +48,22 @@ ul{
 .about a{
   color: blue;
   font-family: 'Kreon', arial, serif;
+}
+
+#top_menu{
+  height: 26px;
+  background-color: #444;
+  padding-left: 10px;
+}
+
+#top_menu a{
+  width: 40px;
+  line-height: 26px;
+  padding: 3px 8px;
+  color: white;
+  font-size: 14px;
+}
+
+#top_menu a:hover{
+  background-color: #666;
 }
