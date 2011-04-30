@@ -18,10 +18,12 @@ class Game
   Attributes.each do |attrib|
     attr_accessor attrib
   end
+  
+  attr_accessor :next_moves
 
   BlackPieces = ['nB', 'bB', 'qB', 'kB', 'rB', 'pB']
   WhitePieces = ['nW', 'bW', 'qW', 'kW', 'rW', 'pW']
-
+   
   def self.create
     g = Game.new
     g.id = REDIS.incr "last_game_id" while REDIS.get("game_#{g.id}")
@@ -86,6 +88,7 @@ class Game
     Attributes.each do |attribute, value|
       g.send "#{attribute.to_s}=", redis_attributes[attribute.to_s]
     end
+    g.next_moves = redis_attributes['next_moves'] if redis_attributes['next_moves']
     return g
   end
   
@@ -301,13 +304,11 @@ class Game
       if piece1 == 'pW' && to[0] == 0
         @turn = 'replaceW'
         @replace_move = move
-        @next_moves = nil
         save() unless trying
         return true
       elsif piece1 == 'pB' && to[0] == 7
         @turn = 'replaceB'
         @replace_move = move
-        @next_moves = nil
         save() unless trying
         return true
       end
@@ -325,7 +326,7 @@ class Game
     end
   end
   
-  def move_finished    
+  def move_finished
     if next_moves().length == 0
       # Game Finished
       @winner = white_king? ? 'B' : (black_king? ? 'W' : 'TIE')
@@ -395,6 +396,11 @@ class Game
     special_move = self.special_move?(move)
     move['special_move'] = special_move
     move['id'] = self.moves.length
+    if @next_moves
+      #raise @next_moves.inspect
+      first_move =  @next_moves.select{|m| (m['from'] == move['from']) && (m['to'] == move['to'])}.first
+      return !first_move.nil?
+    end
 
     # Checks
     return false if from[0] < 0 || from[0] > 7
@@ -471,11 +477,13 @@ class Game
             @cells = old_cells
             last_move_turn = @turn
             @turn = old_turn
+            @next_moves = nil
             @eaten_pieces = old_eaten_pieces
           end
         end
       end
     end
+    @next_moves = moves
     return moves    
   end
 

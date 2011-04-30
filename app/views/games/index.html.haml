@@ -16,3 +16,4 @@
 .games
   - @games.each do |game|
     .game{ :id => "game_#{game.id}" }
+      = link_to 'Visit Game', game_path(game.id), :class => "link"

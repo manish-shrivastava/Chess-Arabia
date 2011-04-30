@@ -13,6 +13,7 @@ html {overflow-y: scroll;}
 body{
   background-color: #999;
   background-image: url('/images/back.jpg');
+  background-attachment: fixed;
 }
 
 a{

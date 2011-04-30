@@ -23,6 +23,13 @@ function game_started(now){
   // Event Handler
   // now means Just Started
   started = 1;
+  if (player_seat == 'W' || player_seat == 'B'){
+    player_seat_down = player_seat.toLowerCase();
+    selector = '.' + player_seat_down + 'piece';
+    $(selector).draggable({ containment: "parent", stop: drag_stopped, start: function(event, ui){ $(event.target).css('z-index', 2); $(event.target).removeClass('hoverable'); } });
+    $(selector).addClass('hoverable');
+    $(selector).click(piece_clicked);
+  }
 }
 
 function game_finished(winner, now){
@@ -45,13 +52,6 @@ $(function(){
   socket.send($.toJSON({follow_game: game_id}));
 
   render_pieces();
-  if (player_seat == 'W' || player_seat == 'B'){
-    player_seat_down = player_seat.toLowerCase();
-    selector = '.' + player_seat_down + 'piece';
-    $(selector).draggable({ containment: "parent", stop: drag_stopped, start: function(event, ui){ $(event.target).css('z-index', 2); $(event.target).removeClass('hoverable'); } });
-    $(selector).addClass('hoverable');
-    $(selector).click(piece_clicked);
-  }
   if (current_turn == 'replaceW' && player_seat == 'W'){ show_replace_white() }
   if (current_turn == 'replaceB' && player_seat == 'B'){ show_replace_black() }
 
@@ -192,22 +192,6 @@ function legal(from, to){
   });
   return r;
 }
-
-/*
-function make_moves(moves, callback){
-  // callback to be called after making the last move
-  new_moves = moves;
-  make_next_move(callback);
-}
-
-function make_next_move(callback){
-  // callback to be called after making the last move
-  if (new_moves.length > 0){
-    move = new_moves.shift();
-    make_move(move, function(){make_next_move);
-  }
-}
-*/
 
 function make_move(move, callback){
   from = move['from'];

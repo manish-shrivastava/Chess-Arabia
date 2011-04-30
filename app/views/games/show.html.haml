@@ -41,7 +41,6 @@
           show_last_moved_from(<%= @game.moves.last['from'].to_json %>);
           show_last_moved(<%= @game.moves.last['to'].to_json %>);
         <% end %>
-        <% if @player_seat == @game.turn && @game.moves.length > 0 %> start_move_timer(<%= (20 - (Time.now.getutc - @game.last_move_at.to_time).to_i) %>) <% end %>
       });
     </script>
 
@@ -67,6 +66,8 @@
         = User.player_code_name(@game.players['W'])
       - elsif ! @game.in_game?(@player_code)
         = link_to '[ Sit Here ]', sit_game_path(@game.id, :seat => 'W'), :method => "post"
+      - else
+        = "[ Waiting for player ]"
   
   .player_info#black_panel
     .t= "Black Player"
@@ -75,6 +76,8 @@
         = User.player_code_name(@game.players['B'])
       - elsif ! @game.in_game?(@player_code)
         = link_to '[ Sit Here ]', sit_game_path(@game.id, :seat => 'B'), :method => "post"
+      - else
+        = "[ Waiting for player ]"
   .clearer
 
 .replace_box#replace_white{ :style => "display: none" }
