@@ -14,7 +14,6 @@
     <script type="text/javascript">
       rendered_moves = <%= @game.moves.map{|move| move['id']}.to_json %>;
       moves = <%= @game.moves.length %>;
-      chat = <%= @game.chat_lines.length %>;
       cells = <%= @game.cells.to_json %>;
       pieces = {};
       next_moves = <%= @game.turn == @player_seat ? @game.next_moves.to_json : [].to_json %>;

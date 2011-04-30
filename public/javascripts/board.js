@@ -37,7 +37,7 @@ function game_finished(winner, now){
   // now means Just Finished
   finished = winner;
   if (now){
-    alert("Just Finished");
+
   }
 }
 

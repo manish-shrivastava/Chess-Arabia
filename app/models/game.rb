@@ -6,7 +6,6 @@ class Game
   # Finished Games IDS "finished_games"
   # Last ID "last_game_id"
   # Queue "computer_games"
-  # Chat List for each game "game_chat_#{id}"
   
   # Channels
   # - move_finished
@@ -71,7 +70,7 @@ class Game
     # Reset Redis Storage, Shouldn't be run on the Production Environment
     REDIS.del 'games'
     REDIS.set 'last_game_id', 0
-    (0..100).each{|n| REDIS.del "game_#{n}"; REDIS.del "game_chat_#{n}"; REDIS.lrem 'games', 1, n}
+    (0..100).each{|n| REDIS.del "game_#{n}"; REDIS.lrem 'games', 1, n}
   end
   
   def self.find(id)
@@ -397,7 +396,6 @@ class Game
     move['special_move'] = special_move
     move['id'] = self.moves.length
     if @next_moves
-      #raise @next_moves.inspect
       first_move =  @next_moves.select{|m| (m['from'] == move['from']) && (m['to'] == move['to'])}.first
       return !first_move.nil?
     end
@@ -549,10 +547,6 @@ class Game
     end
     r += '+' if move['check_mate']
     return r
-  end
-  
-  def chat_lines
-    REDIS.lrange "game_chat_#{self.id}", 0, (REDIS.llen("game_chat_#{self.id}"))
   end
 
 end

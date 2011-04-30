@@ -1,6 +1,6 @@
 class GamesController < ApplicationController
 
-  before_filter :load_game, :only => [:show, :sit, :reset, :move, :random_move, :refresh, :replace, :two_steps, :computer_sit, :post_chat]
+  before_filter :load_game, :only => [:show, :sit, :reset, :move, :random_move, :refresh, :replace, :two_steps, :computer_sit]
 
   def load_game
     @game = Game.find(params[:id])
