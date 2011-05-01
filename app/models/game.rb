@@ -289,9 +289,9 @@ class Game
     
     if r
       # Move is for sure OK
+      @next_moves = nil
       move['check_mate'] = (white_king? || black_king?)
       move['standard'] = to_standard(move)
-      @next_moves = nil  
       @kw_moved = true if piece1 == 'kW'
       @kb_moved = true if piece1 == 'kB'
       @r00_moved = true if from == [0, 0]
@@ -327,6 +327,7 @@ class Game
   
   def move_finished
     if next_moves().length == 0
+      #raise next_moves.inspect
       # Game Finished
       @winner = white_king? ? 'B' : (black_king? ? 'W' : 'TIE')
       REDIS.lrem 'games', 1, @id
@@ -395,7 +396,7 @@ class Game
     special_move = self.special_move?(move)
     move['special_move'] = special_move
     move['id'] = self.moves.length
-    if @next_moves
+    if @next_moves && !ignore_turn
       first_move =  @next_moves.select{|m| (m['from'] == move['from']) && (m['to'] == move['to'])}.first
       return !first_move.nil?
     end
@@ -475,7 +476,6 @@ class Game
             @cells = old_cells
             last_move_turn = @turn
             @turn = old_turn
-            @next_moves = nil
             @eaten_pieces = old_eaten_pieces
           end
         end

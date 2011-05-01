@@ -1,24 +1,30 @@
-%h2= "تسجيل الدخول"
+.forms_page
+  
+  %h2= "Sign in"
 
-= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
-  %ul.form
-    %li.element
-      = f.label 'البريد الإلكتروني'
-      = f.text_field :email
-    
-    %li.element
-      = f.label 'كلمة السر'
-      = f.password_field :password
+  = form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
+    %ul.full_column_form
+      %li.element
+        = f.label 'Email Address'
+        = f.text_field :email
+      
+      %li.element
+        = f.label 'Password'
+        = f.password_field :password
 
-    - if devise_mapping.rememberable?    
-      %li.button
-        = f.check_box :remember_me
-        = f.label 'تذكرتي'
+      - if devise_mapping.rememberable?    
+        %li.element
+          = f.check_box :remember_me
+          = f.label 'Remember Me'
+      %li
+        = f.submit "Sign in", :class => "button"
+      .clearer
 
-  = f.submit "تسجيل الدخول"
-
-
-%h2= "تسجيل الدخول بواسطة جوجل"
-= form_for('user', :as => 'user', :url => session_path('user'), :html => { :id => "google_login_form" }) do |f|
-  = hidden_field_tag 'user[identity_url]', 'https://www.google.com/accounts/o8/id'
-  = f.submit 'الدخول بواسطة جوجل'
+  %h2= "Or Login using your GMail Account"
+  = form_for('user', :as => 'user', :url => session_path('user'), :html => { :id => "google_login_form" }) do |f|
+    %ul.full_column_form
+      = hidden_field_tag 'user[identity_url]', 'https://www.google.com/accounts/o8/id'
+      %li
+        %img{:src => "/images/gmail.jpg", :style => "float: left"}
+        = f.submit 'Sign In', :class => "button", :style => "margin-left: 20px; margin-top: 20px;"
+        

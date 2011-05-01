@@ -1,0 +1,84 @@
+.forms_page{
+  padding: 10px;
+}
+
+.forms_page h2{
+  font-size: 16px;
+  background-color: #81794C;
+  padding: 3px 12px;
+  border-radius: 7px;
+  color: #EAEAEA;
+}
+
+form {
+  margin: 5px 0;
+  color: #444444; }
+  form ul {
+    list-style-type: none; }
+  form .full_column_form .watermark {
+    float: none;
+    margin: 0 0 0 30.6%; }
+  form .full_column_form p {
+    float: left;
+    margin: 10px 0 0 30.6%; }
+  form .full_column_form li {
+    padding: 10px;
+    float: left;
+    *float: none;
+    width: 97%; }
+  form .full_column_form li.element {
+    border-bottom: 1px solid #dddddd; }
+  form .full_column_form .error_message {
+    border: 1px solid #ec6f29 !important;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px; }
+  form .full_column_form .remove {
+    color: white;
+    margin: 7px 3px 0 0; }
+  form label {
+    width: 29%;
+    float: left;
+    font-size: 90%;
+    padding: 4px 10px 0 0;
+    display: block;
+    font-weight: bold; }
+  form input[type="text"], form textarea, form select, form input[type="password"] {
+    width: 34%;
+    padding: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #777777;
+    font-size: 100%;
+    font-family: trebuchet MS, Arial; }
+  form input[type="radio"], form input[type="checkbox"] {
+    margin: 0 5px 0 0; }
+  form input[type="submit"] {
+    margin: 0 0 0 30.3%;
+    border: none;
+    width: auto;
+    padding: 5px 15px; }
+  form .choice label {
+    width: auto; }
+  form .choice input[type="radio"] {
+    margin: 4px 5px 0 0; }
+  form .show_advanced_link {
+    margin: 1% 0 0 30.3%; }
+
+
+form .button{
+  color: white;
+  background-color: #444;
+  border-radius: 8px;
+  width: 120px;
+}
+
+input:active, select:active{
+  background-color: #EEE;
+}
+
+.field_with_errors input, .field_with_errors select{
+  background-color: red;
+  color: white;
+}

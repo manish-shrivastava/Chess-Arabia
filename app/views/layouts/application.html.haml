@@ -2,7 +2,7 @@
 %html
   %head
     <link rel="shortcut icon" href="/images/icon.ico" type="image/x-icon">
-    - if Rails.env != 'develo2pment'
+    - if Rails.env != 'development'
       <link href='http://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
       <link href='http://fonts.googleapis.com/css?family=Kreon' rel='stylesheet' type='text/css'>
     %title= "Chess Arabia"
@@ -18,22 +18,34 @@
     = javascript_include_tag 'jquery.json-2.2.min.js'
     = javascript_include_tag 'underscore.js'
     = javascript_include_tag 'jquery-ui-1.8.4.custom.min.js'
+    = javascript_include_tag "rails.validations", "rails.validations.custom"
     = yield :header
     %script{:type => "text/javascript"}
       :erb
         player_name = <%= @player_name.to_json %>;
         guest = <%= @guest.to_json %>;
-        locale = <%= I18n.locale.to_json %>;  
+        locale = <%= I18n.locale.to_json %>;
+
+        $(function(){
+          <% if flash[:notice] %>
+            setTimeout(function(){ $('.flash_notice').hide('slow'); }, 3000);
+          <% end %>
+        });
   %body
     #wrapper
       #top_menu
         %a{ :href => "/" }= "Homepage"
         %a{ :href => "/games" }= "Games Room"
+        %a{ :href => "/players/top" }= "Top Players"
         - unless current_user
           %a{ :href => new_user_session_path }= "Sign in"
           %a{ :href => new_user_registration_path }= "Sign Up"
         - else
           %a{ :href => edit_player_path(current_user) }= current_user.name
+          %a{ :href => destroy_user_session_path }= "Log Out"
+      .flash_line
+        - if flash[:notice]
+          .flash_notice= flash[:notice]
       = yield
       .clearer
               

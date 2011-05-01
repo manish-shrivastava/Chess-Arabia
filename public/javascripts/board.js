@@ -7,6 +7,10 @@ function msg_received(msg){
       if (game_state.winner){ game_finished(game_state.winner, true); }    
     });
   }
+  else if (msg.chat_line){
+    $("#chat_list").append("<div class='chat_line'>" + msg.chat_line + "</div>");
+    $("#chat_list")[0].scrollTop = $("#chat_list")[0].scrollHeight;
+  }
   else if (msg.msg_type == 'player_joined'){
     if (msg.seat == 'W'){
       $('#white_panel .player_name').html(msg.player_name);
@@ -17,6 +21,11 @@ function msg_received(msg){
       game_started(true);
     }
   }
+}
+
+function send_chat(){
+  socket.send($.toJSON({ player_name: player_name, chat_line: $('#chat_line').attr('value'), game_id: game_id }));
+  $('#chat_line').attr('value', '');
 }
 
 function game_started(now){
@@ -36,6 +45,11 @@ function game_finished(winner, now){
   // Event Handler
   // now means Just Finished
   finished = winner;
+  if (player_seat == 'W' || player_seat == 'B'){
+    selector = '.' + player_seat_down + 'piece';
+    $(selector).draggable('disable');
+    $(selector).removeClass('hoverable');
+  }  
   if (now){
 
   }
@@ -45,23 +59,41 @@ $(function(){
   render_cells();
   socket = new io.Socket(null, {port: 8080, rememberTransport: false});
   socket.connect();
-  socket.on('connect', function(){ }) 
-  socket.on('message', function(data){ msg_received($.parseJSON(data)); }) 
-  socket.on('disconnect', function(){alert("Disconnect"); }) 
+  socket.on('connect', function(){ });
+  socket.on('message', function(data){ msg_received($.parseJSON(data)); });
+  socket.on('disconnect', function(){
+    // Disconnected
+  });
 
   socket.send($.toJSON({follow_game: game_id}));
 
   render_pieces();
   if (current_turn == 'replaceW' && player_seat == 'W'){ show_replace_white() }
   if (current_turn == 'replaceB' && player_seat == 'B'){ show_replace_black() }
-
+  
+  $('#send_chat').click(function(event){
+    send_chat();
+    event.preventDefault();
+  });
 
   if (started){
     game_started(false); 
   } 
   if (finished){
     game_finished(finished, false); 
-  }  
+  }
+  $('#board_right').css('height', $('#board_left').css('height'));
+  
+  $('#chat_line').keydown(function(event){
+    if (event.keyCode == 13){
+      send_chat();
+    }
+  });
+  
+  $('#board_right .right_box .title').click(function(event){
+    right_box_body = $(event.target).parent('.right_box').find('.right_box_body');
+    right_box_body.toggle('slow');
+  });
 });
 
 function black(){

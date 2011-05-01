@@ -50,12 +50,11 @@ redis_client3 = redis.createClient();    // Create the client to subscribe to pl
 
 underscore = require('./underscore.js');
 
-// socket.io, I choose you
-// simplest chat application evar
 var io = io.listen(server)
   , buffer = [];
 
-var games = [];
+var games = {};
+var client_games = {};
 
 redis_client2.subscribeTo('move_finished', function(err, game_id){
   game_key = "game_" + game_id;
@@ -84,29 +83,31 @@ redis_client3.subscribeTo('player_joined', function(err, info_jsoned){
 io.on('connection', function(client){
   //client.broadcast({ announcement: client.sessionId + ' connected' });
   
+  client_games[client] = [];
+  
   client.on('message', function(message){
     //client.sessionId
 
     msg = JSON.parse(message);
     if (msg.follow_game){
+      client_games[client].push(msg.follow_game);
       games[msg.follow_game] = games[msg.follow_game] || [];
       games[msg.follow_game].push(client);
-      client.send(JSON.stringify({toAlert: "OMAR !"}));
-      underscore.each(games[msg.follow_game], function(game_client){ game_client.send(JSON.stringify({toAlert: "OMAR !!"})) });
     }
-    else if (msg.join_game) {
-      key = "game_" + msg.join_game;
-      game_json = redis_client.get(key, function(err, data){ 
-        game_json = data;
-        game = JSON.parse(game_json);
-        game.players['W'] = msg.player_code;
-        redis_client.set(key, JSON.stringify(game));
+    else if (msg.chat_line) {
+      game_clients = games[msg.game_id];
+      underscore.each(game_clients, function(c){
+        c.send(JSON.stringify({ chat_line: msg.player_name + ": " + msg.chat_line }));
       });
     }
 
   });
 
   client.on('disconnect', function(){
+    underscore.each(client_games[client], function(game_id){
+      games[game_id].splice(games[game_id].indexOf(client), 1);
+    });
+    client_games[client] = null;
     //client.broadcast({ announcement: client.sessionId + ' disconnected' });
   });
 });

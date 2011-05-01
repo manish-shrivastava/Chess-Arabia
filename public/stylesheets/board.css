@@ -118,11 +118,79 @@
 .player_info{
   background-color: #EEE;
   height: 100%;
-  width: 50%;
+  width: 299px;
   float: left;
 }
 
 #black_panel{
-  background-color: #444;
+  background-color: #DDD;
+  color: black;
+  border-left: 1px dotted black;
+}
+
+#board_left{
+  width: 653px;
+  float: left;
+  border-right: 1px dotted #555;
+  padding-bottom: 50px
+}
+
+#board_right{
+  width: 305px;
+  height: 100px;
+  float: left;
+  background-color: #EFEFEF;
+  padding-bottom: 40px;
+  padding-top: 10px;
+}
+
+#board_right .right_box{
+  border: 1px solid black;
+  margin: 5px;
+  border-radius: 5px;
+  background-color: white;
+  margin-bottom: 10px;
+}
+
+.right_box .right_box_body{
+  padding-bottom: 5px;
+  padding-left: 5px;
+}
+
+#board_right .right_box .title{
   color: white;
+  text-align: center;
+  background-color: #56512F;
+  padding: 2px;
+  cursor: pointer;
+}
+
+#board_right .right_box .title:hover{
+  background-color: yellow;
+  color: black;
+}
+
+#chat_list{
+  height: 150px;
+  max-height: 150px;
+  overflow: auto;
+}
+
+#chat_line{
+  width: 220px;
+  font-size: 14px;
+  padding: 2px 3px;
+  border: 1px solid black;
+}
+
+#chat_list .chat_line{
+  margin: 1px 3px;
+}
+
+#send_chat{
+  border-radius: 3px;
+  background-color: green;
+  color: white;
+  padding: 2px 8px;
+  font-size: 14px;
 }

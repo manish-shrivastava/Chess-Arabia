@@ -20,3 +20,4 @@ gem 'devise_openid_authenticatable'
 gem 'redis'
 gem "rspec-rails"
 gem 'system_timer'
+gem 'client_side_validations'

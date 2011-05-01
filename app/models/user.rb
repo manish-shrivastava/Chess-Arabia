@@ -5,6 +5,10 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   devise :openid_authenticatable
+  
+  validates_presence_of :name, :email
+  validates_uniqueness_of :email
+  validates_length_of :password, :minimum => 4, :if => "identity_url.blank?"
 
   def self.create_from_identity_url(identity_url)
     User.create(:identity_url => identity_url)
@@ -16,7 +20,7 @@ class User < ActiveRecord::Base
   
   def self.player_code_name(player_code)
     return nil if player_code.nil?
-    return "الكمبيوتر" if player_code == 'computer'
+    return "Computer" if player_code == 'computer'
     player_code.match(/\Aguest_/) ? REDIS.get('player_name_' + player_code) + "" : User.find_by_email(player_code).name
   end
   

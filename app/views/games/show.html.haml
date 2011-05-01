@@ -43,41 +43,57 @@
       });
     </script>
 
-#board_out
-  #board_container
-    #characters_top
-      - characters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
-      - characters = characters.reverse if @black
-      - characters.each do |char|
-        .char= char
-    #numbers_left
-      - numbers = (1..8).to_a
-      - numbers = numbers.reverse unless @black
-      - numbers.each do |num|
-        .num= num
-    #board
+#board_left
+  #board_out
+    #board_container
+      #characters_top
+        - characters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+        - characters = characters.reverse if @black
+        - characters.each do |char|
+          .char= char
+      #numbers_left
+        - numbers = (1..8).to_a
+        - numbers = numbers.reverse unless @black
+        - numbers.each do |num|
+          .num= num
+      #board
+      .clearer
+  #players_panel
+    .player_info#white_panel
+      .t= "White Player"
+      .player_name
+        - if @game.players['W']
+          = User.player_code_name(@game.players['W'])
+        - elsif ! @game.in_game?(@player_code)
+          = link_to '[ Sit Here ]', sit_game_path(@game.id, :seat => 'W'), :method => "post"
+        - else
+          = "[ Waiting for player ]"
+    
+    .player_info#black_panel
+      .t= "Black Player"
+      .player_name
+        - if @game.players['B']
+          = User.player_code_name(@game.players['B'])
+        - elsif ! @game.in_game?(@player_code)
+          = link_to '[ Sit Here ]', sit_game_path(@game.id, :seat => 'B'), :method => "post"
+        - else
+          = "[ Waiting for player ]"
     .clearer
-#players_panel
-  .player_info#white_panel
-    .t= "White Player"
-    .player_name
-      - if @game.players['W']
-        = User.player_code_name(@game.players['W'])
-      - elsif ! @game.in_game?(@player_code)
-        = link_to '[ Sit Here ]', sit_game_path(@game.id, :seat => 'W'), :method => "post"
-      - else
-        = "[ Waiting for player ]"
-  
-  .player_info#black_panel
-    .t= "Black Player"
-    .player_name
-      - if @game.players['B']
-        = User.player_code_name(@game.players['B'])
-      - elsif ! @game.in_game?(@player_code)
-        = link_to '[ Sit Here ]', sit_game_path(@game.id, :seat => 'B'), :method => "post"
-      - else
-        = "[ Waiting for player ]"
-  .clearer
+
+#board_right
+  .right_box#chat_box
+    .title= "Chat"
+    .right_box_body
+      #chat_list
+      %input#chat_line{:type => "text"}
+      %a#send_chat{:href => "#"}= "Send"
+
+  .right_box
+    .title= "Captured Pieces"
+    .right_box_body
+      #white_eaten_pieces
+      #black_eaten_pieces
+.clearer
 
 .replace_box#replace_white{ :style => "display: none" }
   %h2= "استبدل الجندي بقطعة اخرى"
