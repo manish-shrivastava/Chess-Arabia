@@ -60,36 +60,36 @@
       .clearer
   #players_panel
     .player_info#white_panel
-      .t= "White Player"
+      .t= t(:white_player)
       .player_name
         - if @game.players['W']
           = User.player_code_name(@game.players['W'])
         - elsif ! @game.in_game?(@player_code)
-          = link_to '[ Sit Here ]', sit_game_path(@game.id, :seat => 'W'), :method => "post"
+          = link_to "[ #{t(:sit_here)} ]", sit_game_path(@game.id, :seat => 'W'), :method => "post"
         - else
-          = "[ Waiting for player ]"
+          = "[ #{t(:waiting_for_player)} ]"
     
     .player_info#black_panel
-      .t= "Black Player"
+      .t= t(:black_player)
       .player_name
         - if @game.players['B']
           = User.player_code_name(@game.players['B'])
         - elsif ! @game.in_game?(@player_code)
-          = link_to '[ Sit Here ]', sit_game_path(@game.id, :seat => 'B'), :method => "post"
+          = link_to "[ #{t(:sit_here)} ]", sit_game_path(@game.id, :seat => 'B'), :method => "post"
         - else
-          = "[ Waiting for player ]"
+          = "[ #{t(:waiting_for_player)} ]"
     .clearer
 
 #board_right
   .right_box#chat_box
-    .title= "Chat"
+    .title= t(:chat)
     .right_box_body
       #chat_list
       %input#chat_line{:type => "text"}
-      %a#send_chat{:href => "#"}= "Send"
+      %a#send_chat{:href => "#"}= t(:send)
 
   .right_box
-    .title= "Captured Pieces"
+    .title= t(:captured_pieces)
     .right_box_body
       #white_eaten_pieces
       #black_eaten_pieces

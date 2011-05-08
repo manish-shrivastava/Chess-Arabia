@@ -1,0 +1,39 @@
+ar:
+  errors:
+    messages:
+      not_found: "غير موجود"
+      already_confirmed: "was already confirmed"
+      not_locked: "was not locked"
+
+  devise:
+    failure:
+      unauthenticated: 'انتا بحاجة لتسجيل الدخول'
+      unconfirmed: 'You have to confirm your account before continuing.'
+      locked: 'تم ايقاف تفعيل حسابك في الموقع'
+      invalid: 'البريد الالكتروني او كلمة السر خطأ'
+      invalid_token: 'Invalid authentication token.'
+      timeout: 'Your session expired, please sign in again to continue.'
+      inactive: 'لم يتم تفعيل حسابك بعد.'
+    sessions:
+      signed_in: 'تم تسجيل الدخول بنجاح'
+      signed_out: 'تم تسجيل الخروج من الموقع بنجاح'
+    passwords:
+      send_instructions: 'سوف تقوم ابإستقبال بريد الكتروني يرشدك لإختيار كلمة سر جديدة'
+      updated: 'Your password was changed successfully. You are now signed in.'
+    confirmations:
+      send_instructions: 'You will receive an email with instructions about how to confirm your account in a few minutes.'
+      confirmed: 'Your account was successfully confirmed. You are now signed in.'
+    registrations:
+      signed_up: 'You have signed up successfully. If enabled, a confirmation was sent to your e-mail.'
+      updated: 'You updated your account successfully.'
+      destroyed: 'Bye! Your account was successfully cancelled. We hope to see you again soon.'
+    unlocks:
+      send_instructions: 'You will receive an email with instructions about how to unlock your account in a few minutes.'
+      unlocked: 'Your account was successfully unlocked. You are now signed in.'
+    mailer:
+      confirmation_instructions:
+        subject: 'Confirmation instructions'
+      reset_password_instructions:
+        subject: 'تعليمات اعادة اختيار كلمة السر'
+      unlock_instructions:
+        subject: 'Unlock Instructions'

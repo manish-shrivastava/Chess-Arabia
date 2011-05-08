@@ -6,11 +6,11 @@
   
 .menu
   [
-  = link_to 'New Game', games_path, :method => "post"
+  = link_to t(:new_game), games_path, :method => "post"
   |
-  = link_to 'Play Against Computer', play_with_computer_games_path, :method => "post"
+  = link_to t(:play_against_computer), play_with_computer_games_path, :method => "post"
   |
-  = link_to 'Games Room', games_path
+  = link_to t(:games_room), games_path
   |
   - if I18n.locale == :en
     = link_to 'بالعربية', "/?locale=ar"
@@ -19,7 +19,7 @@
   ]
 
 .about
-  Developed By
-  %a{:href => "http://twitter.com/OmarQunsul", :target => "_blank"}= "Omar Qunsul"
+  = t(:developed_by)
+  %a{:href => "http://twitter.com/OmarQunsul", :target => "_blank"}= t(:omar_qunsul)
 
 %img{:src => "/images/knight.png", :style => "position: relative; left: 30px; width: 100px; left: 155px; top: -219px"}

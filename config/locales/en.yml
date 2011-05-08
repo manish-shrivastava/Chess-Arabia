@@ -2,30 +2,33 @@
 # See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  computer: "Computer"
+  homepage: "Homepage"
+  games_room: "Games Room"
+  top_players: "Top Players"
+  sign_in: "Sign in"
+  sign_up: "Sign Up"
+  sign_out: "Sign Out"
+  new_game: "New Game"
+  play_against_computer: "Play Against Computer"
+  games_room: "Games Room"
+  developed_by: "Developed By"
+  omar_qunsul: "Omar Qunsul"
+
+  new_player_registration: "New Player Registration"
+  player_name: "Player Name"
+  email_address: "Email Address"
+  password: "Password"
+  password_confirmation: "Password Confirmation"
+  country: "Country"
+  
+  or_login_using_gmail: "Or Login using your GMail Account"
+  
+  remember_me: "Remember Me"
+  
+  chat: "Chat"
+  sit_here: "Sit Here"
+  waiting_for_player: "Waiting for a player"
   white_player: "White Player"
   black_player: "Black Player"
-
-  main_tabs:
-    home_page: "Home Page"
-    games: "Games"
-    about: "About"
-    top_players: "Top Players"
-    guest: "%{player_name} (Guest)"
-    sign_up: "New Player"
-    sign_in: "Sign in"
-    sign_out: "Sign out"
-    game_id: "Game (%{id})"
-
-  games:
-    show:
-      sit_here: "Sit Here"
-      no_body: "No Body"
-      eaten_pieces: "Eaten Pieces"
-      chat: "Chat"
-      computer_sit_here: "Against Computer"
-
-    index:
-      started_games: "Started Games"
-      new_games: "New Games"
-      game_id: "Game Number"
+  captured_pieces: "Captured Pieces"
+  send: "Send"

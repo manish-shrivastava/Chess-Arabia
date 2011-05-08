@@ -1,34 +1,37 @@
 
 .forms_page
-  %h2= "New Player Registration"
+  %h2= t(:new_player_registration)
 
   = form_for(resource, :as => resource_name, :url => registration_path(resource_name), :validate => true) do |f|
     = devise_error_messages!
     %ul.full_column_form
       %li.element
-        = f.label "Player Name"
+        = f.label t(:player_name)
         = f.text_field :name
       %li.element
-        = f.label "Email Address"
+        = f.label t(:email_address)
         = f.text_field :email
       %li.element
-        = f.label "Password"
+        = f.label t(:password)
         = f.password_field :password
       %li.element
-        = f.label "Password Confirmation"
+        = f.label t(:password_confirmation)
         = f.password_field :password_confirmation
       %li.element
-        = f.label "Country"
-        = f.select :country, Countries.map{|c| [c.first, c.first] }.sort{|a, b| a.first <=> b.first }, {}, :class => "rtl"
+        = f.label t(:country)
+        - if I18n.locale == :ar
+          = f.select :country, Countries.map{|c| [c.last, c.first] }.sort{|a, b| a.first <=> b.first }, {}, :class => "rtl"
+        - else
+          = f.select :country, Countries.map{|c| [c.first, c.first] }.sort{|a, b| a.first <=> b.first }, {}, :class => "rtl"
       %li
-        = f.submit "Sign Up", :class => "button"
+        = f.submit t(:sign_up), :class => "button"
       .clearer
 
-  %h2= "Or Login using your GMail Account"
+  %h2= t(:or_login_using_gmail)
   = form_for('user', :as => 'user', :url => session_path('user'), :html => { :id => "google_login_form" }) do |f|
     %ul.full_column_form
       = hidden_field_tag 'user[identity_url]', 'https://www.google.com/accounts/o8/id'
       %li
         %img{:src => "/images/gmail.jpg", :style => "float: left"}
-        = f.submit 'Sign In', :class => "button", :style => "margin-left: 20px; margin-top: 20px;"
+        = f.submit t(:sign_in), :class => "button", :style => "margin-left: 20px; margin-top: 20px;"
 

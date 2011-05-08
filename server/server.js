@@ -64,8 +64,8 @@ redis_client2.subscribeTo('move_finished', function(err, game_id){
     game_clients = games[game_id];
     game_state = { turn: game.turn, next_moves: game.next_moves, winner: game.winner }
     to_move_msg = { make_move: game.moves[game.moves.length - 1], game_state: game_state }
-    underscore.each(game_clients, function(client){
-      client.send(JSON.stringify(to_move_msg));
+    underscore.each(game_clients, function(c){
+      c.send(JSON.stringify(to_move_msg));
     });
   }); 
 });

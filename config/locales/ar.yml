@@ -1,21 +1,30 @@
 ar:
-  computer: "الكمبيوتر"
+  homepage: "الصفحة الرئيسية"
+  games_room: "غرفة الالعاب"
+  top_players: "افضل اللاعبين"
+  sign_in: "تسجيل الدخول"
+  sign_up: "لاعب جديد"
+  sign_out: "تسجيل الخروج"
+  new_game: "لعبة جديدة"
+  play_against_computer: "العب ضد الكمبيوتر"
+  developed_by: "تصميم وبرمجة"
+  omar_qunsul: "عمر القنصل"
 
-  main_tabs:
-    home_page: "الصفحة الرئيسية"
-    games: "الالعاب"
-    about: "عن الموقع"
-    top_players: "افضل اللاعبين"
-    guest: "%{player_name} (زائر)"
-    sign_up: "لاعب جديد"
-    sign_in: "تسجيل الدخول"
-    sign_out: "تسجيل الخروج"
-    game_id: "اللعبة (%{id})"
+  new_player_registration: "تسجيل لاعب جديد"
+  player_name: "اسم اللاعب"
+  email_address: "البريد الالكتروني"
+  password: "كلمة السر"
+  password_confirmation: "تأكيد كلمة السر"
+  country: "الدولة"
 
-  games:
-    show:
-      sit_here: "اجلس هنا"
-      no_body: "لا احد"
-      eaten_pieces: "القطع المأكولة"
-      chat: "الدردشة"
-      computer_sit_here: "العب ضد الكمبيوتر"
+  or_login_using_gmail: "او سجل دخول بواسطة حساب بريد الالكتروني في"
+
+  remember_me: "تذكرني"
+  
+  chat: "الدردشة"
+  sit_here: "اجلس هنا"
+  waiting_for_player: "بإنتظار لاعب"
+  white_player: "اللاعب الابيض"
+  black_player: "اللاعب الاسود"
+  captured_pieces: "القطع المأكولة"
+  send: "ارسال"

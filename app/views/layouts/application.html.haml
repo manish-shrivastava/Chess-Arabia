@@ -2,7 +2,7 @@
 %html
   %head
     <link rel="shortcut icon" href="/images/icon.ico" type="image/x-icon">
-    - if Rails.env != 'development'
+    - if true
       <link href='http://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
       <link href='http://fonts.googleapis.com/css?family=Kreon' rel='stylesheet' type='text/css'>
     %title= "Chess Arabia"
@@ -27,25 +27,27 @@
         locale = <%= I18n.locale.to_json %>;
 
         $(function(){
-          <% if flash[:notice] %>
+          <% if flash[:notice] || flash[:alert] %>
             setTimeout(function(){ $('.flash_notice').hide('slow'); }, 3000);
           <% end %>
         });
   %body
     #wrapper
       #top_menu
-        %a{ :href => "/" }= "Homepage"
-        %a{ :href => "/games" }= "Games Room"
-        %a{ :href => "/players/top" }= "Top Players"
+        %a{ :href => "/" }= t(:homepage)
+        %a{ :href => "/games" }= t(:games_room)
+        %a{ :href => "/players/top" }= t(:top_players)
         - unless current_user
-          %a{ :href => new_user_session_path }= "Sign in"
-          %a{ :href => new_user_registration_path }= "Sign Up"
+          %a{ :href => new_user_session_path }= t(:sign_in)
+          %a{ :href => new_user_registration_path }= t(:sign_up)
         - else
           %a{ :href => edit_player_path(current_user) }= current_user.name
-          %a{ :href => destroy_user_session_path }= "Log Out"
+          %a{ :href => destroy_user_session_path }= t(:sign_out)
       .flash_line
         - if flash[:notice]
           .flash_notice= flash[:notice]
+        - if flash[:alert]
+          .flash_notice= flash[:alert]
       = yield
       .clearer
               
