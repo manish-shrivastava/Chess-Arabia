@@ -12,5 +12,7 @@
 }
 
 .menu a{
-  color: #1F2263;  
+  color: #1F2263;
+  font-family: 'Architects Daughter', arial, serif;
+  font-size: 18px;
 }

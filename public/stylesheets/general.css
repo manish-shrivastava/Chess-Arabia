@@ -60,13 +60,18 @@ ul{
 #top_menu a{
   width: 40px;
   line-height: 26px;
-  padding: 3px 8px;
+  padding: 2px 8px;
   color: white;
-  font-size: 14px;
+  font-size: 18px;
+  font-family: 'Architects Daughter', arial, serif;
+  border-right: 1px solid white;
+  margin-right: 12px;
+  text-align: center;
 }
 
 #top_menu a:hover{
-  background-color: #666;
+  background-color: #444;
+  padding-bottom: 10px;
 }
 
 .flash_line{

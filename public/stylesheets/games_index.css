@@ -12,25 +12,48 @@
 }
 
 .menu a{
-  color: #1F2263;  
+  color: #1F2263;
+  font-family: 'Architects Daughter', arial, serif;
+  font-size: 18px;
 }
 
-.games{
-  margin: 30px 20px;
+table.games{
+  width: 60%;
+  margin: auto;
+  margin-bottom: 30px;
+  border: 1px solid #777;
+  border-radius: 5px;
 }
 
-.game{
-  width: 280px;
-  height: 120px;
-  border: 1px solid #444;
-  float: left;
-  margin-right: 20px;
-  padding: 2px;
-  margin-bottom: 20px;
-}
-
-.game .link{
-  font-size: 12px;
-  font-weight: 100;
+table.games a{
   color: blue;
 }
+
+table.games tr th{
+  text-align: center;
+  background-color: orange;
+  padding: 2px;
+}
+
+table.games tr td{
+  border: 1px solid #666;
+  text-align: center; 
+  padding: 2px;
+}
+
+h2.table_title{
+  width: 60%;
+  margin: auto;
+  margin-top: 30px;
+  margin-bottom: 4px;
+  font-family: 'Architects Daughter', arial, serif;
+}
+
+.no_games{
+  width: 60%;
+  color: orange;
+  text-align: left;
+  margin: auto;
+  padding-left: 30px;
+}
+

@@ -9,18 +9,14 @@ ar:
   play_against_computer: "العب ضد الكمبيوتر"
   developed_by: "تصميم وبرمجة"
   omar_qunsul: "عمر القنصل"
-
   new_player_registration: "تسجيل لاعب جديد"
   player_name: "اسم اللاعب"
   email_address: "البريد الالكتروني"
   password: "كلمة السر"
   password_confirmation: "تأكيد كلمة السر"
   country: "الدولة"
-
   or_login_using_gmail: "او سجل دخول بواسطة حساب بريد الالكتروني في"
-
-  remember_me: "تذكرني"
-  
+  remember_me: "تذكرني"  
   chat: "الدردشة"
   sit_here: "اجلس هنا"
   waiting_for_player: "بإنتظار لاعب"
@@ -28,3 +24,10 @@ ar:
   black_player: "اللاعب الاسود"
   captured_pieces: "القطع المأكولة"
   send: "ارسال"
+  no_player: "[ لا يوجد لاعب ]"
+  computer: "الكمبيوتر"
+  no_games: "لا يوجد العاب"
+  started_games: "العاب مبتدئة"
+  new_games: "العاب جديدة يمكنك المشاركة فيها"
+
+  join: "شارك"

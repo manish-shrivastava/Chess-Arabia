@@ -6,12 +6,39 @@
   
 .menu
   [
-  = link_to 'New Game', games_path, :method => "post"
+  = link_to t(:new_game), games_path, :method => "post"
   |
-  = link_to 'Play Against Computer', play_with_computer_games_path, :method => "post"
+  = link_to t(:play_against_computer), play_with_computer_games_path, :method => "post"
   ]
 
-.games
-  - @games.each do |game|
-    .game{ :id => "game_#{game.id}" }
-      = link_to 'Visit Game', game_path(game.id), :class => "link"
+%h2.table_title= t(:new_games)
+- if @new_games.any?
+  %table.games
+    %tr
+      %th= t(:white_player)
+      %th= t(:black_player)
+      %th.options= t(:options)
+    - @new_games.each do |game|
+      %tr.game{ :id => "game_#{game.id}" }
+        %td= !game.players['W'].nil? ? User.player_code_name(game.players['W']) : t(:no_player)
+        %td= !game.players['B'].nil? ? User.player_code_name(game.players['B']) : t(:no_player)
+        %td= link_to t(:join), game_path(game.id)
+- else
+  .no_games= t(:no_games)
+
+%h2.table_title= t(:started_games)
+- if @started_games.any?
+  %table.games
+    %tr
+      %th= t(:white_player)
+      %th= t(:black_player)
+      %th= t(:moves)
+      %th.options= t(:options)
+    - @started_games.each do |game|
+      %tr.game{ :id => "game_#{game.id}" }
+        %td= User.player_code_name(game.players['W'])
+        %td= User.player_code_name(game.players['B'])
+        %td= game.moves.length
+        %td= link_to t(:watch), game_path(game.id)
+- else
+  .no_games= t(:no_games)

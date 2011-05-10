@@ -13,22 +13,25 @@ en:
   games_room: "Games Room"
   developed_by: "Developed By"
   omar_qunsul: "Omar Qunsul"
-
   new_player_registration: "New Player Registration"
   player_name: "Player Name"
   email_address: "Email Address"
   password: "Password"
   password_confirmation: "Password Confirmation"
-  country: "Country"
-  
-  or_login_using_gmail: "Or Login using your GMail Account"
-  
-  remember_me: "Remember Me"
-  
+  country: "Country"  
+  or_login_using_gmail: "Or Login using your GMail Account"  
+  remember_me: "Remember Me"  
   chat: "Chat"
   sit_here: "Sit Here"
   waiting_for_player: "Waiting for a player"
   white_player: "White Player"
   black_player: "Black Player"
   captured_pieces: "Captured Pieces"
-  send: "Send"
+  send: "Send"  
+  no_player: "[ No Player ]"
+  computer: "Computer"
+  no_games: "No Games"
+  started_games: "Started Games"
+  new_games: "New Games"
+  
+  join: "Join"

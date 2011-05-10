@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
   
   def self.player_code_name(player_code)
     return nil if player_code.nil?
-    return "Computer" if player_code == 'computer'
+    return I18n.translate(:computer) if player_code == 'computer'
     player_code.match(/\Aguest_/) ? REDIS.get('player_name_' + player_code) + "" : User.find_by_email(player_code).name
   end
   
