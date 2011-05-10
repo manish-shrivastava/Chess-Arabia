@@ -29,8 +29,9 @@ ar:
   no_games: "لا يوجد العاب"
   started_games: "العاب مبتدئة"
   new_games: "العاب جديدة يمكنك المشاركة فيها"
-
   join: "شارك"
   watch: "شاهد"
   back: "العودة"
   game_id: "الرقم"
+  moves: "الحركات"
+  options: "اختيارات"

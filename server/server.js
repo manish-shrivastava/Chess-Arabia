@@ -97,7 +97,7 @@ io.on('connection', function(client){
     else if (msg.chat_line) {
       game_clients = games[msg.game_id];
       underscore.each(game_clients, function(c){
-        c.send(JSON.stringify({ chat_line: msg.player_name + ": " + msg.chat_line }));
+        c.send(JSON.stringify({ chat_line: "<b>" + msg.player_name + "</b>" + ": " + msg.chat_line }));
       });
     }
 

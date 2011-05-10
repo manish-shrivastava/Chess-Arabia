@@ -32,9 +32,9 @@ en:
   computer: "Computer"
   no_games: "No Games"
   started_games: "Started Games"
-  new_games: "New Games"
-  
+  new_games: "New Games"  
   join: "Join"
   watch: "Watch"
   back: "Back"
   game_id: "Game ID"
+  moves: "Moves"

@@ -47,6 +47,11 @@ table.games tr td{
   font-size: 16px;
 }
 
+table.games tr td a{
+  font-family: 'Architects Daughter', arial, serif;
+  font-size: 16px;
+}
+
 h2.table_title{
   width: 60%;
   margin: auto;
@@ -57,10 +62,9 @@ h2.table_title{
 
 .no_games{
   width: 60%;
-  color: orange;
-  text-align: left;
+  color: red;
+  text-align: center;
   margin: auto;
-  padding-left: 30px;
 }
 
 .games_table{
@@ -78,7 +82,6 @@ h2.table_title{
 border: 1px solid black;
 background-image: -moz-linear-gradient(top, #fcfcfc, #f7f7f7 3%, #f2f2f2 12%, #d9d9d9 90%, #bfbfbf);
 background-image: -webkit-gradient(linear, center top, center bottom, from(#fcfcfc), to(#bfbfbf), color-stop(3%, #f7f7f7), color-stop(12%, #f2f2f2), color-stop(90%, #d9d9d9));
-box-shadow: 0 3px 5px rgba(0,0,0,0.75);
 
 }
 

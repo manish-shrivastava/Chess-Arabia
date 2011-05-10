@@ -234,6 +234,7 @@ function make_move(move, callback){
   console.log("MAKING MOVE");
   rendered_moves.push(move['id']);
   $('#moves_list').append('<div class=\'move_list_element\'>' + move['standard'] + '</div>');
+  $("#moves_list")[0].scrollTop = $("#moves_list")[0].scrollHeight;
   special_move = move['special_move'];
   animate_piece(from, to, function(){
     if (piece2) { add_eaten_piece(piece2); }
@@ -386,8 +387,9 @@ function piece_moved(from, to){
   if (! ( (to[0] == 0 && piece == 'pW') || (to[0] == 7 && piece == 'pB') )){
     moves += 1;
     send_move(from, to);
-    $('#moves_list').append('<div class=\'move_list_element\'>' + legal_move['standard'] + '</div>')
-    current_turn = current_turn == 'W' ? 'B' : 'W'
+    $('#moves_list').append('<div class=\'move_list_element\'>' + legal_move['standard'] + '</div>');
+    $("#moves_list")[0].scrollTop = $("#moves_list")[0].scrollHeight;
+    current_turn = current_turn == 'W' ? 'B' : 'W';
     // Special Moves
     special_move = legal_move['special_move'];
     if (special_move){

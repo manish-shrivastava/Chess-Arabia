@@ -36,6 +36,8 @@ ul{
   border: 1px solid black;
   min-height: 500px;
   background-color: white;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
 }
 
 .about{
@@ -52,26 +54,23 @@ ul{
 }
 
 #top_menu{
-  height: 26px;
+  height: 28px;
   background-color: #56512F;
   padding-left: 10px;
 }
 
 #top_menu a{
   width: 40px;
-  line-height: 26px;
-  padding: 2px 8px;
+  line-height: 28px;
+  padding: 2px 14px;
   color: white;
-  font-size: 18px;
-  font-family: 'Architects Daughter', arial, serif;
+  font-size: 16px;
   border-right: 1px solid white;
-  margin-right: 12px;
   text-align: center;
 }
 
 #top_menu a:hover{
   background-color: #444;
-  padding-bottom: 10px;
 }
 
 .flash_line{
