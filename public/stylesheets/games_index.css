@@ -17,11 +17,13 @@
   font-size: 18px;
 }
 
+#wrapper{
+  padding-bottom: 35px;
+}
+
 table.games{
-  width: 60%;
+  width: 92%;
   margin: auto;
-  margin-bottom: 30px;
-  border: 1px solid #777;
   border-radius: 5px;
 }
 
@@ -32,21 +34,25 @@ table.games a{
 table.games tr th{
   text-align: center;
   background-color: orange;
-  padding: 2px;
+  padding: 5px 15px;
+  color: black;
 }
 
 table.games tr td{
   border: 1px solid #666;
   text-align: center; 
-  padding: 2px;
+  padding: 5px 20px;
+  background-color: white;
+  font-family: 'Architects Daughter', arial, serif;
+  font-size: 16px;
 }
 
 h2.table_title{
   width: 60%;
   margin: auto;
-  margin-top: 30px;
   margin-bottom: 4px;
   font-family: 'Architects Daughter', arial, serif;
+  text-align: center;
 }
 
 .no_games{
@@ -55,5 +61,24 @@ h2.table_title{
   text-align: left;
   margin: auto;
   padding-left: 30px;
+}
+
+.games_table{
+  margin-top: 30px;
+  background-color: #EFEFEF;
+  padding: 20px;
+  padding-top: 5px;
+  border-radius: 20px;
+  width: 75%;
+  margin: auto;
+  margin-bottom: 35px;
+  margin-top: 25px;
+  border-shadow: 2px black;
+
+border: 1px solid black;
+background-image: -moz-linear-gradient(top, #fcfcfc, #f7f7f7 3%, #f2f2f2 12%, #d9d9d9 90%, #bfbfbf);
+background-image: -webkit-gradient(linear, center top, center bottom, from(#fcfcfc), to(#bfbfbf), color-stop(3%, #f7f7f7), color-stop(12%, #f2f2f2), color-stop(90%, #d9d9d9));
+box-shadow: 0 3px 5px rgba(0,0,0,0.75);
+
 }
 
