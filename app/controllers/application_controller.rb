@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   end
   
   def set_locale
-    cookies[:locale] = params[:locale] ? params[:locale].to_sym : (cookies[:locale] || 'ar')
+    cookies[:locale] = params[:locale] ? params[:locale].to_sym : (cookies[:locale] || 'en')
     I18n.locale = cookies[:locale]
   end
   
