@@ -32,6 +32,10 @@
       game_id = <%= @game.id %>;
       board_cells = {};
       
+      function show_replace_black(){
+        $('#replace_black').slideDown();
+      }
+      
       $(function(){
         <% @game.eaten_pieces.each do |eaten_piece| %>
           add_eaten_piece(<%= eaten_piece.to_json %>);
@@ -104,16 +108,17 @@
 
 .clearer
 
-.replace_box#replace_white{ :style => "display: none" }
-  %h2= "استبدل الجندي بقطعة اخرى"
-  = link_to "<img src='/images/pieces/qW.png'/>".html_safe, replace_game_path(@game.id, :piece => "qW"), :remote => true, :class => "replace_piece"
-  = link_to "<img src='/images/pieces/rW.png'/>".html_safe, replace_game_path(@game.id, :piece => "rW"), :remote => true, :class => "replace_piece"
-  = link_to "<img src='/images/pieces/nW.png'/>".html_safe, replace_game_path(@game.id, :piece => "nW"), :remote => true, :class => "replace_piece"
-  = link_to "<img src='/images/pieces/bW.png'/>".html_safe, replace_game_path(@game.id, :piece => "bW"), :remote => true, :class => "replace_piece"
-.replace_box#replace_black{ :style => "display: none" }
-  %h2= "استبدل الجندي بقطعة اخرى"
-  = link_to "<img src='/images/pieces/qB.png'/>".html_safe, replace_game_path(@game.id, :piece => "qB"), :remote => true, :class => "replace_piece"
-  = link_to "<img src='/images/pieces/rB.png'/>".html_safe, replace_game_path(@game.id, :piece => "rB"), :remote => true, :class => "replace_piece"
-  = link_to "<img src='/images/pieces/nB.png'/>".html_safe, replace_game_path(@game.id, :piece => "nB"), :remote => true, :class => "replace_piece"
-  = link_to "<img src='/images/pieces/bB.png'/>".html_safe, replace_game_path(@game.id, :piece => "bB"), :remote => true, :class => "replace_piece"
+-content_for :out_wrapper do
+  .replace_box#replace_white
+    %h2= "استبدل الجندي بقطعة اخرى"
+    = link_to "<img src='/images/pieces/qW.png'/>".html_safe, replace_game_path(@game.id, :piece => "qW"), :remote => true, :class => "replace_piece"
+    = link_to "<img src='/images/pieces/rW.png'/>".html_safe, replace_game_path(@game.id, :piece => "rW"), :remote => true, :class => "replace_piece"
+    = link_to "<img src='/images/pieces/nW.png'/>".html_safe, replace_game_path(@game.id, :piece => "nW"), :remote => true, :class => "replace_piece"
+    = link_to "<img src='/images/pieces/bW.png'/>".html_safe, replace_game_path(@game.id, :piece => "bW"), :remote => true, :class => "replace_piece"
+  .replace_box#replace_black{ :style => "display: none" }
+    %h2= "استبدل الجندي بقطعة اخرى"
+    = link_to "<img src='/images/pieces/qB.png'/>".html_safe, replace_game_path(@game.id, :piece => "qB"), :remote => true, :class => "replace_piece"
+    = link_to "<img src='/images/pieces/rB.png'/>".html_safe, replace_game_path(@game.id, :piece => "rB"), :remote => true, :class => "replace_piece"
+    = link_to "<img src='/images/pieces/nB.png'/>".html_safe, replace_game_path(@game.id, :piece => "nB"), :remote => true, :class => "replace_piece"
+    = link_to "<img src='/images/pieces/bB.png'/>".html_safe, replace_game_path(@game.id, :piece => "bB"), :remote => true, :class => "replace_piece"
 

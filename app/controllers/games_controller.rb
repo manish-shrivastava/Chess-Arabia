@@ -73,7 +73,6 @@ class GamesController < ApplicationController
       render :update do |page|
         page << "hide_replace_white()"
         page << "current_turn = #{@game.turn.to_json}"
-        page << "update_turn_info();"
         page << "moves = #{@game.moves.length}"
         page << "started = #{@game.started?.to_json}"
         page << "finished = #{@game.finished?.to_json}"
@@ -86,7 +85,6 @@ class GamesController < ApplicationController
       render :update do |page|
         page << "hide_replace_black()"
         page << "current_turn = #{@game.turn.to_json}"
-        page << "update_turn_info();"
         page << "moves = #{@game.moves.length}"
         page << "started = #{@game.started?.to_json}"
         page << "finished = #{@game.finished?.to_json}"

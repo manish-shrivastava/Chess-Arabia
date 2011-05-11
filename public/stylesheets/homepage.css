@@ -16,3 +16,7 @@
   font-family: 'Architects Daughter', arial, serif;
   font-size: 18px;
 }
+
+.menu a:hover{
+  text-decoration: underline;
+}

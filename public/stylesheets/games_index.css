@@ -17,6 +17,10 @@
   font-size: 18px;
 }
 
+.menu a:hover{
+  text-decoration: underline;
+}
+
 #wrapper{
   padding-bottom: 35px;
 }
@@ -69,7 +73,7 @@ h2.table_title{
 
 .games_table{
   margin-top: 30px;
-  background-color: #EFEFEF;
+  background-color: #F3F3F3;
   padding: 20px;
   padding-top: 5px;
   border-radius: 20px;
@@ -78,10 +82,7 @@ h2.table_title{
   margin-bottom: 35px;
   margin-top: 25px;
   border-shadow: 2px black;
-
-border: 1px solid black;
-background-image: -moz-linear-gradient(top, #fcfcfc, #f7f7f7 3%, #f2f2f2 12%, #d9d9d9 90%, #bfbfbf);
-background-image: -webkit-gradient(linear, center top, center bottom, from(#fcfcfc), to(#bfbfbf), color-stop(3%, #f7f7f7), color-stop(12%, #f2f2f2), color-stop(90%, #d9d9d9));
+  border: 1px solid black;
 
 }
 

@@ -55,6 +55,22 @@ function game_finished(winner, now){
   }
 }
 
+function show_replace_white(){
+  $('#replace_white').slideDown();
+}
+     
+function show_replace_black(){
+  $('#replace_black').slideDown();
+}
+
+function hide_replace_white(){
+  $('#replace_white').slideUp();
+}
+     
+function hide_replace_black(){
+  $('#replace_black').slideUp();
+}
+
 $(function(){
   render_cells();
   socket = new io.Socket(null, {port: 8080, rememberTransport: false});

@@ -25,14 +25,21 @@
         player_name = <%= @player_name.to_json %>;
         guest = <%= @guest.to_json %>;
         locale = <%= I18n.locale.to_json %>;
+        
+        function show_flash(msg){
+          $('.flash_notice').html(msg);
+          $('.flash_notice').slideDown('slow');
+          setTimeout(function(){ $('.flash_notice').slideUp('slow'); }, 3000);
+        }
 
         $(function(){
           <% if flash[:notice] || flash[:alert] %>
-            setTimeout(function(){ $('.flash_notice').hide('slow'); }, 3000);
+            show_flash(<%= (flash[:notice] || flash[:alert]).to_json %>);
           <% end %>
         });
-  %body
+  %body    
     #wrapper
+      = yield :out_wrapper
       #top_menu
         %a{ :href => "/" }= t(:homepage)
         %a{ :href => "/games" }= t(:games_room)
@@ -44,10 +51,7 @@
           %a{ :href => edit_player_path(current_user) }= current_user.name
           %a{ :href => destroy_user_session_path }= t(:sign_out)
       .flash_line
-        - if flash[:notice]
-          .flash_notice= flash[:notice]
-        - if flash[:alert]
-          .flash_notice= flash[:alert]
+        .flash_notice{ :style => "display: none" }
       = yield
       .clearer
               
