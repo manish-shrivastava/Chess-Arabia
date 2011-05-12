@@ -57,13 +57,13 @@ var games = {};
 var client_games = {};
 
 redis_client2.subscribeTo('move_finished', function(err, game_id){
-  game_key = "game_" + game_id;
-  game_json = redis_client.get(game_key, function(err, data){ 
-    game_json = data;
-    game = JSON.parse(game_json);
-    game_clients = games[game_id];
-    game_state = { turn: game.turn, next_moves: game.next_moves, winner: game.winner }
-    to_move_msg = { make_move: game.moves[game.moves.length - 1], game_state: game_state }
+  var game_key = "game_" + game_id;
+  redis_client.get(game_key, function(err, data){ 
+    var game_json = data;
+    var game = JSON.parse(game_json);
+    var game_clients = games[game_id];
+    var game_state = { turn: game.turn, next_moves: game.next_moves, winner: game.winner }
+    var to_move_msg = { make_move: game.moves[game.moves.length - 1], game_state: game_state }
     underscore.each(game_clients, function(c){
       c.send(JSON.stringify(to_move_msg));
     });
@@ -71,10 +71,10 @@ redis_client2.subscribeTo('move_finished', function(err, game_id){
 });
 
 redis_client3.subscribeTo('player_joined', function(err, info_jsoned){
-  info = JSON.parse(info_jsoned);
+  var info = JSON.parse(info_jsoned);
   info.msg_type = 'player_joined';
-  game_id = info.game_id;
-  game_clients = games[game_id];
+  var game_id = info.game_id;
+  var game_clients = games[game_id];
   underscore.each(game_clients, function(client){
     client.send(JSON.stringify(info));
   });
@@ -110,4 +110,8 @@ io.on('connection', function(client){
     client_games[client] = null;
     //client.broadcast({ announcement: client.sessionId + ' disconnected' });
   });
+});
+
+process.on('uncaughtException', function (err) {
+  console.log('Caught exception: ' + err);
 });
