@@ -71,11 +71,22 @@ function hide_replace_black(){
   $('#replace_black').slideUp();
 }
 
+function show_connecting(){
+  $('#board_container').hide();
+  $('#connecting_msg').show();
+}
+
+function hide_connecting(){
+  $('#board_container').show();
+  $('#connecting_msg').hide();
+}
+
 $(function(){
   render_cells();
   socket = new io.Socket(null, {port: 8080, rememberTransport: false});
   socket.connect();
-  socket.on('connect', function(){ socket.send($.toJSON({follow_game: game_id})); });
+  show_connecting();
+  socket.on('connect', function(){ socket.send($.toJSON({follow_game: game_id})); hide_connecting(); });
   socket.on('message', function(data){ msg_received($.parseJSON(data)); });
   socket.on('disconnect', function(){
     // Disconnected

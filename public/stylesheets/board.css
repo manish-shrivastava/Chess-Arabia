@@ -251,3 +251,8 @@ box-shadow: 0 1px 5px rgba(0,0,0,0.75);
 .replace_box .replace_piece img:hover{
   background-color: #777;
 }
+
+#connecting_msg{
+  width: 100%;
+  text-align: center;
+}
