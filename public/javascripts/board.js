@@ -51,7 +51,7 @@ function game_finished(winner, now){
     $(selector).removeClass('hoverable');
   }  
   if (now){
-
+    // Nothing
   }
 }
 
@@ -84,8 +84,8 @@ $(function(){
   socket.send($.toJSON({follow_game: game_id}));
 
   render_pieces();
-  if (current_turn == 'replaceW' && player_seat == 'W'){ show_replace_white() }
-  if (current_turn == 'replaceB' && player_seat == 'B'){ show_replace_black() }
+  if (current_turn == 'replaceW' && player_seat == 'W'){ show_replace_white(); }
+  if (current_turn == 'replaceB' && player_seat == 'B'){ show_replace_black(); }
   
   $('#send_chat').click(function(event){
     send_chat();
@@ -164,11 +164,11 @@ function location_of_piece(place){
 
 function render_pieces(){
   $.each(cells, function(row_ind, row){
-    pieces[row_ind] = {}
+    pieces[row_ind] = {};
     $.each(row, function(col_ind, cell){
       if (cell){
         $('#board').append("<div class='piece' src='/images/pieces/" + cell + ".png' />");
-        loc = location_of_piece([row_ind, col_ind])
+        loc = location_of_piece([row_ind, col_ind]);
         $('#board .piece').last().css('top', loc[0]);
         $('#board .piece').last().css('left', loc[1]);
         $('#board .piece').last().addClass(cell);
@@ -196,7 +196,7 @@ function add_chat_line(line, new_chat_length){
 function position_of_piece(piece){
   for( i = 0; i < 8; i++){
     for (j = 0; j < 8; j++){
-      if (pieces[i][j] && pieces[i][j].index(piece) == 0){ return [i, j]; };
+      if (pieces[i][j] && pieces[i][j].index(piece) == 0){ return [i, j]; }
     }
   }
   //return null;
@@ -236,7 +236,7 @@ function legal(from, to){
   $.each(next_moves, function(ind, arr){
     from1 = arr['from'];
     to1 = arr['to'];
-    if (from1[0] == from[0] && from1[1] == from[1] && to[0] == to1[0] && to[1] == to1[1]){ r = arr }
+    if (from1[0] == from[0] && from1[1] == from[1] && to[0] == to1[0] && to[1] == to1[1]){ r = arrl; }
   });
   return r;
 }
@@ -261,7 +261,7 @@ function make_move(move, callback){
     $('.piece').removeClass('last_moved');
     show_last_moved(to);
     show_last_moved_from(from);
-    if (special_move){make_special_move(move)};
+    if (special_move){ make_special_move(move); }
     replace_piece = move['replace_piece'];
     if (replace_piece){
       make_replace_move(move);
@@ -273,7 +273,7 @@ function make_move(move, callback){
 function make_replace_move(move){
   // Runs on Both Sides
   from = move['from'];
-  to = move['to']
+  to = move['to'];
   piece1 = move['piece1'];
   piece2 = move['piece2'];
   replace_piece = move['replace_piece'];
