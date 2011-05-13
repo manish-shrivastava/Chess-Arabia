@@ -96,6 +96,7 @@ io.on('connection', function(client){
       client_games[client].push(msg.follow_game);
       games[msg.follow_game] = games[msg.follow_game] || [];
       games[msg.follow_game].push(client);
+      console.log("Client " + client.sessionID + " is connected to the game " + msg.follow_game);
     }
     else if (msg.chat_line) {
       game_clients = games[msg.game_id];

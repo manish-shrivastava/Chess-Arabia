@@ -75,13 +75,11 @@ $(function(){
   render_cells();
   socket = new io.Socket(null, {port: 8080, rememberTransport: false});
   socket.connect();
-  socket.on('connect', function(){ });
+  socket.on('connect', function(){ socket.send($.toJSON({follow_game: game_id})); });
   socket.on('message', function(data){ msg_received($.parseJSON(data)); });
   socket.on('disconnect', function(){
     // Disconnected
-  });
-
-  socket.send($.toJSON({follow_game: game_id}));
+  });  
 
   render_pieces();
   if (current_turn == 'replaceW' && player_seat == 'W'){ show_replace_white(); }
