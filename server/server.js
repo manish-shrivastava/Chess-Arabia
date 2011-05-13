@@ -57,14 +57,17 @@ var games = {};
 var client_games = {};
 
 redis_client2.subscribeTo('move_finished', function(err, game_id){
+  console.log('Move Finished in ' + game_id);
   var game_key = "game_" + game_id;
-  redis_client.get(game_key, function(err, data){ 
+  redis_client.get(game_key, function(err, data){
+
     var game_json = data;
     var game = JSON.parse(game_json);
     var game_clients = games[game_id];
     var game_state = { turn: game.turn, next_moves: game.next_moves, winner: game.winner }
     var to_move_msg = { make_move: game.moves[game.moves.length - 1], game_state: game_state }
     underscore.each(game_clients, function(c){
+      console.log('Telling Client ' + c.sessionId + ' About Move in ' + game_key);
       c.send(JSON.stringify(to_move_msg));
     });
   }); 

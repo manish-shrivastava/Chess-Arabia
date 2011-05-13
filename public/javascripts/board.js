@@ -236,7 +236,7 @@ function legal(from, to){
   $.each(next_moves, function(ind, arr){
     from1 = arr['from'];
     to1 = arr['to'];
-    if (from1[0] == from[0] && from1[1] == from[1] && to[0] == to1[0] && to[1] == to1[1]){ r = arrl; }
+    if (from1[0] == from[0] && from1[1] == from[1] && to[0] == to1[0] && to[1] == to1[1]){ r = arr; }
   });
   return r;
 }
