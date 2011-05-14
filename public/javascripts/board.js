@@ -75,11 +75,13 @@ function hide_replace_black(){
 function show_connecting(){
   $('#board_container').hide();
   $('#connecting_msg').show();
+  $('#players_panel').hide();
 }
 
 function hide_connecting(){
   $('#board_container').show();
   $('#connecting_msg').hide();
+  $('#players_panel').show();
 }
 
 $(function(){
