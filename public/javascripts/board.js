@@ -12,6 +12,7 @@ function msg_received(msg){
     $("#chat_list")[0].scrollTop = $("#chat_list")[0].scrollHeight;
   }
   else if (msg.msg_type == 'player_joined'){
+
     if (msg.seat == 'W'){
       $('#white_panel .player_name').html(msg.player_name);
     } else if (msg.seat == 'B'){
@@ -256,7 +257,6 @@ function make_move(move, callback){
   piece1 = move['piece1'];
   piece2 = move['piece2'];
   if ($.inArray(move['id'], rendered_moves) > -1){ return; }
-  console.log("MAKING MOVE");
   rendered_moves.push(move['id']);
   $('#moves_list').append('<div class=\'move_list_element\'>' + move['standard'] + '</div>');
   $("#moves_list")[0].scrollTop = $("#moves_list")[0].scrollHeight;
@@ -440,13 +440,15 @@ function add_eaten_piece(piece){
 function render_cells(){
   for (var row = 0; row < 8; row++){
     for (var col = 0; col < 8; col++){
-      $('#board').append("<div class='cell'></div>");
-      $('.cell').last().addClass((row + col) % 2 == 0 ? 'white' : 'black');
-      loc = location_of_piece(row.toString() + col);
-      board_cells[row.toString() + col] = $('#board .cell').last();
-      $('#board .cell').last().css('top', loc[0]);
-      $('#board .cell').last().css('left', loc[1]);
-      $('#board .cell').last().css('position', 'absolute');
+      var cell_div = $('<div>', { 'class': 'cell' });
+      cl = (row + col) % 2 == 0 ? 'white_cell' : 'black_cell';
+      cell_div.addClass(cl);
+      $('#board').append(cell_div);
+      var loc = location_of_piece([row, col]);
+      board_cells[row.toString() + col.toString()] = cell_div;
+      cell_div.css('top', loc[0]);
+      cell_div.css('left', loc[1]);
+      cell_div.css('position', 'absolute');
     }
   }
 }

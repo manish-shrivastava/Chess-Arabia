@@ -68,12 +68,12 @@
   height: 45px;
 }
 
-.cell.black{
+.black_cell{
   background-color: #D18B47;
   border: 1px solid #D18B47;
 }
 
-.cell.white{
+.white_cell{
   background-color: #FFDAB8;
   border: 1px solid #FFDAB8;
 }
