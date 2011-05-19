@@ -31,6 +31,7 @@ class GamesController < ApplicationController
     g.players['W'] = @player_code
     g.started_at = Time.now.getutc if g.started?
     g.save
+    g.game_started
     #g.tell_computer_to_play
     redirect_to game_path(:id => g.id)
   end
@@ -38,6 +39,7 @@ class GamesController < ApplicationController
   def sit
     @game.players[params[:seat]] = @player_code
     @game.save
+    @game.game_started if @game.started?
     REDIS.publish('player_joined', {'game_id' => @game.id, 'seat' => params[:seat], 'player_name' => User.player_code_name(@player_code), 'player_code' => @player_code, 'started' => @game.started? ? '1' : '0' }.to_json)
     redirect_to game_path(:id => @game.id)
   end

@@ -11,6 +11,7 @@ class Game
   # - move_finished
   # - computer_play
   # - player_joined
+  # - game_started
   
   Attributes = [:id, :cells, :turn, :players, :moves, :two_steps, :replace_move, :winner, :eaten_pieces, :created_at, :last_move_at, :started_at]
   Attributes += [:state_count]
@@ -323,6 +324,10 @@ class Game
       @turn = old_turn
       return false
     end
+  end
+  
+  def game_started
+    REDIS.publish('game_started', self.id)
   end
   
   def move_finished
