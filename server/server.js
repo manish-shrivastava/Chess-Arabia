@@ -82,7 +82,7 @@ redis_client2.subscribeTo('move_finished', function(err, game_id){
     var to_move_msg = { make_move: game.moves[game.moves.length - 1], game_state: game_state };
     clearTimeout(game_resign[game.id]);
     if ( ! game.winner) {
-      game_resign[game.id] = setTimeout(function(){ game_resigned(game); }, 5000);
+      game_resign[game.id] = setTimeout(function(){ game_resigned(game); }, 200000);
     }
     underscore.each(game_clients, function(c){
       console.log('Telling Client ' + c.sessionId + ' About Move in ' + game_key);
