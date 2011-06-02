@@ -12,39 +12,10 @@
     </style>
     
     <script type="text/javascript">
-      rendered_moves = <%= @game.moves.map{|move| move['id']}.to_json %>;
-      moves = <%= @game.moves.length %>;
-      cells = <%= @game.cells.to_json %>;
-      pieces = {};
-      next_moves = <%= @game.turn == @player_seat ? @game.next_moves.to_json : [].to_json %>;
+      game_id = <%= @game.id %>;
       player_seat = <%= @player_seat.to_json %>;
       player_code = <%= @player_code.to_json %>;
       cell_size = 47;
-      current_turn = <%= @game.turn.to_json %>;
-      started = <%= @game.started?.to_json %>;
-      finished = <%= @game.finished?.to_json %>;
-      timer_id = 0;
-      title1 = "الشطرنج العربية";
-      title2 = "الشطرنج العربية - دورك الان";
-      toggling = false;
-      toggling_timer = -1;
-      selected_cell = null;
-      game_id = <%= @game.id %>;
-      board_cells = {};
-      
-      function show_replace_black(){
-        $('#replace_black').slideDown();
-      }
-      
-      $(function(){
-        <% @game.eaten_pieces.each do |eaten_piece| %>
-          add_eaten_piece(<%= eaten_piece.to_json %>);
-        <% end %>
-        <% if @game.moves.last %>
-          show_last_moved_from(<%= @game.moves.last['from'].to_json %>);
-          show_last_moved(<%= @game.moves.last['to'].to_json %>);
-        <% end %>
-      });
     </script>
 
 #board_left

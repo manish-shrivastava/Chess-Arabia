@@ -47,6 +47,7 @@ var redis = require("./redis-node/lib/redis");
 redis_client = redis.createClient();    // Create the client
 redis_client2 = redis.createClient();    // Create the client to subscribe to move_finished channel
 redis_client3 = redis.createClient();    // Create the client to subscribe to player_joined
+redis_client4 = redis.createClient();    // Create the client to subscribe to game_started
 
 underscore = require('./underscore.js');
 
@@ -55,6 +56,19 @@ var io = io.listen(server)
 
 var games = {};
 var client_games = {};
+var game_resign = {};
+
+function game_resigned(game){
+  console.log(game.id);
+  var game_clients = games[game.id];
+  game.winner = 'resign' + game.turn;
+  redis_client.set("game_" + game.id, JSON.stringify(game));
+  underscore.each(game_clients, function(c){
+    resigned_msg = { resigned: game.winner };
+    c.send(JSON.stringify(resigned_msg));
+  });
+  
+}
 
 redis_client2.subscribeTo('move_finished', function(err, game_id){
   console.log('Move Finished in ' + game_id);
@@ -64,8 +78,12 @@ redis_client2.subscribeTo('move_finished', function(err, game_id){
     var game_json = data;
     var game = JSON.parse(game_json);
     var game_clients = games[game_id];
-    var game_state = { turn: game.turn, next_moves: game.next_moves, winner: game.winner }
-    var to_move_msg = { make_move: game.moves[game.moves.length - 1], game_state: game_state }
+    var game_state = { turn: game.turn, next_moves: game.next_moves, winner: game.winner };
+    var to_move_msg = { make_move: game.moves[game.moves.length - 1], game_state: game_state };
+    clearTimeout(game_resign[game.id]);
+    if ( ! game.winner) {
+      game_resign[game.id] = setTimeout(function(){ game_resigned(game); }, 5000);
+    }
     underscore.each(game_clients, function(c){
       console.log('Telling Client ' + c.sessionId + ' About Move in ' + game_key);
       c.send(JSON.stringify(to_move_msg));
@@ -80,7 +98,13 @@ redis_client3.subscribeTo('player_joined', function(err, info_jsoned){
   var game_clients = games[game_id];
   underscore.each(game_clients, function(client){
     console.log('Telling Client ( PLAYER JOINED )' + client.sessionId + ' IN ' + game_id);
-    client.send(JSON.stringify(info));
+    var game_key = "game_" + game_id;
+    redis_client.get(game_key, function(err, data){
+      var game_json = data;
+      var game = JSON.parse(game_json);
+      game.msg_type = 'connected_successfully';
+      client.send(JSON.stringify(game));
+    });
   });
 });
   
@@ -98,6 +122,18 @@ io.on('connection', function(client){
       games[msg.follow_game] = games[msg.follow_game] || [];
       games[msg.follow_game].push(client);
       console.log("Client " + client.sessionId + " is connected to the game " + msg.follow_game);
+      var game_key = "game_" + msg.follow_game;
+      redis_client.get(game_key, function(err, data){
+        //console.log("GAME DATA" + data);
+        var game = JSON.parse(data);
+        return_hash = {load_game: msg.follow_game, turn: game.turn, players: game.players, cells: game.cells};
+        return_hash.next_moves = game.next_moves;
+        return_hash.last_rendered_move = game.moves.length - 1;
+        return_hash.moves = game.moves;
+        return_hash.winner = game.winner;
+        return_hash.eaten_pieces = game.eaten_pieces;
+        client.send(JSON.stringify(return_hash));
+      });
     }
     else if (msg.chat_line) {
       game_clients = games[msg.game_id];

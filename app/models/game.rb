@@ -51,6 +51,10 @@ class Game
     ! players['W'].nil? && ! players['B'].nil?
   end
   
+  def empty?
+    players['W'].nil? && players['B'].nil?
+  end
+  
   def in_game?(player_code)
     return [@players['W'], @players['B']].include?(player_code)
   end
@@ -67,7 +71,6 @@ class Game
   end
   
   def self.clear_db
-    return unless Rails.env == 'development'
     # Reset Redis Storage, Shouldn't be run on the Production Environment
     REDIS.del 'games'
     REDIS.set 'last_game_id', 0

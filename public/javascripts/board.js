@@ -1,5 +1,17 @@
 function msg_received(msg){
-  if (msg.make_move){
+  if (msg.load_game){
+    // Set Game Information Here
+    current_turn = msg.turn;
+    cells = msg.cells;
+    players = msg.players;
+    next_moves = msg.next_moves;
+    last_rendered_move = msg.last_rendered_move;
+    moves = msg.moves;
+    winner = msg.winner;
+    eaten_pieces = msg.eaten_pieces;
+    load_game();
+  }
+  else if (msg.make_move){
     make_move(msg.make_move, function(){
       game_state = msg.game_state;
       current_turn = game_state.turn;
@@ -11,8 +23,11 @@ function msg_received(msg){
     $("#chat_list").append("<div class='chat_line'>" + msg.chat_line + "</div>");
     $("#chat_list")[0].scrollTop = $("#chat_list")[0].scrollHeight;
   }
+  else if (msg.resigned){
+    game_finished(msg.resigned, true);
+    alert("Resigned " + winner);
+  }
   else if (msg.msg_type == 'player_joined'){
-
     if (msg.seat == 'W'){
       $('#white_panel .player_name').html(msg.player_name);
     } else if (msg.seat == 'B'){
@@ -24,6 +39,67 @@ function msg_received(msg){
   }
 }
 
+$(function(){
+  socket = new io.Socket(null, {port: 8080, rememberTransport: false});
+  socket.connect();
+  show_connecting();
+  socket.on('connect', function(){ socket.send($.toJSON({follow_game: game_id})); hide_connecting(); });
+  socket.on('message', function(data){ msg_received($.parseJSON(data)); });
+  socket.on('disconnect', function(){
+    // Disconnected
+  });  
+  
+  $('#send_chat').click(function(event){
+    send_chat();
+    event.preventDefault();
+  });
+
+  $('#board_right').css('height', $('#board_left').css('height'));
+  
+  $('#chat_line').keydown(function(event){
+    if (event.keyCode == 13){
+      send_chat();
+    }
+  });
+  
+  $('#board_right .right_box .title').click(function(event){
+    right_box_body = $(event.target).parent('.right_box').find('.right_box_body');
+    right_box_body.toggle('slow');
+  });
+
+});
+
+
+function load_game(){
+  board_cells = {};
+  render_cells();
+  pieces = {};
+  render_pieces();
+  
+  if (moves.length > 0){
+    last_move = moves[moves.length - 1];
+    show_last_moved_from( last_move.from );
+    show_last_moved( last_move.to );  
+  }
+
+  if (current_turn == 'replaceW' && player_seat == 'W'){ show_replace_white(); }
+  if (current_turn == 'replaceB' && player_seat == 'B'){ show_replace_black(); }
+  if (started()){ game_started(false); }
+  if (finished()){ game_finished(winner, false); }
+  _.each(eaten_pieces, function(p){
+    add_eaten_piece(p);
+  });
+
+}
+
+function started(){
+  return players['W'] && players['B'];
+}
+
+function finished(){
+  return winner;
+}
+
 function send_chat(){
   socket.send($.toJSON({ player_name: player_name, chat_line: $('#chat_line').attr('value'), game_id: game_id }));
   $('#chat_line').attr('value', '');
@@ -32,20 +108,19 @@ function send_chat(){
 function game_started(now){
   // Event Handler
   // now means Just Started
-  started = 1;
   if (player_seat == 'W' || player_seat == 'B'){
     player_seat_down = player_seat.toLowerCase();
     selector = '.' + player_seat_down + 'piece';
     $(selector).draggable({ containment: "parent", stop: drag_stopped, start: function(event, ui){ $(event.target).css('z-index', 2); $(event.target).removeClass('hoverable'); } });
     $(selector).addClass('hoverable');
-    $(selector).click(piece_clicked);
+    //$(selector).click(piece_clicked);
   }
 }
 
-function game_finished(winner, now){
+function game_finished(w, now){
   // Event Handler
   // now means Just Finished
-  finished = winner;
+  winner = w;
   if (player_seat == 'W' || player_seat == 'B'){
     selector = '.' + player_seat_down + 'piece';
     $(selector).draggable('disable');
@@ -83,46 +158,6 @@ function hide_connecting(){
   $('#connecting_msg').hide();
   $('#players_panel').show();
 }
-
-$(function(){
-  render_cells();
-  socket = new io.Socket(null, {port: 8080, rememberTransport: false});
-  socket.connect();
-  show_connecting();
-  socket.on('connect', function(){ socket.send($.toJSON({follow_game: game_id})); hide_connecting(); });
-  socket.on('message', function(data){ msg_received($.parseJSON(data)); });
-  socket.on('disconnect', function(){
-    // Disconnected
-  });  
-
-  render_pieces();
-  if (current_turn == 'replaceW' && player_seat == 'W'){ show_replace_white(); }
-  if (current_turn == 'replaceB' && player_seat == 'B'){ show_replace_black(); }
-  
-  $('#send_chat').click(function(event){
-    send_chat();
-    event.preventDefault();
-  });
-
-  if (started){
-    game_started(false); 
-  } 
-  if (finished){
-    game_finished(finished, false); 
-  }
-  $('#board_right').css('height', $('#board_left').css('height'));
-  
-  $('#chat_line').keydown(function(event){
-    if (event.keyCode == 13){
-      send_chat();
-    }
-  });
-  
-  $('#board_right .right_box .title').click(function(event){
-    right_box_body = $(event.target).parent('.right_box').find('.right_box_body');
-    right_box_body.toggle('slow');
-  });
-});
 
 function black(){
   return player_seat == 'B';
@@ -258,8 +293,8 @@ function make_move(move, callback){
   to = move['to'];
   piece1 = move['piece1'];
   piece2 = move['piece2'];
-  if ($.inArray(move['id'], rendered_moves) > -1){ return; }
-  rendered_moves.push(move['id']);
+  if (move['id'] <= last_rendered_move){ return; }  
+  last_rendered_move = move['id'];
   $('#moves_list').append('<div class=\'move_list_element\'>' + move['standard'] + '</div>');
   $("#moves_list")[0].scrollTop = $("#moves_list")[0].scrollHeight;
   special_move = move['special_move'];
@@ -389,14 +424,14 @@ function piece_moved(from, to){
   legal_move = legal(from, to);
   piece = cells[from[0]][from[1]];
   piece2 = cells[to[0]][to[1]];        
-  if ( !your_turn() || !started || finished || !legal_move ){
+  if ( !your_turn() || !started() || finished() || !legal_move ){
     return false;                
   }
 
   // It's 100% Legal
   cells[from[0]][from[1]] = null;
   cells[to[0]][to[1]] = piece;        
-  rendered_moves.push(legal_move.id);
+  last_rendered_move = legal_move.id;
   
   // Removing Piece2
   piece2_image = pieces[to[0]][to[1]];
@@ -412,7 +447,6 @@ function piece_moved(from, to){
   show_last_moved(to);
 
   if (! ( (to[0] == 0 && piece == 'pW') || (to[0] == 7 && piece == 'pB') )){
-    moves += 1;
     send_move(from, to);
     $('#moves_list').append('<div class=\'move_list_element\'>' + legal_move['standard'] + '</div>');
     $("#moves_list")[0].scrollTop = $("#moves_list")[0].scrollHeight;

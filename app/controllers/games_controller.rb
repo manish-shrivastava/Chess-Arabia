@@ -15,7 +15,7 @@ class GamesController < ApplicationController
   end
 
   def create
-    g = Game.create
+    g = Game.all.select(&:empty?).first || Game.create
     redirect_to game_path(:id => g.id)
   end
   
@@ -62,7 +62,7 @@ class GamesController < ApplicationController
         page << "show_replace_white()" if @game.turn == "replaceW"
         page << "show_replace_black()" if @game.turn == "replaceB"
         page << "next_moves = []"
-        page << "finished = #{@game.finished?.to_json}"
+        page << "winner = #{@game.finished?.to_json}"
       end
     end 
   end
@@ -77,7 +77,7 @@ class GamesController < ApplicationController
         page << "current_turn = #{@game.turn.to_json}"
         page << "moves = #{@game.moves.length}"
         page << "started = #{@game.started?.to_json}"
-        page << "finished = #{@game.finished?.to_json}"
+        page << "winner = #{@game.finished?.to_json}"
         page << "make_replace_move(#{@game.moves.last.to_json})"
         page << "$('#moves_list').append('<div class=\\'move_list_element\\'>' + #{replace_move['standard'].to_json} + '</div>');"
       end      
@@ -89,7 +89,7 @@ class GamesController < ApplicationController
         page << "current_turn = #{@game.turn.to_json}"
         page << "moves = #{@game.moves.length}"
         page << "started = #{@game.started?.to_json}"
-        page << "finished = #{@game.finished?.to_json}"
+        page << "winner = #{@game.finished?.to_json}"
         page << "make_replace_move(#{@game.moves.last.to_json})"
         page << "$('#moves_list').append('<div class=\\'move_list_element\\'>' + #{replace_move['standard'].to_json} + '</div>');"
       end
