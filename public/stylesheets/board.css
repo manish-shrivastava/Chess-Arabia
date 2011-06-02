@@ -256,3 +256,36 @@ box-shadow: 0 1px 5px rgba(0,0,0,0.75);
   width: 100%;
   text-align: center;
 }
+
+#timer{
+  margin: 3px 5px;
+  padding: 3px;
+  text-align: center;
+}
+
+#timer_body{
+  min-height: 40px;
+  padding-top: 3px;
+}
+
+#timer #minutes, #timer #seconds{
+  width: 70px;
+  border: 1px solid black;
+  border-radius: 4px;
+  font-size: 20px;
+  text-align: center;
+  float: left;
+  font-weight: bold;
+}
+
+#timer #minutes{
+  margin-left: 58px;
+  margin-right: 5px;
+  background-color: #247528;
+  color: white;
+}
+
+#timer #seconds{
+  background-color: #7B6E08;
+  color: white;
+}

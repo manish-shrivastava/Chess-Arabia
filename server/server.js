@@ -57,6 +57,7 @@ var io = io.listen(server)
 var games = {};
 var client_games = {};
 var game_resign = {};
+var last_move = {};
 
 function game_resigned(game){
   console.log(game.id);
@@ -83,7 +84,8 @@ redis_client2.subscribeTo('move_finished', function(err, game_id){
     var to_move_msg = { make_move: game.moves[game.moves.length - 1], game_state: game_state };
     clearTimeout(game_resign[game.id]);
     if ( ! game.winner) {
-      game_resign[game.id] = setTimeout(function(){ game_resigned(game); }, 180000);
+      game_resign[game.id] = setTimeout(function(){ game_resigned(game); }, 121000);
+      last_move[game.id] = new Date();
     }
     underscore.each(game_clients, function(c){
       console.log('Telling Client ' + c.sessionId + ' About Move in ' + game_key);
@@ -133,6 +135,7 @@ io.on('connection', function(client){
         return_hash.moves = game.moves;
         return_hash.winner = game.winner;
         return_hash.eaten_pieces = game.eaten_pieces;
+        return_hash.last_move = (120 - parseInt(((new Date()) - last_move[game.id])/ 1000));
         client.send(JSON.stringify(return_hash));
       });
     }

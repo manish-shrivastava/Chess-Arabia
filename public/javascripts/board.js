@@ -9,6 +9,11 @@ function msg_received(msg){
     moves = msg.moves;
     winner = msg.winner;
     eaten_pieces = msg.eaten_pieces;
+    if (player_seat == current_turn){
+      timer = msg.last_move;
+      $('#timer').show();
+      tick_timer();
+    }
     load_game();
   }
   else if (msg.make_move){
@@ -17,6 +22,9 @@ function msg_received(msg){
       current_turn = game_state.turn;
       next_moves = game_state.next_moves;
       if (game_state.winner){ game_finished(game_state.winner, true); }    
+      if (current_turn == player_seat && ! winner){
+        reset_timer();
+      }
     });
   }
   else if (msg.chat_line){
@@ -43,6 +51,28 @@ function msg_received(msg){
   }
 }
 
+function stop_timer(){
+  clearTimeout(timer_id);
+  $('#timer').hide();
+}
+
+function reset_timer(){
+  timer = 121;
+  tick_timer();
+  $('#timer').show();
+}
+
+function tick_timer(){
+  timer -= 1;
+  if (timer < 0){
+    $('#timer').hide();
+    return;
+  }
+  $('#timer #minutes').html(parseInt(timer / 60));
+  $('#timer #seconds').html(timer % 60);
+  timer_id = setTimeout(tick_timer, 1000);
+}
+
 $(function(){
   socket = new io.Socket(null, {port: 8080, rememberTransport: false});
   socket.connect();
@@ -57,6 +87,9 @@ $(function(){
     send_chat();
     event.preventDefault();
   });
+  
+  $('#timer').hide();
+  timer_id = 0;
 
   $('#board_right').css('height', $('#board_left').css('height'));
   
@@ -277,7 +310,8 @@ function send_move(from, to){
       url: "/games/" + game_id + "/move",
       data: "from=" + from[0].toString() + from[1].toString() + "&to=" + to[0].toString() + to[1].toString(),
       dataType: 'script',
-      type: "POST"
+      type: "POST",
+      success: function(){ stop_timer(); }
     });          
   }
 }
