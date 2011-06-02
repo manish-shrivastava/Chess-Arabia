@@ -80,7 +80,7 @@ class Game
   def self.find(id)
     g = Game.new
     redis_data = REDIS.get("game_#{id}")
-    return Game.create unless redis_data
+    return Game.all.select(&:empty?).first || Game.create unless redis_data
     redis_attributes = ActiveSupport::JSON.decode(redis_data)
     unless redis_attributes
       g = Game.create

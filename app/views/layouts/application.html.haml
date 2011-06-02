@@ -25,6 +25,12 @@
         player_name = <%= @player_name.to_json %>;
         guest = <%= @guest.to_json %>;
         locale = <%= I18n.locale.to_json %>;
+        <% translate_keys = [:time_to_move, :white_resigned, :black_resigned] %>
+        translate_hash = <%= translate_keys.inject({}){|h, k| h[k.to_s] = I18n.translate(k); h}.to_json %>;
+        
+        function translate(k){
+          return translate_hash[k] || k;
+        }
         
         function show_flash(msg){
           $('.flash_notice').html(msg);

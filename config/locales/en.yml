@@ -37,7 +37,10 @@ en:
   watch: "Watch"
   back: "Back"
   game_id: "Game ID"
-  moves: "Moves"
-  
+  moves: "Moves"  
   promote_the_pawn_to: "Promote Prawn to"
   connecting: "Connecting..."
+
+  time_to_move: "Remaining time to move"
+  white_resigned: "White player resigned"
+  black_resigned: "Black player resigned"

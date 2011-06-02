@@ -25,7 +25,11 @@ function msg_received(msg){
   }
   else if (msg.resigned){
     game_finished(msg.resigned, true);
-    alert("Resigned " + winner);
+    if (winner == "resignW"){
+      alert(translate('white_resigned'));
+    } else if (winner == "resignB"){
+      alert(translate('black_resigned'));
+    }
   }
   else if (msg.msg_type == 'player_joined'){
     if (msg.seat == 'W'){
