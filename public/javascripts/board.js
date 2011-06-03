@@ -4,17 +4,20 @@ function msg_received(msg){
     current_turn = msg.turn;
     cells = msg.cells;
     players = msg.players;
+
     next_moves = msg.next_moves;
     last_rendered_move = msg.last_rendered_move;
     moves = msg.moves;
     winner = msg.winner;
     eaten_pieces = msg.eaten_pieces;
+    load_game();
+
     if (player_seat == current_turn){
-      timer = msg.last_move;
-      $('#timer').show();
+      t = msg.last_move;
+      $('#timer_div').show();
       tick_timer();
     }
-    load_game();
+
   }
   else if (msg.make_move){
     make_move(msg.make_move, function(){
@@ -53,23 +56,23 @@ function msg_received(msg){
 
 function stop_timer(){
   clearTimeout(timer_id);
-  $('#timer').hide();
+  $('#timer_div').hide();
 }
 
 function reset_timer(){
-  timer = 121;
+  t = 121;
   tick_timer();
-  $('#timer').show();
+  $('#timer_div').show();
 }
 
 function tick_timer(){
-  timer -= 1;
-  if (timer < 0){
-    $('#timer').hide();
+  t = t - 1;
+  if (t < 0){
+    $('#timer_div').hide();
     return;
   }
-  $('#timer #minutes').html(parseInt(timer / 60));
-  $('#timer #seconds').html(timer % 60);
+  $('#timer_div #minutes').html(parseInt(t / 60));
+  $('#timer_div #seconds').html(t % 60);
   timer_id = setTimeout(tick_timer, 1000);
 }
 
