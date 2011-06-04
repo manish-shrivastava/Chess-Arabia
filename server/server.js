@@ -76,21 +76,8 @@ redis_client3.subscribeTo('player_joined', function(err, info_jsoned){
   info.msg_type = 'player_joined';
   var game_id = info.game_id;
   var game_clients = games[game_id];
-  game_key = "game_" + game_id;  
-  redis_client.get(game_key, function(err, data){
-    var game_json = data;
-    var game = JSON.parse(game_json);
-  }
-  
   underscore.each(game_clients, function(client){
-    console.log('Telling Client ( PLAYER JOINED )' + client.sessionId + ' IN ' + game_id);
-    var game_key = "game_" + game_id;
-    
-      
-      
-      
-      client.send(JSON.stringify(game));
-    });
+    client.send(JSON.stringify(info));
   });
 });
   

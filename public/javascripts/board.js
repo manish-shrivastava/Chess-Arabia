@@ -45,8 +45,10 @@ function msg_received(msg){
   else if (msg.msg_type == 'player_joined'){
     if (msg.seat == 'W'){
       $('#white_panel .player_name').html(msg.player_name);
+      players['W'] = msg.player_code;
     } else if (msg.seat == 'B'){
       $('#black_panel .player_name').html(msg.player_name);
+      players['B'] = msg.player_code;
     }
     if (msg.started == '1'){
       game_started(true);
