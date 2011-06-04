@@ -64,12 +64,11 @@ function game_resigned(game){
   var game_clients = games[game.id];
   game.winner = 'resign' + game.turn;
   redis_client.set("game_" + game.id, JSON.stringify(game));
+  redis_client.lrem('games', 1, game.id);
   underscore.each(game_clients, function(c){
     resigned_msg = { resigned: game.winner };
     c.send(JSON.stringify(resigned_msg));
-    redis_client.lrem('games', 1, game.id)
-  });
-  
+  });  
 }
 
 redis_client2.subscribeTo('move_finished', function(err, game_id){
