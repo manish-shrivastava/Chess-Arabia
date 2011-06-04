@@ -91,7 +91,7 @@ $(function(){
     event.preventDefault();
   });
   
-  $('#timer').hide();
+  $('#timer_div').hide();
   timer_id = 0;
 
   $('#board_right').css('height', $('#board_left').css('height'));
@@ -106,12 +106,12 @@ $(function(){
     right_box_body = $(event.target).parent('.right_box').find('.right_box_body');
     right_box_body.toggle('slow');
   });
+  board_cells = {};
 
 });
 
 
 function load_game(){
-  board_cells = {};
   render_cells();
   pieces = {};
   render_pieces();
