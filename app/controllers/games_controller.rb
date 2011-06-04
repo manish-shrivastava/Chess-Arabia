@@ -58,7 +58,7 @@ class GamesController < ApplicationController
     if @game.can_move?(move) && @game.commit_move(move)
       @game.log("User Played #{move.inspect}")
       render :update do |page|
-        page << "current_turn = #{@game.turn.to_json}"
+        #page << "current_turn = #{@game.turn.to_json}"
         page << "show_replace_white()" if @game.turn == "replaceW"
         page << "show_replace_black()" if @game.turn == "replaceB"
         page << "next_moves = []"
@@ -74,7 +74,7 @@ class GamesController < ApplicationController
       replace_move = @game.replace(params[:piece])
       render :update do |page|
         page << "hide_replace_white()"
-        page << "current_turn = #{@game.turn.to_json}"
+        #page << "current_turn = #{@game.turn.to_json}"
         page << "moves = #{@game.moves.length}"
         page << "started = #{@game.started?.to_json}"
         page << "winner = #{@game.finished?.to_json}"
@@ -86,7 +86,7 @@ class GamesController < ApplicationController
       replace_move = @game.replace(params[:piece])
       render :update do |page|
         page << "hide_replace_black()"
-        page << "current_turn = #{@game.turn.to_json}"
+        #page << "current_turn = #{@game.turn.to_json}"
         page << "moves = #{@game.moves.length}"
         page << "started = #{@game.started?.to_json}"
         page << "winner = #{@game.finished?.to_json}"

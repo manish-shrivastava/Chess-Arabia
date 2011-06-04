@@ -319,6 +319,7 @@ function send_move(from, to){
       success: function(){ stop_timer(); }
     });          
   }
+  current_turn = '';
 }
 
 function legal(from, to){
