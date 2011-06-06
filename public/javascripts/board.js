@@ -150,6 +150,7 @@ function send_chat(){
 function game_started(now){
   // Event Handler
   // now means Just Started
+  if (now){ reset_timer(); }
   if (player_seat == 'W' || player_seat == 'B'){
     player_seat_down = player_seat.toLowerCase();
     selector = '.' + player_seat_down + 'piece';

@@ -80,6 +80,18 @@ redis_client3.subscribeTo('player_joined', function(err, info_jsoned){
     client.send(JSON.stringify(info));
   });
 });
+
+redis_client4.subscribeTo('game_started', function(err, game_id){
+  console.log('Game Started ' + game_id);
+  var game_key = "game_" + game_id;
+  redis_client.get(game_key, function(err, data){
+    var game_json = data;
+    var game = JSON.parse(game_json);
+    game_resign[game.id] = setTimeout(function(){ game_resigned(game); }, 121000);
+    last_move[game.id] = new Date();
+  });
+
+});
   
 io.on('connection', function(client){
   //client.broadcast({ announcement: client.sessionId + ' connected' });
