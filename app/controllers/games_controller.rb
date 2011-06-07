@@ -61,7 +61,7 @@ class GamesController < ApplicationController
         #page << "current_turn = #{@game.turn.to_json}"
         page << "show_replace_white()" if @game.turn == "replaceW"
         page << "show_replace_black()" if @game.turn == "replaceB"
-        page << "next_moves = []"
+        #page << "next_moves = []"
         page << "winner = #{@game.finished?.to_json}"
       end
     end 
