@@ -2,6 +2,10 @@ var sys = require("sys");
 var io = require('socket.io').listen(8080);
 var underscore = require('./underscore.js');
 
+io.configure(function () {
+  io.set('transports', ['websocket', 'flashsocket', 'xhr-polling']);
+});
+
 // REDIS
 var redis = require("./redis-node/lib/redis");
 redis_client = redis.createClient();    // Create the client
@@ -130,7 +134,6 @@ io.on('connection', function(client){
       client_games[client].push(msg.follow_game);
       games[msg.follow_game] = games[msg.follow_game] || [];
       games[msg.follow_game].push(client);
-      console.log("Client " + client.sessionId + " is connected to the game " + msg.follow_game);
       var game_key = "game_" + msg.follow_game;
       redis_client.get(game_key, function(err, data){
         //console.log("GAME DATA" + data);

@@ -1,5 +1,5 @@
 $(function(){
-  var socket = io.connect('http://localhost:8080');
+  var socket = io.connect('http://127.0.0.1:8080');
   show_connecting();
   socket.on('connect', function(){ ; socket.send($.toJSON({follow_game: game_id})); hide_connecting(); });
   socket.on('message', function(data){ msg_received($.parseJSON(data)); });
