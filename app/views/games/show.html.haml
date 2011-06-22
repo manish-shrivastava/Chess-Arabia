@@ -1,7 +1,7 @@
 -content_for :header do
   = stylesheet_link_tag 'board.css'
   = javascript_include_tag 'board.js'
-  = javascript_include_tag "/socket.io/socket.io.js"
+  = javascript_include_tag "http://localhost:8080/socket.io/socket.io.js"
   :erb
     <style type="text/css">
       <% ['kB', 'qB', 'pB', 'rB', 'bB', 'nB', 'kW', 'qW', 'pW', 'rW', 'bW', 'nW'].each do |c| %>      

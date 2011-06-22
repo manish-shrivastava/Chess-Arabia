@@ -1,3 +1,35 @@
+$(function(){
+  var socket = io.connect('http://localhost:8080');
+  show_connecting();
+  socket.on('connect', function(){ ; socket.send($.toJSON({follow_game: game_id})); hide_connecting(); });
+  socket.on('message', function(data){ msg_received($.parseJSON(data)); });
+  socket.on('disconnect', function(){
+    // Disconnected
+  });  
+  
+  $('#send_chat').click(function(event){
+    send_chat();
+    event.preventDefault();
+  });
+  
+  $('#timer_div').hide();
+  timer_id = 0;
+
+  $('#board_right').css('height', $('#board_left').css('height'));
+  
+  $('#chat_line').keydown(function(event){
+    if (event.keyCode == 13){
+      send_chat();
+    }
+  });
+  
+  $('#board_right .right_box .title').click(function(event){
+    right_box_body = $(event.target).parent('.right_box').find('.right_box_body');
+    right_box_body.toggle('slow');
+  });
+  board_cells = {};
+});
+
 function msg_received(msg){
   if (msg.load_game){
     // Set Game Information Here
@@ -77,41 +109,6 @@ function tick_timer(){
   $('#timer_div #seconds').html(t % 60);
   timer_id = setTimeout(tick_timer, 1000);
 }
-
-$(function(){
-  socket = new io.Socket(null, {port: 8080, rememberTransport: false});
-  socket.connect();
-  show_connecting();
-  socket.on('connect', function(){ socket.send($.toJSON({follow_game: game_id})); hide_connecting(); });
-  socket.on('message', function(data){ msg_received($.parseJSON(data)); });
-  socket.on('disconnect', function(){
-    // Disconnected
-  });  
-  
-  $('#send_chat').click(function(event){
-    send_chat();
-    event.preventDefault();
-  });
-  
-  $('#timer_div').hide();
-  timer_id = 0;
-
-  $('#board_right').css('height', $('#board_left').css('height'));
-  
-  $('#chat_line').keydown(function(event){
-    if (event.keyCode == 13){
-      send_chat();
-    }
-  });
-  
-  $('#board_right .right_box .title').click(function(event){
-    right_box_body = $(event.target).parent('.right_box').find('.right_box_body');
-    right_box_body.toggle('slow');
-  });
-  board_cells = {};
-
-});
-
 
 function load_game(){
   render_cells();
