@@ -1,7 +1,7 @@
 $(function(){
-  var socket = io.connect('http://127.0.0.1:8080');
+  socket = io.connect('http://127.0.0.1:8080');
   show_connecting();
-  socket.on('connect', function(){ ; socket.send($.toJSON({follow_game: game_id})); hide_connecting(); });
+  socket.on('connect', function(){ ; socket.emit('follow_game', game_id) ; hide_connecting(); });
   socket.on('message', function(data){ msg_received($.parseJSON(data)); });
   socket.on('disconnect', function(){
     // Disconnected
@@ -140,7 +140,7 @@ function finished(){
 }
 
 function send_chat(){
-  socket.send($.toJSON({ player_name: player_name, chat_line: $('#chat_line').attr('value'), game_id: game_id }));
+  socket.emit('send_chat', game_id, $('#chat_line').attr('value'), player_name);
   $('#chat_line').attr('value', '');
 }
 

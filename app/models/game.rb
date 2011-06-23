@@ -1,3 +1,5 @@
+YAML::ENGINE.yamler= 'syck'
+
 class Game
   
   # ------------ REDIS ------------

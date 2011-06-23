@@ -13,11 +13,11 @@ gem "rack", "~>1.1"
 gem 'aws-s3', :require => 'aws/s3'
 gem 'haml'
 gem 'rack-mount'
-gem 'mongrel'
+gem 'mongrel', '1.2.0.pre2'
 gem 'devise'
 gem 'pg'
 gem 'devise_openid_authenticatable'
 gem 'redis'
 gem "rspec-rails"
-gem 'system_timer'
 gem 'client_side_validations'
+gem 'bundler'
