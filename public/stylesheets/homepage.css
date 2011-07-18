@@ -1,22 +1,79 @@
-.title{
-  margin-top: 140px;
+#homepage{
+  padding: 0 20px;
+  height: 400px;
+}
+
+#homepage-image{
+  margin-top: 20px;
+  position: absolute;
+}
+
+#homepage-image img{
+  width: 90%;
+}
+
+#homepage-text{
+  margin-left: 63%;
+  background-color: #FEFEFE;
+  min-height: 400px;
+}
+
+#homepage-text .title{
+  font-size: 16px;
+  padding-top: 22px;
+  margin-bottom: 9px;
+  color: #111111;
+  line-height: 24px;
+  font-size: 25px;
+  vertical-align: baseline;
+}
+
+#homepage-text p{
+  padding: 22px 0;
+  font-size: 14px;
+  color: #444444;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  line-height: 24px;
+}
+
+#homepage-text .buttons a{
+  width: 100%;
+  display: block;
+  font: inherit;
+  font-size: 20px;
+  padding: 10px 0 12px;
+  margin-bottom: 15px;
+  color: white;
+  text-shadow: 0 -1px 0 #557303;
+  border-radius: 5px 5px 5px 5px;
+  text-decoration: none;
+  cursor: pointer;
   text-align: center;
-  font-size: 75px;
-  color: #222;
-  font-family: 'Architects Daughter', arial, serif;
+  border: 1px solid white;
 }
 
-.menu{
-  text-align: center;
-  color: #777;
+#homepage-text .buttons a#play_now{
+  background: -moz-linear-gradient(center top , #961B1B, #C84B4B) repeat scroll 0 0 #89B908;
 }
 
-.menu a{
-  color: #1F2263;
-  font-family: 'Architects Daughter', arial, serif;
-  font-size: 18px;
+#homepage-text .buttons a#play_now:hover{
+  background: -moz-linear-gradient(center top, #C84B4B , #961B1B) repeat scroll 0 0 #89B908;
 }
 
-.menu a:hover{
-  text-decoration: underline;
+#homepage-text .buttons a#play_now:active{
+  background: -moz-linear-gradient(center top, #961B1B , #961B1B) repeat scroll 0 0 #89B908;
+  border-color: black;
+}
+
+#homepage-text .buttons a#practice{
+  background: -moz-linear-gradient(center top , #1F2668, #1D2BA7) repeat scroll 0 0 #89B908;
+}
+
+#homepage-text .buttons a#practice:hover{
+  background: -moz-linear-gradient(center top, #1D2BA7 , #1F2668) repeat scroll 0 0 #89B908;
+}
+
+#homepage-text .buttons a#practice:active{
+  background: -moz-linear-gradient(center top, #1F2668 , #1F2668) repeat scroll 0 0 #89B908;
+  border-color: black;
 }

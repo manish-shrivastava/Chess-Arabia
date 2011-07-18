@@ -1,25 +1,13 @@
 -content_for :header do
   = stylesheet_link_tag 'homepage.css'
 
-.title
-  ChessArabia
-  
-.menu
-  [
-  = link_to t(:new_game), games_path, :method => "post"
-  |
-  = link_to t(:play_against_computer), play_with_computer_games_path, :method => "post"
-  |
-  = link_to t(:games_room), games_path
-  |
-  - if I18n.locale == :en
-    = link_to 'بالعربية', "/?locale=ar"
-  - else
-    = link_to 'English', "/?locale=en"
-  ]
-
-.about
-  = t(:developed_by)
-  %a{:href => "http://twitter.com/OmarQunsul", :target => "_blank"}= t(:omar_qunsul)
-
-%img{:src => "/images/knight.png", :style => "position: relative; width: 100px; left: 135px; top: -219px"}
+#homepage
+  #homepage-image
+    %img{ :src => "/images/chess.png" }
+  #homepage-text
+    .title= "Play Free Chess"
+    %p= "You can play Chess on our website with other players, and with your friends, easily and for Free. With just 1 click, you are ready to start playing"
+    
+    .buttons
+      %a#play_now{ :href => "#" }= "Play Now!"
+      %a#practice{ :href => "#" }= "Practice"

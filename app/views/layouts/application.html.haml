@@ -2,9 +2,8 @@
 %html
   %head
     <link rel="shortcut icon" href="/images/icon.ico" type="image/x-icon">
-    - if false
-      <link href='http://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
-      <link href='http://fonts.googleapis.com/css?family=Kreon' rel='stylesheet' type='text/css'>
+    - if true
+      <link href='http://fonts.googleapis.com/css?family=Istok+Web&v2' rel='stylesheet' type='text/css'>
     %title= I18n.locale == :ar ? "الشطرنج العربية Chessarabia" : "Chessarabia"
     <meta content='شطرنج، عربي، عربية، الشطرنج، العاب، مجانا، العب مجانا، ملك، رقعة، رقعة الشطرنج، الوزير، القلعة، كسباروف، خطط شطرنج' name='keywords'>
     <meta content='العب شطرنج مجانا' name='description'>
@@ -31,33 +30,28 @@
         function translate(k){
           return translate_hash[k] || k;
         }
-        
-        function show_flash(msg){
-          $('.flash_notice').html(msg);
-          $('.flash_notice').slideDown('slow');
-          setTimeout(function(){ $('.flash_notice').slideUp('slow'); }, 3000);
-        }
 
-        $(function(){
-          <% if flash[:notice] || flash[:alert] %>
-            show_flash(<%= (flash[:notice] || flash[:alert]).to_json %>);
-          <% end %>
-        });
-  %body    
+  %body
+
     #wrapper
-      = yield :out_wrapper
-      #top_menu
-        %a{ :href => "/" }= t(:homepage)
-        %a{ :href => "/games" }= t(:games_room)
-        %a{ :href => "/players/top" }= t(:top_players)
-        - unless current_user
-          %a{ :href => new_user_session_path }= t(:sign_in)
-          %a{ :href => new_user_registration_path }= t(:sign_up)
-        - else
-          %a{ :href => edit_player_path(current_user) }= current_user.name
-          %a{ :href => destroy_user_session_path }= t(:sign_out)
-      .flash_line
-        .flash_notice{ :style => "display: none" }
-      = yield
-      .clearer
+      #header
+        #logo
+          %a{ :href => "/" }= "Chess Arabia"
+        #top-header-links
+          #top-links
+            %a{ :href => "/" }= t(:homepage)
+            %span.sep
+            %a{ :href => "/games" }= t(:games_room)
+            %span.sep
+            %a{ :href => "/players/top" }= t(:top_players)
+
+          #nav-links
+            - unless current_user
+              %a{ :href => new_user_session_path }= t(:sign_in)
+              %a{ :href => new_user_registration_path }= t(:sign_up)
+            - else
+              %a{ :href => edit_player_path(current_user) }= current_user.name
+              %a{ :href => destroy_user_session_path }= t(:sign_out)
+      #wrapper_body
+        = yield
               
