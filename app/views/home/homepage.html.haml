@@ -1,5 +1,12 @@
 -content_for :header do
   = stylesheet_link_tag 'homepage.css'
+  = javascript_include_tag 'homepage.js'
+  = javascript_include_tag "http://localhost:8080/socket.io/socket.io.js"
+
+  %script
+    :erb
+      pending_games = <%= Game.all.reject(&:started?).map(&:json_hash).to_json %>;
+      started_games = <%= Game.all.select(&:started?).map(&:json_hash).to_json %>;
 
 #homepage
   #homepage-image
@@ -7,7 +14,14 @@
   #homepage-text
     .title= "Play Free Chess"
     %p= "You can play Chess on our website with other players, and with your friends, easily and for Free. With just 1 click, you are ready to start playing"
-    
+
     .buttons
-      %a#play_now{ :href => "#" }= "Play Now!"
-      %a#practice{ :href => "#" }= "Practice"
+      = link_to 'Play Now', games_path, :method => "post", :id => "play_now"
+      = link_to 'Practice against Computer', play_against_computer_games_path, :method => "post", :id => "practice"
+
+
+#games_index{ 'style' => 'display: none' }
+  #not_started_games
+    %h2= "Not started Games"
+  #started_games
+    %h2= "Started Games"

@@ -1,28 +1,28 @@
 $(function(){
   socket = io.connect('http://127.0.0.1:8080');
   show_connecting();
-  socket.on('connect', function(){ ; socket.emit('follow_game', game_id) ; hide_connecting(); });
+  socket.on('connect', function(){ socket.emit('follow_game', game_id) ; hide_connecting(); });
   socket.on('message', function(data){ msg_received($.parseJSON(data)); });
   socket.on('disconnect', function(){
     // Disconnected
-  });  
-  
+  });
+
   $('#send_chat').click(function(event){
     send_chat();
     event.preventDefault();
   });
-  
+
   $('#timer_div').hide();
   timer_id = 0;
 
   $('#board_right').css('height', $('#board_left').css('height'));
-  
+
   $('#chat_line').keydown(function(event){
     if (event.keyCode == 13){
       send_chat();
     }
   });
-  
+
   $('#board_right .right_box .title').click(function(event){
     right_box_body = $(event.target).parent('.right_box').find('.right_box_body');
     right_box_body.toggle('slow');
@@ -56,7 +56,7 @@ function msg_received(msg){
       game_state = msg.game_state;
       current_turn = game_state.turn;
       next_moves = game_state.next_moves;
-      if (game_state.winner){ game_finished(game_state.winner, true); }    
+      if (game_state.winner){ game_finished(game_state.winner, true); }
       if (current_turn == player_seat && ! winner){
         reset_timer();
       }
@@ -147,13 +147,15 @@ function send_chat(){
 function game_started(now){
   // Event Handler
   // now means Just Started
-  if (now){ reset_timer(); }
+  if (now){ 
+    reset_timer();
+    show_top_message('Game just started', 6000);
+  }
   if (player_seat == 'W' || player_seat == 'B'){
     player_seat_down = player_seat.toLowerCase();
     selector = '.' + player_seat_down + 'piece';
     $(selector).draggable({ containment: "parent", stop: drag_stopped, start: function(event, ui){ $(event.target).css('z-index', 2); $(event.target).removeClass('hoverable'); } });
     $(selector).addClass('hoverable');
-    //$(selector).click(piece_clicked);
   }
 }
 
@@ -165,16 +167,23 @@ function game_finished(w, now){
     selector = '.' + player_seat_down + 'piece';
     $(selector).draggable('disable');
     $(selector).removeClass('hoverable');
-  }  
+  }
+  if (w == 'W') msg = 'White player won!';
+  if (w == 'B') msg = 'Black player won!';
+  if (w == 'ResignW') msg = 'White player resigned';
+  if (w == 'ResignB') msg = 'Black player resigned';
+  if (w == 'TIE') msg = 'It\' Tie';
+  show_top_message(msg);
   if (now){
     // Nothing
+    show_message(msg, 'Game Finished');
   }
 }
 
 function show_replace_white(){
   $('#replace_white').slideDown();
 }
-     
+
 function show_replace_black(){
   $('#replace_black').slideDown();
 }

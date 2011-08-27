@@ -9,26 +9,29 @@ class GamesController < ApplicationController
     @player_seat = 'W' if @white
     @player_seat = 'B' if @black
   end
-  
+
   def show
     #redirect_to games_path unless @game.started?
   end
 
   def create
-    g = Game.all.select(&:empty?).first || Game.create
+    #g = Game.all.select(&:empty?).first || Game.create
+    g = Game.create
     redirect_to game_path(:id => g.id)
   end
-  
+
   def index
     @games = Game.all
     @new_games = @games.reject(&:started?)
     @started_games = @games.select(&:started?)
   end
-  
-  def play_with_computer
+
+  def play_against_computer
     g = Game.create
     g.players['B'] = 'computer'
     g.players['W'] = @player_code
+    REDIS.publish('player_joined', {'game_id' => g.id, 'seat' => 'W', 'player_name' => User.player_code_name(@player_code), 'player_code' => @player_code, 'started' => g.started? ? '1' : '0' }.to_json)
+    REDIS.publish('player_joined', {'game_id' => g.id, 'seat' => 'B', 'player_name' => 'Computer', 'player_code' => 'computer', 'started' => g.started? ? '1' : '0' }.to_json)
     g.started_at = Time.now.getutc if g.started?
     g.save
     g.game_started
@@ -43,7 +46,7 @@ class GamesController < ApplicationController
     REDIS.publish('player_joined', {'game_id' => @game.id, 'seat' => params[:seat], 'player_name' => User.player_code_name(@player_code), 'player_code' => @player_code, 'started' => @game.started? ? '1' : '0' }.to_json)
     redirect_to game_path(:id => @game.id)
   end
-  
+
   def move
     return unless @game.players[@game.turn] == @player_code
     return unless @game.started?

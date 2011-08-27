@@ -9,7 +9,7 @@ ChessArabia::Application.routes.draw do
   resources :games do
     collection do
       get :index
-      post :play_with_computer
+      post :play_against_computer
     end
     member do
       post :sit

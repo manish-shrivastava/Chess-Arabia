@@ -12,11 +12,13 @@ redis_client = redis.createClient();    // Create the client
 redis_client2 = redis.createClient();    // Create the client to subscribe to move_finished channel
 redis_client3 = redis.createClient();    // Create the client to subscribe to player_joined
 redis_client4 = redis.createClient();    // Create the client to subscribe to game_started
+redis_client5 = redis.createClient();    // Create the client to subscribe to game_created
 
 var games = {};
 var client_games = {};
 var game_resign = {};
 var last_move = {};
+var homepage_clients = [];
 
 process.on('uncaughtException', function (err) {
   console.log('Caught exception: ' + err);
@@ -25,14 +27,21 @@ process.on('uncaughtException', function (err) {
 function game_resigned(game){
   console.log(game.id);
   var game_clients = games[game.id];
-  game.winner = 'resign' + game.turn;
+  game.winner = 'Resign' + game.turn;
   redis_client.set("game_" + game.id, JSON.stringify(game));
   redis_client.lrem('games', 1, game.id);
   underscore.each(game_clients, function(c){
     resigned_msg = { resigned: game.winner };
     c.send(JSON.stringify(resigned_msg));
-  });  
+  });
 }
+
+redis_client5.subscribeTo('game_created', function(err, game_json){
+  var game = JSON.parse(game_json);
+  underscore.each(homepage_clients, function(c){
+    c.send(JSON.stringify({ 'game_created': game }));
+  });
+});
 
 redis_client2.subscribeTo('move_finished', function(err, game_id){
   console.log('Move Finished in ' + game_id);
@@ -52,7 +61,7 @@ redis_client2.subscribeTo('move_finished', function(err, game_id){
     underscore.each(game_clients, function(c){
       c.send(JSON.stringify(to_move_msg));
     });
-  }); 
+  });
 });
 
 redis_client3.subscribeTo('player_joined', function(err, info_jsoned){
@@ -63,6 +72,10 @@ redis_client3.subscribeTo('player_joined', function(err, info_jsoned){
   underscore.each(game_clients, function(client){
     client.send(JSON.stringify(info));
   });
+  underscore.each(homepage_clients, function(client){
+    client.send(JSON.stringify(info));
+  });
+
 });
 
 redis_client4.subscribeTo('game_started', function(err, game_id){
@@ -74,6 +87,11 @@ redis_client4.subscribeTo('game_started', function(err, game_id){
     game_resign[game.id] = setTimeout(function(){ game_resigned(game); }, 121000);
     last_move[game.id] = new Date();
   });
+
+  underscore.each(homepage_clients, function(c){
+    c.send(JSON.stringify({ 'game_started': game }));
+  });
+
 });
 
 
@@ -99,7 +117,11 @@ io.sockets.on('connection', function (client) {
       client.send(JSON.stringify(return_hash));
     });
   });
-  
+
+  client.on('follow_games', function(){
+    homepage_clients.push(client);
+  });
+
   client.on('send_chat', function(game_id, chat_line, player_name){
     if (chat_line) {
       game_clients = games[game_id];

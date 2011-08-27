@@ -2,7 +2,7 @@
 .forms_page
   %h2= t(:new_player_registration)
 
-  = form_for(resource, :as => resource_name, :url => registration_path(resource_name), :validate => true) do |f|
+  = form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
     = devise_error_messages!
     %ul.full_column_form
       %li.element
@@ -34,4 +34,4 @@
       %li
         %img{:src => "/images/gmail.jpg", :style => "float: left"}
         = f.submit t(:sign_in), :class => "button", :style => "margin-left: 20px; margin-top: 20px;"
-
+      .clearer

@@ -1,34 +1,47 @@
-YAML::ENGINE.yamler= 'syck'
+#YAML::ENGINE.yamler= 'syck'
 
 class Game
-  
+
   # ------------ REDIS ------------
   # Attributes "game_#{id}"
   # IDs List "games"
   # Finished Games IDS "finished_games"
   # Last ID "last_game_id"
   # Queue "computer_games"
-  
+
   # Channels
   # - move_finished
   # - computer_play
   # - player_joined
   # - game_started
-  
+  # - game_created
+  # - game_finished
+
   Attributes = [:id, :cells, :turn, :players, :moves, :two_steps, :replace_move, :winner, :eaten_pieces, :created_at, :last_move_at, :started_at]
   Attributes += [:state_count]
   Attributes.each do |attrib|
     attr_accessor attrib
   end
-  
-  attr_accessor :next_moves
 
   BlackPieces = ['nB', 'bB', 'qB', 'kB', 'rB', 'pB']
   WhitePieces = ['nW', 'bW', 'qW', 'kW', 'rW', 'pW']
-   
+
+  def json_hash
+    hash = Attributes.inject({}){|a, b| a[b] = self.send(b); a}
+    hash['white_player_name'] = self.players['W'] ? User.player_code_name(self.players['W']) : '-'
+    hash['black_player_name'] = self.players['B'] ? User.player_code_name(self.players['B']) : '-'
+    return hash
+  end
+
   def self.create
     g = Game.new
     g.id = REDIS.incr "last_game_id" while REDIS.get("game_#{g.id}")
+    if g.id.nil?
+      # First Game
+      raise "L"
+      g.id = 1
+      REDIS.set("last_game_id", g.id)
+    end
     REDIS.rpush 'games', g.id
     g.cells = []
     g.cells << ['rB', 'nB', 'bB', 'qB', 'kB', 'bB', 'nB', 'rB']
@@ -46,6 +59,7 @@ class Game
     g.eaten_pieces = []
     g.created_at = Time.now.getutc
     g.save # Save the game to Redis
+    REDIS.publish('game_created', g.json_hash.to_json)
     return g
   end
 
@@ -460,6 +474,10 @@ class Game
     elsif piece1 == 'kW' || piece1 == 'kB'
       return ((to[0] - from[0]).abs < 2) && ((to[1] - from[1]).abs < 2) 
     end  
+  end
+
+  def next_moves=(m)
+    @next_moves = m
   end
 
   def next_moves

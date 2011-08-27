@@ -44,8 +44,8 @@
   padding: 10px 0 12px;
   margin-bottom: 15px;
   color: white;
-  text-shadow: 0 -1px 0 #557303;
-  border-radius: 5px 5px 5px 5px;
+  text-shadow: 0 -1px 0 white;
+  border-radius: 9px;
   text-decoration: none;
   cursor: pointer;
   text-align: center;
@@ -53,27 +53,79 @@
 }
 
 #homepage-text .buttons a#play_now{
-  background: -moz-linear-gradient(center top , #961B1B, #C84B4B) repeat scroll 0 0 #89B908;
+  background-color: #D5BB11;
+  color: black;
+  border: 1px dotted black;
 }
 
 #homepage-text .buttons a#play_now:hover{
-  background: -moz-linear-gradient(center top, #C84B4B , #961B1B) repeat scroll 0 0 #89B908;
+  background-color: #F1C75B;
 }
 
 #homepage-text .buttons a#play_now:active{
-  background: -moz-linear-gradient(center top, #961B1B , #961B1B) repeat scroll 0 0 #89B908;
   border-color: black;
 }
 
 #homepage-text .buttons a#practice{
-  background: -moz-linear-gradient(center top , #1F2668, #1D2BA7) repeat scroll 0 0 #89B908;
+  background-color: #1F2668;
 }
 
 #homepage-text .buttons a#practice:hover{
-  background: -moz-linear-gradient(center top, #1D2BA7 , #1F2668) repeat scroll 0 0 #89B908;
 }
 
 #homepage-text .buttons a#practice:active{
-  background: -moz-linear-gradient(center top, #1F2668 , #1F2668) repeat scroll 0 0 #89B908;
   border-color: black;
+}
+
+#not_started_games{
+  width: 475px;
+  border: 1px solid gray;
+  margin-left: 40px;
+  min-height: 100px;
+  margin-top: 40px;
+  float: left;
+}
+
+#not_started_games h2{
+  text-align: center;
+  font-size: 16px;
+  line-height: 35px;
+  u
+}
+
+#started_games{
+  width: 475px;
+  border: 1px solid gray;
+  margin-left: 20px;
+  min-height: 100px;
+  margin-top: 40px;
+  float: left;
+}
+
+#started_games h2{
+  text-align: center;
+  font-size: 16px;
+  line-height: 35px;
+}
+
+
+.game_item{
+  background-color: #D5BB11;
+  margin-bottom: 3px;
+  padding: 4px;
+}
+
+.game_item div.info{
+  display: inline;
+  padding: 4px;
+  float: left;
+  text-align: center;
+}
+
+.game_item div.white_player{
+  width: 130px;
+}
+
+.game_item div.black_player{
+  width: 130px;
 }

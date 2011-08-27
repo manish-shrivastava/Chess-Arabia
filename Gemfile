@@ -2,6 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.0.7'
 gem "rack", "~>1.1"
+gem 'rake', '0.8.7'
 
 # Use unicorn as the web server
 # gem 'unicorn'
@@ -16,8 +17,9 @@ gem 'rack-mount'
 gem 'mongrel', '1.2.0.pre2'
 gem 'devise'
 gem 'pg'
-gem 'devise_openid_authenticatable'
+gem 'devise_openid_authenticatable', '1.0.0'
 gem 'redis'
-gem "rspec-rails"
-gem 'client_side_validations'
 gem 'bundler'
+gem 'thin'
+gem 'ruby-debug'
+
