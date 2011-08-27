@@ -9,15 +9,17 @@
       started_games = <%= Game.all.select(&:started?).map(&:json_hash).to_json %>;
 
 #homepage
-  #homepage-image
-    %img{ :src => "/images/chess.png" }
-  #homepage-text
-    .title= "Play Free Chess"
-    %p= "You can play Chess on our website with other players, and with your friends, easily and for Free. With just 1 click, you are ready to start playing"
+  #homepage_top
+    #homepage-image
+      %img{ :src => "/images/chess.png" }
+    #homepage-text
+      .title= "Play Free Chess"
+      %p= "You can play Chess on our website with other players, and with your friends, easily and for Free. With just 1 click, you are ready to start playing"
 
-    .buttons
-      = link_to 'Play Now', games_path, :method => "post", :id => "play_now"
-      = link_to 'Practice against Computer', play_against_computer_games_path, :method => "post", :id => "practice"
+      .buttons
+        = link_to 'Play Now', games_path, :method => "post", :id => "play_now"
+        = link_to 'Practice against Computer', play_against_computer_games_path, :method => "post", :id => "practice"
+  #homepage_bottom
 
 
 #games_index{ 'style' => 'display: none' }

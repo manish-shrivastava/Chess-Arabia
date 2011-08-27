@@ -28,3 +28,29 @@ $(function(){
     //$('#set_guest_name_link').click(function(event){ show_change_guest_name_dialog(); event.preventDefault(); });
   }
 });
+
+
+var soundEmbed = null;
+function soundPlay(which)
+{
+  if (!soundEmbed)
+  {
+    soundEmbed = document.createElement("embed");
+    soundEmbed.setAttribute("src", "/snd/"+which+".wav");
+    soundEmbed.setAttribute("hidden", true);
+    soundEmbed.setAttribute("autostart", true);
+  }
+  else
+  {
+    document.body.removeChild(soundEmbed);
+    soundEmbed.removed = true;
+    soundEmbed = null;
+    soundEmbed = document.createElement("embed");
+    soundEmbed.setAttribute("src", "/snd/"+which+".wav");
+    soundEmbed.setAttribute("hidden", true);
+    soundEmbed.setAttribute("autostart", true);
+  }
+  soundEmbed.removed = false;
+  document.body.appendChild(soundEmbed);
+}
+

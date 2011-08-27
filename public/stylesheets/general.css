@@ -1,3 +1,5 @@
+html {overflow-y: scroll;}
+
 * {
   margin: 0;
   padding: 0;
@@ -14,8 +16,10 @@ a{
 
 #top_msg_container p{
   text-align: center;
-  padding: 8px;
-  background-color: #F4DF35;
+  padding: 6px;
+  background-color: #D5BB11;
+  padding-top: 3px;
+  font-weight: bold;
 }
 
 body{
@@ -48,7 +52,7 @@ body{
 }
 
 #header{
-  height: 75px;
+  height: 68px;
 }
 
 #header a{
@@ -60,7 +64,8 @@ body{
   width: 100%;
   border: 1px solid #999;
   min-height: 400px;
-  border-radius: 10px;
+  border-radius: 3px;
+  border-top: 10px solid #D5BB11;
 }
 
 #top-header-links{
@@ -85,12 +90,28 @@ body{
   right: 10px;
   top: 45px;
   vertical-align: middle;
+  height: 30px;
 }
 
 #nav-links a{
   text-transform: uppercase;
   margin-left: 23px;
   color: #DDD;
+  padding: 4px 6px;
+}
+
+#nav-links a.rating{
+  background-color: red;
+  color: white;
+  font-weight: bold;
+  margin-left: 4px;
+  font-size: 14px;
+  padding: 4px 16px;
+}
+
+#nav-links a.user_link{
+  margin-right: 4px;
+  font-weight: bold;
 }
 
 .sep{

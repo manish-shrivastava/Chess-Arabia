@@ -1,21 +1,32 @@
 #homepage{
-  padding: 0 20px;
-  height: 400px;
+}
+
+
+#homepage_top{
+  margin: 0 20px;
+  height: 330px;
+}
+
+#homepage_bottom{
+  min-height: 200px;
+  background-color: #E2E2E2;
+  border-top: 1px dotted #555;
 }
 
 #homepage-image{
   margin-top: 20px;
   position: absolute;
+  margin-left: 20px;
 }
 
 #homepage-image img{
-  width: 90%;
+  width: 80%;
 }
 
 #homepage-text{
-  margin-left: 63%;
+  margin-left: 58%;
   background-color: #FEFEFE;
-  min-height: 400px;
+  width: 390px;
 }
 
 #homepage-text .title{
@@ -43,8 +54,6 @@
   font-size: 20px;
   padding: 10px 0 12px;
   margin-bottom: 15px;
-  color: white;
-  text-shadow: 0 -1px 0 white;
   border-radius: 9px;
   text-decoration: none;
   cursor: pointer;
@@ -56,6 +65,7 @@
   background-color: #D5BB11;
   color: black;
   border: 1px dotted black;
+  text-shadow: 0 -1px 0 white;
 }
 
 #homepage-text .buttons a#play_now:hover{
@@ -67,7 +77,8 @@
 }
 
 #homepage-text .buttons a#practice{
-  background-color: #1F2668;
+  background-color: #4055CC;
+  color: white;
 }
 
 #homepage-text .buttons a#practice:hover{
@@ -90,7 +101,8 @@
   text-align: center;
   font-size: 16px;
   line-height: 35px;
-  u
+  background-color: #43B036;
+  color: white;
 }
 
 #started_games{
@@ -106,6 +118,8 @@
   text-align: center;
   font-size: 16px;
   line-height: 35px;
+  background-color: #43B036;
+  color: white;
 }
 
 
@@ -113,6 +127,10 @@
   background-color: #D5BB11;
   margin-bottom: 3px;
   padding: 4px;
+}
+
+.game_item:hover{
+  background-color: #E2DC2A;
 }
 
 .game_item div.info{

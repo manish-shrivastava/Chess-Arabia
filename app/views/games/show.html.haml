@@ -1,16 +1,17 @@
 -content_for :header do
   = stylesheet_link_tag 'board.css'
+  = javascript_include_tag 'soundmanager2-jsmin.js'
   = javascript_include_tag 'board.js'
   = javascript_include_tag "http://localhost:8080/socket.io/socket.io.js"
   :erb
     <style type="text/css">
-      <% ['kB', 'qB', 'pB', 'rB', 'bB', 'nB', 'kW', 'qW', 'pW', 'rW', 'bW', 'nW'].each do |c| %>      
+      <% ['kB', 'qB', 'pB', 'rB', 'bB', 'nB', 'kW', 'qW', 'pW', 'rW', 'bW', 'nW'].each do |c| %>
         .piece.<%= c %>{
           background-image: url('/images/pieces/<%= c %>.png');
         }
       <% end %>
     </style>
-    
+
     <script type="text/javascript">
       game_id = <%= @game.id %>;
       player_seat = <%= @player_seat.to_json %>;

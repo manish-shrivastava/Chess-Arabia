@@ -1,3 +1,10 @@
+soundManager.debugMode = false;
+soundManager.useHTML5Audio = false;
+soundManager.onready(function(){
+  put_piece_sound = soundManager.createSound({ 'id': 'put_piece', 'url': '/sounds/put_piece.mp3' });
+  moving_piece_sound = soundManager.createSound({ 'id': 'moving_piece', 'url': '/sounds/moving_piece.mp3' });
+});
+
 $(function(){
   socket = io.connect('http://127.0.0.1:8080');
   show_connecting();
@@ -68,11 +75,6 @@ function msg_received(msg){
   }
   else if (msg.resigned){
     game_finished(msg.resigned, true);
-    if (winner == "resignW"){
-      alert(translate('white_resigned'));
-    } else if (winner == "resignB"){
-      alert(translate('black_resigned'));
-    }
   }
   else if (msg.msg_type == 'player_joined'){
     if (msg.seat == 'W'){
@@ -298,24 +300,6 @@ function position_of_piece(piece){
   //return null;
 }
 
-function piece_clicked(event){
-  if (selected_cell){
-  
-  } else {
-    position = position_of_piece($(event.target));
-    //alert(position[0]);
-  }
-}
-
-function select_cell(){
-
-}
-
-function select_no_cell(){
-  selected_cell = null;
-  
-}
-
 function send_move(from, to){
   if (your_turn()){
     $.ajax({
@@ -324,7 +308,7 @@ function send_move(from, to){
       dataType: 'script',
       type: "POST",
       success: function(){ stop_timer(); }
-    });          
+    });
   }
   current_turn = '';
 }
@@ -349,6 +333,7 @@ function make_move(move, callback){
   $('#moves_list').append('<div class=\'move_list_element\'>' + move['standard'] + '</div>');
   $("#moves_list")[0].scrollTop = $("#moves_list")[0].scrollHeight;
   special_move = move['special_move'];
+  moving_piece_sound.play({ 'onfinish': function(){ } });
   animate_piece(from, to, function(){
     if (piece2) { add_eaten_piece(piece2); }
     pieces[to[0]][to[1]] = pieces[from[0]][from[1]];
@@ -381,7 +366,7 @@ function make_replace_move(move){
 
 function make_special_move(move){
   from = move['from'];
-  to = move['to'];       
+  to = move['to'];
   special_move_id = move['special_move'];
   if (special_move_id == 1){
     animate_piece(to, [to[0] - 1, to[1]]);
@@ -395,28 +380,28 @@ function make_special_move(move){
     cells[to[0] + 1][to[1]] = cells[to[0]][to[1]];
     cells[to[0]][to[1]] = null;
     pieces[(to[0] + 1)][to[1]] = pieces[to[0]][to[1]];
-    pieces[to[0]][to[1]] = null;   
+    pieces[to[0]][to[1]] = null;
   }
   else if (special_move_id == 3){
     animate_piece([7, 7], [7, 5]);
     cells[7][5] = cells[7][7];
     cells[7][7] = null;
     pieces[7][5] = pieces[7][7];
-    pieces[7][7] = null;        
+    pieces[7][7] = null;
   }
   else if (special_move_id == 4){
     animate_piece([7, 0], [7, 3]);
     cells[7][3] = cells[7][0];
     cells[7][0] = null;
     pieces[7][3] = pieces[7][0];
-    pieces[7][0] = null;    
+    pieces[7][0] = null;
   }
   else if (special_move_id == 5){
     animate_piece([0, 7], [0, 5]);
     cells[0][5] = cells[0][7];
     cells[0][7] = null;
     pieces[0][5] = pieces[0][7];
-    pieces[0][7] = null;        
+    pieces[0][7] = null;
   }
   else if (special_move_id == 6){
     animate_piece([0, 0], [0, 3]);
@@ -425,7 +410,7 @@ function make_special_move(move){
     pieces[0][3] = pieces['00'];
     pieces['00'] = null;
   }
-}    
+}
 
 function drag_stopped(event, ui){
   $(event.target).addClass('hoverable');
@@ -437,10 +422,10 @@ function drag_stopped(event, ui){
   else top_shift = 0;
   pp = 'z-index';
   $(event.target).css('top', p.top - (p.top % 47) + top_shift);
-  $(event.target).css(pp, 0);  
+  $(event.target).css(pp, 0);
   new_top = p.top - (p.top % 47) + top_shift;
   new_top = new_top / 47;
-  
+
   // Left
   left_diff = (p.left % 47);
   if (left_diff > 47/2) left_shift = 47;
@@ -461,7 +446,7 @@ function drag_stopped(event, ui){
     from[0] = 7 - from[0]; from[1] = 7 - from[1];
     to[0] = 7 - to[0]; to[1] = 7 - to[1];
   }
-  
+
   if (!piece_moved(from, to)){
     // Return the piece here
     loc = location_of_piece(from);
@@ -474,23 +459,24 @@ function piece_moved(from, to){
   piece_image = pieces[from[0]][from[1]];
   legal_move = legal(from, to);
   piece = cells[from[0]][from[1]];
-  piece2 = cells[to[0]][to[1]];        
+  piece2 = cells[to[0]][to[1]];
   if ( !your_turn() || !started() || finished() || !legal_move ){
-    return false;                
+    return false;
   }
 
   // It's 100% Legal
+  put_piece_sound.play({ 'onfinish': function(){ } });
   cells[from[0]][from[1]] = null;
-  cells[to[0]][to[1]] = piece;        
+  cells[to[0]][to[1]] = piece;
   last_rendered_move = legal_move.id;
-  
+
   // Removing Piece2
   piece2_image = pieces[to[0]][to[1]];
   if (piece2_image){
     piece2_image.remove();
     add_eaten_piece(piece2);
   }
-  
+
   pieces[to[0]][to[1]] = pieces[from[0]][from[1]];
   pieces[from[0]][from[1]] = null;
 

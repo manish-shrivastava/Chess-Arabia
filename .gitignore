@@ -7,3 +7,4 @@ tmp/
 *.log
 vendor/cache
 config/database.yml
+*.swp

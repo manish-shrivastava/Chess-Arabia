@@ -32,6 +32,9 @@ function msg_received(msg){
       $('#game_' + msg.game_id).appendTo('#started_games');
     }
   }
+  else if (msg.game_finished){
+    $('#game_' + msg.game_finished).remove();
+  }
 }
 
 $(function(){
@@ -45,6 +48,11 @@ $(function(){
     // Disconnected
   });
 
+  $('.game_item').live('click', function(event){
+    game_id = $(this).attr('id').match(/\d+/)[0];
+    document.location = '/games/' + game_id;
+  });
+
   _.each(pending_games, function(game){
     render_not_started_game_item(game);
   });
@@ -55,17 +63,17 @@ $(function(){
 
 
   $('a.games_room').click(function(){
-    $('#games_index').fadeIn();
-    $('#homepage').fadeOut();
+    $('#homepage').slideUp('fast');
+    $('#games_index').fadeIn('slow');
   });
 
   $('a.homepage').click(function(){
-    $('#games_index').fadeOut();
-    $('#homepage').fadeIn();
+    $('#games_index').hide();
+    $('#homepage').slideDown();
   });
 
   if (document.location.hash == '#games'){
-    $('#games_index').fadeIn();
-    $('#homepage').fadeOut();
+    $('#homepage').slideUp('fast');
+    $('#games_index').fadeIn('slow');
   }
 });

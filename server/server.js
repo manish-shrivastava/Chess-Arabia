@@ -13,6 +13,7 @@ redis_client2 = redis.createClient();    // Create the client to subscribe to mo
 redis_client3 = redis.createClient();    // Create the client to subscribe to player_joined
 redis_client4 = redis.createClient();    // Create the client to subscribe to game_started
 redis_client5 = redis.createClient();    // Create the client to subscribe to game_created
+redis_client6 = redis.createClient();    // Create the client to subscribe to game_finished
 
 var games = {};
 var client_games = {};
@@ -30,11 +31,18 @@ function game_resigned(game){
   game.winner = 'Resign' + game.turn;
   redis_client.set("game_" + game.id, JSON.stringify(game));
   redis_client.lrem('games', 1, game.id);
+  redis_client.publish('game_finished', game.id);
   underscore.each(game_clients, function(c){
     resigned_msg = { resigned: game.winner };
     c.send(JSON.stringify(resigned_msg));
   });
 }
+
+redis_client6.subscribeTo('game_finished', function(err, game_id){
+  underscore.each(homepage_clients, function(c){
+    c.send(JSON.stringify({ 'game_finished': game_id }));
+  });
+});
 
 redis_client5.subscribeTo('game_created', function(err, game_json){
   var game = JSON.parse(game_json);
@@ -55,7 +63,7 @@ redis_client2.subscribeTo('move_finished', function(err, game_id){
     var to_move_msg = { make_move: game.moves[game.moves.length - 1], game_state: game_state };
     clearTimeout(game_resign[game.id]);
     if ( ! game.winner) {
-      game_resign[game.id] = setTimeout(function(){ game_resigned(game); }, 121000);
+      game_resign[game.id] = setTimeout(function(){ game_resigned(game); }, 120500);
       last_move[game.id] = new Date();
     }
     underscore.each(game_clients, function(c){
@@ -81,9 +89,10 @@ redis_client3.subscribeTo('player_joined', function(err, info_jsoned){
 redis_client4.subscribeTo('game_started', function(err, game_id){
   console.log('Game Started ' + game_id);
   var game_key = "game_" + game_id;
+  var game;
   redis_client.get(game_key, function(err, data){
     var game_json = data;
-    var game = JSON.parse(game_json);
+    game = JSON.parse(game_json);
     game_resign[game.id] = setTimeout(function(){ game_resigned(game); }, 121000);
     last_move[game.id] = new Date();
   });

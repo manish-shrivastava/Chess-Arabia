@@ -273,7 +273,7 @@ class Game
       return @moves.last
     end
   end
-  
+
   def commit_move(move, trying = false)
     from, to, piece1, piece2, special_move, replace_move = ['from', 'to', 'piece1', 'piece2', 'special_move', 'replace_move'].map{|k| move[k] }
     old_cells = []
@@ -306,7 +306,7 @@ class Game
 
     r = false if old_turn == 'W' && white_king?
     r = false if old_turn == 'B' && black_king?
-    
+
     if r
       # Move is for sure OK
       @next_moves = nil
@@ -344,11 +344,11 @@ class Game
       return false
     end
   end
-  
+
   def game_started
     REDIS.publish('game_started', self.id)
   end
-  
+
   def move_finished
     if next_moves().length == 0
       #raise next_moves.inspect
@@ -358,22 +358,25 @@ class Game
       REDIS.lpush 'finished_games', @id
       rate_game
     end
-    @last_move_at = Time.now.getutc  
+    @last_move_at = Time.now.getutc
   end
-  
+
   def after_move_finished
     # Tell Computer to play
     if (@players[@turn] == 'computer' && @winner.nil?)
       tell_computer_to_play
     end
     r = REDIS.publish('move_finished', self.id) # move_finished channel
+    if @winner
+      r = REDIS.publish('game_finished', self.id) # game_finished channel
+    end
   end
-  
+
   def tell_computer_to_play
     REDIS.rpush 'computer_games', @id
     REDIS.publish 'computer_play', @id
   end
-  
+
   def self.standard_location(loc)
     ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'][loc[1]] + (1..8).to_a.reverse.map(&:to_s)[loc[0]]
   end
@@ -383,9 +386,9 @@ class Game
     game_state_string_digest = Digest::SHA1.hexdigest(game_state_string)
     computer_cached_move_key = 'computer_cached_move_' + game_state_string_digest
     computer_cached_move = REDIS.get(computer_cached_move_key)
-    
+
     return computer_cached_move if computer_cached_move
-    
+
     input_path = File.join(Rails.root, 'tmp', "game_input_#{@id}")
     output_path = File.join(Rails.root, 'tmp', "game_output_#{@id}")
     f = File.new input_path, 'w'
@@ -394,11 +397,11 @@ class Game
     @moves.each do |move|
       f.write to_standard(move) + "\n"
     end
-    f.write "go\n"    
+    f.write "go\n"
     f.close
     system("hoichess < #{input_path} > #{output_path}")
     f = File.open output_path
-    response = f.read    
+    response = f.read
     if response.match /Illegal move/
       error_f = File.new(File.join(Rails.root, "log", "computer_error_#{Time.now.to_s}.log"), "w")
       error_f.write(response)
@@ -408,9 +411,7 @@ class Game
     lines = response.split("\n")
     move = lines.pop
     move = lines.pop unless move.match /move\s/
-    
-    REDIS.set computer_cached_move_key, move
-    
+
     f.close
     return move
   end
@@ -434,7 +435,7 @@ class Game
     return false if piece2 && piece1.chars.to_a[1] == piece2.chars.to_a[1]
     return false if piece1.nil?
     return false if (piece1.chars.to_a[1] != @turn) && !ignore_turn
-    
+
     # Checking for Special Moves
     if special_move == 1
       return true
@@ -472,8 +473,8 @@ class Game
     elsif piece1 == 'rW' || piece1 == 'rB'
       return ((to[0] - from[0] == 0) || (to[1] - from[1] == 0)) && clear_range?(move)
     elsif piece1 == 'kW' || piece1 == 'kB'
-      return ((to[0] - from[0]).abs < 2) && ((to[1] - from[1]).abs < 2) 
-    end  
+      return ((to[0] - from[0]).abs < 2) && ((to[1] - from[1]).abs < 2)
+    end
   end
 
   def next_moves=(m)
