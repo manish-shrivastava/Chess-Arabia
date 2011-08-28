@@ -54,11 +54,11 @@
               %a{ :href => new_user_session_path }= t(:sign_in)
               %a{ :href => new_user_registration_path }= t(:sign_up)
             - else
-              %a{ :href => edit_player_path(current_user) }= current_user.name
+              %a.user_link{ :href => edit_player_path(current_user) }= current_user.name
               %a.rating{ :href => "#" }= current_user.rating
-              %a.user_link{ :href => destroy_user_session_path }= t(:sign_out)
+              %a{ :href => destroy_user_session_path }= t(:sign_out)
       #wrapper_body
-        #top_msg_container{ 'style' => 'display: none;' }
+        #top_msg_container
         = yield
       #msg_dialog{ 'style' => 'display: none;' }
 

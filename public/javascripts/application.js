@@ -14,12 +14,15 @@ function show_message(msg, title){
   $('#msg_dialog').dialog({ 'modal': true, 'buttons': { 'Close': function(){ $(this).dialog('close'); }}, 'title': title });
 }
 
+top_message_timeout = 0;
+
 function show_top_message(msg, time){
+  clearTimeout(top_message_timeout);
   $('#top_msg_container').html('<p>' + msg + '</p>');
-  $('#top_msg_container').hide();
-  $('#top_msg_container').slideDown();
+  $('#top_msg_container p').hide();
+  $('#top_msg_container p').slideDown();
   if (time > 0){
-    setTimeout(function(){ $('#top_msg_container').slideUp('slow'); }, time);
+    top_message_timeout = setTimeout(function(){ $('#top_msg_container p').slideUp('slow'); }, time);
   }
 }
 

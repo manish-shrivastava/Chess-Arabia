@@ -51,7 +51,7 @@ function msg_received(msg){
     eaten_pieces = msg.eaten_pieces;
     load_game();
 
-    if (player_seat == current_turn){
+    if (player_seat == current_turn && !winner){
       t = msg.last_move;
       $('#timer_div').show();
       tick_timer();
@@ -116,11 +116,11 @@ function load_game(){
   render_cells();
   pieces = {};
   render_pieces();
-  
+
   if (moves.length > 0){
     last_move = moves[moves.length - 1];
     show_last_moved_from( last_move.from );
-    show_last_moved( last_move.to );  
+    show_last_moved( last_move.to );
   }
 
   if (current_turn == 'replaceW' && player_seat == 'W'){ show_replace_white(); }
@@ -149,7 +149,7 @@ function send_chat(){
 function game_started(now){
   // Event Handler
   // now means Just Started
-  if (now){ 
+  if (now){
     reset_timer();
     show_top_message('Game just started', 6000);
   }
@@ -324,6 +324,9 @@ function legal(from, to){
 }
 
 function make_move(move, callback){
+  if (move.check_mate){
+    show_top_message('Check Mate', 8000);
+  }
   from = move['from'];
   to = move['to'];
   piece1 = move['piece1'];

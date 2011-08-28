@@ -97,7 +97,7 @@
 #players_panel{
   width: 600px;
   margin: auto;
-  margin-top: 55px;
+  margin-top: 25px;
   border: 1px solid black;
   text-align: center;
 }

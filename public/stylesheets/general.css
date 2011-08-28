@@ -11,15 +11,16 @@ a{
 }
 
 #top_msg_container{
-  height: 42px
+  height: 28px
 }
 
 #top_msg_container p{
   text-align: center;
-  padding: 6px;
+  padding: 3px;
   background-color: #D5BB11;
   padding-top: 3px;
-  font-weight: bold;
+  font-weight: 400;
+  font-size: 16px;
 }
 
 body{
@@ -65,7 +66,7 @@ body{
   border: 1px solid #999;
   min-height: 400px;
   border-radius: 3px;
-  border-top: 10px solid #D5BB11;
+  border-top: 3px solid #D5BB11;
 }
 
 #top-header-links{
