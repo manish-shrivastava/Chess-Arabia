@@ -1,30 +1,39 @@
+- content_for :header do
+  %script
+    :erb
+      $(function(){
+        $('#user_email').focus();
+      });
+
 .forms_page
-  
-  %h2= t(:sign_in)
+  .forms_page_left
 
-  = form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
-    %ul.full_column_form
-      %li.element
-        = f.label t(:email_address)
-        = f.text_field :email
-      
-      %li.element
-        = f.label t(:password)
-        = f.password_field :password
+  .forms_page_right
+    %h2= t(:sign_in)
 
-      - if devise_mapping.rememberable?    
+    = form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
+      %ul.full_column_form
         %li.element
-          = f.check_box :remember_me
-          = f.label t(:remember_me)
-      %li
-        = f.submit t(:sign_in), :class => "button"
-      .clearer
+          = f.label t(:email_address)
+          = f.text_field :email
 
-  %h2= t(:or_login_using_gmail)
-  = form_for('user', :as => 'user', :url => session_path('user'), :html => { :id => "google_login_form" }) do |f|
-    %ul.full_column_form
-      = hidden_field_tag 'user[identity_url]', 'https://www.google.com/accounts/o8/id'
-      %li
-        %img{:src => "/images/gmail.jpg", :style => "float: left"}
-        = f.submit t(:sign_in), :class => "button", :style => "margin-left: 20px; margin-top: 20px;"
-        
+        %li.element
+          = f.label t(:password)
+          = f.password_field :password
+
+        - if devise_mapping.rememberable?
+          %li.element
+            = f.check_box :remember_me
+            = f.label t(:remember_me)
+        %li
+          = f.submit t(:sign_in), :class => "button"
+        .clearer
+
+    %h2= t(:or_login_using_gmail)
+    = form_for('user', :as => 'user', :url => session_path('user'), :html => { :id => "google_login_form" }) do |f|
+      %ul.full_column_form
+        = hidden_field_tag 'user[identity_url]', 'https://www.google.com/accounts/o8/id'
+        %li
+          %img{:src => "/images/gmail.jpg", :style => "float: left"}
+          = f.submit t(:sign_in), :class => "button", :style => "margin-left: 20px; margin-top: 20px;"
+        %li.clearer

@@ -16,6 +16,10 @@ function show_message(msg, title){
 
 top_message_timeout = 0;
 
+function hide_top_message(){
+  $('#top_msg_container p').slideUp('slow');
+}
+
 function show_top_message(msg, time){
   clearTimeout(top_message_timeout);
   $('#top_msg_container').html('<p>' + msg + '</p>');

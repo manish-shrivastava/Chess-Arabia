@@ -5,6 +5,14 @@ soundManager.onready(function(){
   moving_piece_sound = soundManager.createSound({ 'id': 'moving_piece', 'url': '/sounds/moving_piece.mp3' });
 });
 
+function update_rating(){
+  if (! rated_game()) return;
+  $('#rating').load('/players/my_rating');
+  for (i = 0; i < 5; i++){
+    $('#rating').fadeOut(250 * i).fadeIn(210 * i);
+  }
+}
+
 $(function(){
   socket = io.connect('http://127.0.0.1:8080');
   show_connecting();
@@ -59,11 +67,11 @@ function msg_received(msg){
 
   }
   else if (msg.make_move){
+    game_state = msg.game_state;
+    if (game_state.winner){ game_finished(game_state.winner, true); }
     make_move(msg.make_move, function(){
-      game_state = msg.game_state;
       current_turn = game_state.turn;
       next_moves = game_state.next_moves;
-      if (game_state.winner){ game_finished(game_state.winner, true); }
       if (current_turn == player_seat && ! winner){
         reset_timer();
       }
@@ -179,6 +187,7 @@ function game_finished(w, now){
   if (now){
     // Nothing
     show_message(msg, 'Game Finished');
+    update_rating();
   }
 }
 
@@ -313,6 +322,10 @@ function send_move(from, to){
   current_turn = '';
 }
 
+function rated_game(){
+  return (players['B'] != 'computer');
+}
+
 function legal(from, to){
   r = false;
   $.each(next_moves, function(ind, arr){
@@ -324,7 +337,8 @@ function legal(from, to){
 }
 
 function make_move(move, callback){
-  if (move.check_mate){
+  if (!winner) hide_top_message();
+  if (move.check_mate && !winner){
     show_top_message('Check Mate', 8000);
   }
   from = move['from'];
@@ -440,11 +454,11 @@ function drag_stopped(event, ui){
 
   old_left = ui.originalPosition.left / 47;
   old_top = ui.originalPosition.top / 47;
-  
+
   from = [old_top, old_left];
   to = [new_top, new_left];
   if (from[0] == to[0] && from[1] == to[1]) return true;
-  
+
   if (black()){
     from[0] = 7 - from[0]; from[1] = 7 - from[1];
     to[0] = 7 - to[0]; to[1] = 7 - to[1];
@@ -468,6 +482,7 @@ function piece_moved(from, to){
   }
 
   // It's 100% Legal
+  hide_top_message();
   put_piece_sound.play({ 'onfinish': function(){ } });
   cells[from[0]][from[1]] = null;
   cells[to[0]][to[1]] = piece;

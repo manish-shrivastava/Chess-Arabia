@@ -4,7 +4,7 @@
 
 #homepage_top{
   margin: 0 20px;
-  height: 330px;
+  height: 296px;
 }
 
 #homepage_bottom{
@@ -31,16 +31,17 @@
 
 #homepage-text .title{
   font-size: 16px;
-  padding-top: 22px;
+  padding-top: 18px;
   margin-bottom: 9px;
   color: #111111;
   line-height: 24px;
   font-size: 25px;
   vertical-align: baseline;
+  margin-top: 2px;
 }
 
 #homepage-text p{
-  padding: 22px 0;
+  margin-bottom: 28px;
   font-size: 14px;
   color: #444444;
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -101,7 +102,7 @@
   text-align: center;
   font-size: 16px;
   line-height: 35px;
-  background-color: #43B036;
+  background-color: black;
   color: white;
 }
 
@@ -118,7 +119,7 @@
   text-align: center;
   font-size: 16px;
   line-height: 35px;
-  background-color: #43B036;
+  background-color: black;
   color: white;
 }
 
@@ -127,6 +128,7 @@
   background-color: #D5BB11;
   margin-bottom: 3px;
   padding: 4px;
+  cursor: pointer;
 }
 
 .game_item:hover{

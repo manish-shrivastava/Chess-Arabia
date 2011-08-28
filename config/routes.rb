@@ -21,6 +21,7 @@ ChessArabia::Application.routes.draw do
   resources :players do
     collection do
       get :top
+      get :my_rating
     end
   end
 

@@ -1,14 +1,28 @@
-.forms_page{
+.forms_page_left{
   padding: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  float: left;
+  width: 280px;
+}
+
+input:focus{
+  background-color: #DDD;
+}
+
+.forms_page_right{
+  padding: 10px;
+  margin-left: 310px;
+  margin-right: 10px;
 }
 
 .forms_page h2{
   font-size: 16px;
-  background-color: #ECDB51;
+  background-color: #F8E122;
   font-weight: 300;
   padding: 3px 12px;
   border-radius: 7px;
-  color: #222;
+  color: #111;
 }
 
 form {
@@ -43,9 +57,9 @@ form {
     font-size: 90%;
     padding: 4px 10px 0 0;
     display: block;
-    font-weight: 300; }
+    font-weight: 400; }
   form input[type="text"], form textarea, form select, form input[type="password"] {
-    width: 34%;
+    width: 55%;
     padding: 5px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;

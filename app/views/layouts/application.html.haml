@@ -2,8 +2,9 @@
 %html
   %head
     <link rel="shortcut icon" href="/images/icon.ico" type="image/x-icon">
-    - if false
+    - if true
       <link href='http://fonts.googleapis.com/css?family=Istok+Web&v2' rel='stylesheet' type='text/css'>
+      <link href='http://fonts.googleapis.com/css?family=Voltaire' rel='stylesheet' type='text/css'>
     %title= I18n.locale == :ar ? "الشطرنج العربية Chessarabia" : "Chessarabia"
     <meta content='شطرنج، عربي، عربية، الشطرنج، العاب، مجانا، العب مجانا، ملك، رقعة، رقعة الشطرنج، الوزير، القلعة، كسباروف، خطط شطرنج' name='keywords'>
     <meta content='العب شطرنج مجانا' name='description'>
@@ -27,20 +28,24 @@
         <% translate_keys = [:time_to_move, :white_resigned, :black_resigned] %>
         translate_hash = <%= translate_keys.inject({}){|h, k| h[k.to_s] = I18n.translate(k); h}.to_json %>;
 
+        flash_notice = <%= (flash[:notice] || flash[:alert]).to_json %>;
+
         function translate(k){
           return translate_hash[k] || k;
         }
 
         $(function(){
-
+          if (flash_notice){
+            show_top_message(flash_notice, 8000);
+          }
         });
 
   %body
-
     #wrapper
       #header
-        #logo
-          %a.homepage{ :href => "/#home" }= "Chess Arabia"
+        %a#logo.homepage{ :href => "/#home" }
+          %img#logo_image{ :src => "/images/logo_work.png" }
+          %p= 'Chess Arabia'
         #top-header-links
           #top-links
             %a.homepage{ :href => "/#home" }= t(:homepage)
@@ -55,10 +60,11 @@
               %a{ :href => new_user_registration_path }= t(:sign_up)
             - else
               %a.user_link{ :href => edit_player_path(current_user) }= current_user.name
-              %a.rating{ :href => "#" }= current_user.rating
+              %a.rating#rating{ :href => "#" }= current_user.rating
               %a{ :href => destroy_user_session_path }= t(:sign_out)
       #wrapper_body
         #top_msg_container
         = yield
+        .clearer
       #msg_dialog{ 'style' => 'display: none;' }
 

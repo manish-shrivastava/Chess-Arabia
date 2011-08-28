@@ -115,6 +115,7 @@ DEPENDENCIES
   bundler
   devise
   devise_openid_authenticatable (= 1.0.0)
+  eventmachine
   haml
   mongrel (= 1.2.0.pre2)
   pg

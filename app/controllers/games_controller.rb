@@ -15,8 +15,7 @@ class GamesController < ApplicationController
   end
 
   def create
-    #g = Game.all.select(&:empty?).first || Game.create
-    g = Game.create
+    g = Game.all.reject(&:started?).first || Game.create
     redirect_to game_path(:id => g.id)
   end
 

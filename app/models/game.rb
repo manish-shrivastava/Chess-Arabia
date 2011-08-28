@@ -120,24 +120,7 @@ class Game
     ids = (REDIS.lrange 'finished_games', 0, (REDIS.LLEN 'finished_games')) rescue []
     ids.map{|id| Game.find id} 
   end
-  
-  def rate_game
-    return if [self.players['W'], self.players['B']].include?('computer')
-    u1 = User.find_by_email(self.players['W'])
-    u2 = User.find_by_email(self.players['B'])
-    
-    if ['resignB', 'W'].include?(self.winner)
-      u1.rank += 10 if u1
-      u2.rank -=10 if u2
-    elsif ['resignW', 'B'].include?(self.winner)
-      u1.rank -= 10 if u1
-      u2.rank += 10 if u2
-    end
-    
-    u1.save if u1
-    u2.save if u2   
-  end
-  
+ 
   def save
     hash = {}
     hash['next_moves'] = self.next_moves()
@@ -356,7 +339,6 @@ class Game
       @winner = white_king? ? 'B' : (black_king? ? 'W' : 'TIE')
       REDIS.lrem 'games', 1, @id
       REDIS.lpush 'finished_games', @id
-      rate_game
     end
     @last_move_at = Time.now.getutc
   end

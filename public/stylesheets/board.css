@@ -1,11 +1,11 @@
 #board_out{
-  padding: 20px;
-  border-radius: 15px;
+  padding: 5px;
+  border-radius: 5px;
   width: 420px;
   position: relative;
   margin: auto;
   top: 9px;
-  border: 1px solid black;
+  border: 1px solid #444;
   background-color: white;
 }
 
@@ -163,6 +163,7 @@
   background-color: #56512F;
   padding: 2px;
   cursor: pointer;
+  font-size: 12px;
 }
 
 #board_right .right_box .title:hover{

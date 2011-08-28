@@ -22,4 +22,5 @@ gem 'redis'
 gem 'bundler'
 gem 'thin'
 gem 'ruby-debug'
+gem 'eventmachine'
 

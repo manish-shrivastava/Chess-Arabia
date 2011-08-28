@@ -1,37 +1,41 @@
 
 .forms_page
-  %h2= t(:new_player_registration)
+  .forms_page_left
+    %h2= "Why to register"
 
-  = form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
-    = devise_error_messages!
-    %ul.full_column_form
-      %li.element
-        = f.label t(:player_name)
-        = f.text_field :name
-      %li.element
-        = f.label t(:email_address)
-        = f.text_field :email
-      %li.element
-        = f.label t(:password)
-        = f.password_field :password
-      %li.element
-        = f.label t(:password_confirmation)
-        = f.password_field :password_confirmation
-      %li.element
-        = f.label t(:country)
-        - if I18n.locale == :ar
-          = f.select :country, Countries.map{|c| [c.last, c.first] }.sort{|a, b| a.first <=> b.first }, {}, :class => "rtl"
-        - else
-          = f.select :country, Countries.map{|c| [c.first, c.first] }.sort{|a, b| a.first <=> b.first }, {}, :class => "rtl"
-      %li
-        = f.submit t(:sign_up), :class => "button"
-      .clearer
+  .forms_page_right
+    %h2= t(:new_player_registration)
 
-  %h2= t(:or_login_using_gmail)
-  = form_for('user', :as => 'user', :url => session_path('user'), :html => { :id => "google_login_form" }) do |f|
-    %ul.full_column_form
-      = hidden_field_tag 'user[identity_url]', 'https://www.google.com/accounts/o8/id'
-      %li
-        %img{:src => "/images/gmail.jpg", :style => "float: left"}
-        = f.submit t(:sign_in), :class => "button", :style => "margin-left: 20px; margin-top: 20px;"
-      .clearer
+    = form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
+      = devise_error_messages!
+      %ul.full_column_form
+        %li.element
+          = f.label t(:player_name)
+          = f.text_field :name
+        %li.element
+          = f.label t(:email_address)
+          = f.text_field :email
+        %li.element
+          = f.label t(:password)
+          = f.password_field :password
+        %li.element
+          = f.label t(:password_confirmation)
+          = f.password_field :password_confirmation
+        %li.element
+          = f.label t(:country)
+          - if I18n.locale == :ar
+            = f.select :country, Countries.map{|c| [c.last, c.first] }.sort{|a, b| a.first <=> b.first }, {}, :class => "rtl"
+          - else
+            = f.select :country, Countries.map{|c| [c.first, c.first] }.sort{|a, b| a.first <=> b.first }, {}, :class => "rtl"
+        %li
+          = f.submit t(:sign_up), :class => "button"
+        .clearer
+
+    %h2= t(:or_login_using_gmail)
+    = form_for('user', :as => 'user', :url => session_path('user'), :html => { :id => "google_login_form" }) do |f|
+      %ul.full_column_form
+        = hidden_field_tag 'user[identity_url]', 'https://www.google.com/accounts/o8/id'
+        %li
+          %img{:src => "/images/gmail.jpg", :style => "float: left"}
+          = f.submit t(:sign_in), :class => "button", :style => "margin-left: 20px; margin-top: 20px;"
+        .clearer
