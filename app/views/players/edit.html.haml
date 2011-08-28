@@ -1,0 +1,31 @@
+.forms_page
+  .forms_page_left
+    %h2= "Profile Picture"
+
+  .forms_page_right
+    %h2= t(:your_information)
+
+    = form_for current_user, :url => player_path(current_user) do |f|
+      %ul.full_column_form
+        %li.element
+          = f.label t(:name)
+          = f.text_field :name
+        %li.element
+          = f.label t(:email_address)
+          %span= current_user.email
+        - unless current_user.identity_url
+          %li.element
+            = f.label t(:password)
+            = f.password_field :password
+          %li.element
+            = f.label t(:password_confirmation)
+            = f.password_field :password_confirmation
+        %li.element
+          = f.label t(:country)
+          - if I18n.locale == :ar
+            = f.select :country, Countries.map{|c| [c.last, c.first] }.sort{|a, b| a.first <=> b.first }, {}, :class => "rtl"
+          - else
+            = f.select :country, Countries.map{|c| [c.first, c.first] }.sort{|a, b| a.first <=> b.first }, {}, :class => "rtl"
+        %li
+          = f.submit t(:save), :class => "button"
+        .clearer

@@ -9,7 +9,9 @@ class PlayersController < ApplicationController
   end
 
   def update
-
+    current_user.update_attributes(params[:user])
+    redirect_to edit_player_path(current_user)
+    flash[:notice] = "Profile updated successfully"
   end
 
   def my_rating

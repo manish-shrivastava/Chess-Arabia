@@ -40,7 +40,7 @@ en:
   moves: "Moves"  
   promote_the_pawn_to: "Promote Prawn to"
   connecting: "Connecting..."
-
+  save: "Save"
   time_to_move: "Remaining time to move"
   white_resigned: "White player resigned"
   black_resigned: "Black player resigned"
