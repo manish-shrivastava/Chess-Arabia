@@ -7,7 +7,7 @@ html {overflow-y: scroll;}
 }
 
 a{
-
+  outline: none;
 }
 
 #top_msg_container{
@@ -108,14 +108,19 @@ body{
 
 #logo:hover p{
   color: yellow;
-text-shadow: 0px 0px 19px #ffffff;
-filter: dropshadow(color=#ffffff, offx=5, offy=5); 
+  text-shadow: 0px 0px 19px #ffffff;
+  filter: dropshadow(color=#ffffff, offx=5, offy=5); 
 }
 
 #top-links a{
   font: inherit;
   font-size: 13px;
   color: white;
+}
+
+#top-links a:hover{
+  text-shadow: 0px 0px 19px #ffffff;
+  filter: dropshadow(color=#ffffff, offx=5, offy=5); 
 }
 
 #nav-links{
@@ -131,6 +136,11 @@ filter: dropshadow(color=#ffffff, offx=5, offy=5);
   margin-left: 23px;
   color: #DDD;
   padding: 4px 6px;
+}
+
+#nav-links a:hover{
+  text-shadow: 0px 0px 19px #ffffff;
+  filter: dropshadow(color=#ffffff, offx=5, offy=5); 
 }
 
 #nav-links a.rating{
