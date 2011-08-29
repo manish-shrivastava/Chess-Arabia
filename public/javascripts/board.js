@@ -3,6 +3,7 @@ soundManager.useHTML5Audio = false;
 soundManager.onready(function(){
   put_piece_sound = soundManager.createSound({ 'id': 'put_piece', 'url': '/sounds/put_piece.mp3' });
   moving_piece_sound = soundManager.createSound({ 'id': 'moving_piece', 'url': '/sounds/moving_piece.mp3' });
+  start_game_sound = soundManager.createSound({ 'id': 'start_game', 'url': '/sounds/start_game.mp3' });
 });
 
 function update_rating(){
@@ -161,6 +162,7 @@ function game_started(now){
   if (now){
     reset_timer();
     show_top_message('Game just started', 6000);
+    start_game_sound.play();
   }
   if (player_seat == 'W' || player_seat == 'B'){
     player_seat_down = player_seat.toLowerCase();
