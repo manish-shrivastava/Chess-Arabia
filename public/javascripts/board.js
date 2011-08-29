@@ -6,6 +6,7 @@ soundManager.onready(function(){
   start_game_sound = soundManager.createSound({ 'id': 'start_game', 'url': '/sounds/start_game.mp3' });
   timer_tick_sound = soundManager.createSound({ 'id': 'timer_tick', 'url': '/sounds/bell.mp3' });
   you_lost_sound = soundManager.createSound({ 'id': 'you_lost', 'url': '/sounds/you_lost.mp3' });
+  eat_queen_sound = soundManager.createSound({ 'id': 'eat_queen', 'url': '/sounds/eat_queen.mp3' });
 });
 
 function update_rating(){
@@ -489,6 +490,9 @@ function piece_moved(from, to){
   }
 
   // It's 100% Legal
+  if (legal_move.piece2 == 'qW' || legal_move.piece2 == 'qB'){
+    eat_queen_sound.play();
+  }
   hide_top_message();
   put_piece_sound.play({ 'onfinish': function(){ } });
   cells[from[0]][from[1]] = null;
