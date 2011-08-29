@@ -1,8 +1,14 @@
-.middle{ :style => 'width: 650px;' }
-  %h2= "Top Players"
-  - @players.each do |user|
-    .player_info_line
-      %span.player_name= user.name
-      %span.player_rating= user.rating
-      %span.player_country= user.country || "N/A"
+.forms_page
+  .forms_page_left
+  .forms_page_right
+    %h2= "Top Players"
+    - @players.each do |user|
+      .player_info_line
+        %span.player_name= user.name
+        %span.player_rating= user.rating
+        %span.country
+          - if user.country
+            %img.country_flag{ :src => "/images/circle_flags/flag_#{user.country.downcase.gsub(" ", "_")}.png" }
+          %span.player_country= user.country || "N/A"
+        .clearer
 

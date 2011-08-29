@@ -17,6 +17,8 @@ function update_rating(){
   }
 }
 
+timer_id = 0;
+
 $(function(){
   socket = io.connect('http://127.0.0.1:8080');
   show_connecting();
@@ -32,7 +34,6 @@ $(function(){
   });
 
   $('#timer_div').hide();
-  timer_id = 0;
 
   $('#board_right').css('height', $('#board_left').css('height'));
 
@@ -63,7 +64,7 @@ function msg_received(msg){
     eaten_pieces = msg.eaten_pieces;
     load_game();
 
-    if (player_seat == current_turn && !winner){
+    if (player_seat == current_turn && !winner && started()){
       t = msg.last_move;
       $('#timer_div').show();
       tick_timer();
@@ -121,6 +122,7 @@ function tick_timer(){
     you_lost_sound.play();
     return;
   }
+  console.log("I'm Ticking " + t);
   timer_id = setTimeout(tick_timer, 1000);
   if (t < 20 && t > 0 && typeof(timer_tick_sound) == 'object'){ timer_tick_sound.play(); $('#seconds').fadeOut(350).fadeIn(200); }
   $('#timer_div #minutes').html(parseInt(t / 60));
@@ -165,7 +167,7 @@ function game_started(now){
   // Event Handler
   // now means Just Started
   if (now){
-    reset_timer();
+    if (current_turn == player_seat) reset_timer();
     show_top_message('Game just started', 6000);
     start_game_sound.play();
   }

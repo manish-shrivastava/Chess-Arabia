@@ -172,3 +172,31 @@ filter: dropshadow(color=#ffffff, offx=5, offy=5);
   color: black;
   font-weight: bold;
 }
+
+.player_info_line .player_rating{
+  text-align: center;
+  width: 55px;
+  margin-left: 10px;
+  margin-right: 20px;
+  color: white;
+  background-color: red;
+  border-radius: 2px;
+  float: left;
+  font-weight: bold;
+}
+
+.player_info_line .country{
+  width: 120px;
+  margin-left: 8px;
+  float: left;
+}
+
+.player_info_line .country .player_country{
+  float: left;
+}
+
+.player_info_line .country_flag{
+  height: 22px;
+  float: left;
+  margin-right: 10px
+}
