@@ -21,6 +21,7 @@ en:
   country: "Country"  
   or_login_using_gmail: "Or Login using your GMail Account"  
   remember_me: "Remember Me"  
+  name: "Name"
   chat: "Chat"
   sit_here: "Sit Here"
   waiting_for_player: "Waiting for a player"

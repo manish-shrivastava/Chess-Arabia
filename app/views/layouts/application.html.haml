@@ -36,7 +36,7 @@
 
         $(function(){
           if (flash_notice){
-            show_top_message(flash_notice, 8000);
+            show_top_message(flash_notice, 4000);
           }
         });
 
@@ -59,7 +59,7 @@
               %a{ :href => new_user_session_path }= t(:sign_in)
               %a{ :href => new_user_registration_path }= t(:sign_up)
             - else
-              %a.user_link{ :href => edit_player_path(current_user) }= current_user.name
+              %a.user_link{ :href => player_path(current_user) }= current_user.name
               %a.rating#rating{ :href => "#" }= current_user.rating
               %a{ :href => destroy_user_session_path }= t(:sign_out)
       #wrapper_body

@@ -1,0 +1,23 @@
+.forms_page
+  .forms_page_left
+    %h2= "Profile Information"
+    - if current_user == @user
+      %p= "This is your profile, #{link_to 'Edit', edit_player_path(current_user)} it".html_safe
+    - else
+      %p= "Here you can find all the information about <b>#{@user.name}</b>".html_safe
+
+  .forms_page_right
+    %h2= t(:your_information)
+
+    = form_for current_user, :url => player_path(current_user) do |f|
+      %ul.full_column_form
+        %li.element
+          = f.label t(:name)
+          %span= current_user.name
+        %li.element
+          = f.label t(:email_address)
+          %span= current_user.email
+        %li.element
+          = f.label t(:country)
+          %span= current_user.country || "N/A"
+        .clearer

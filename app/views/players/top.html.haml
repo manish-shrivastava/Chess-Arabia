@@ -1,2 +1,8 @@
-.about
-  Player Rankings coming soon
+.middle{ :style => 'width: 650px;' }
+  %h2= "Top Players"
+  - @players.each do |user|
+    .player_info_line
+      %span.player_name= user.name
+      %span.player_rating= user.rating
+      %span.player_country= user.country || "N/A"
+
