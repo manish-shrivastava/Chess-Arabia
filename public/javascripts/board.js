@@ -4,6 +4,8 @@ soundManager.onready(function(){
   put_piece_sound = soundManager.createSound({ 'id': 'put_piece', 'url': '/sounds/put_piece.mp3' });
   moving_piece_sound = soundManager.createSound({ 'id': 'moving_piece', 'url': '/sounds/moving_piece.mp3' });
   start_game_sound = soundManager.createSound({ 'id': 'start_game', 'url': '/sounds/start_game.mp3' });
+  timer_tick_sound = soundManager.createSound({ 'id': 'timer_tick', 'url': '/sounds/bell.mp3' });
+  you_lost_sound = soundManager.createSound({ 'id': 'you_lost', 'url': '/sounds/you_lost.mp3' });
 });
 
 function update_rating(){
@@ -113,13 +115,15 @@ function reset_timer(){
 
 function tick_timer(){
   t = t - 1;
-  if (t < 0){
+  if (t == 0){
     $('#timer_div').hide();
+    you_lost_sound.play();
     return;
   }
+  timer_id = setTimeout(tick_timer, 1000);
+  if (t < 20 && t > 0 && typeof(timer_tick_sound) == 'object'){ timer_tick_sound.play(); $('#seconds').fadeOut(350).fadeIn(200); }
   $('#timer_div #minutes').html(parseInt(t / 60));
   $('#timer_div #seconds').html(t % 60);
-  timer_id = setTimeout(tick_timer, 1000);
 }
 
 function load_game(){
