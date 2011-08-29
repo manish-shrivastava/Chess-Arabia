@@ -87,6 +87,12 @@ body{
   margin: 2px 8px 0 0;
 }
 
+#logo:hover p{
+  color: yellow;
+text-shadow: 0px 0px 19px #ffffff;
+filter: dropshadow(color=#ffffff, offx=5, offy=5); 
+}
+
 #top-links a{
   font: inherit;
   font-size: 13px;

@@ -3,14 +3,14 @@
 
 
 #homepage_top{
-  margin: 0 20px;
   height: 296px;
+  background: url('/images/homepage_bg.png');
 }
 
 #homepage_bottom{
   min-height: 200px;
-  background-color: #E2E2E2;
-  border-top: 1px dotted #555;
+  background-color: #AAA;
+  border-top: 2px black solid;
 }
 
 #homepage-image{
@@ -25,12 +25,11 @@
 
 #homepage-text{
   margin-left: 58%;
-  background-color: #FEFEFE;
   width: 390px;
 }
 
 #homepage-text .title{
-  font-size: 16px;
+  font-size: 18px;
   padding-top: 18px;
   margin-bottom: 9px;
   color: #111111;

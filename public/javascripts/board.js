@@ -68,13 +68,14 @@ function msg_received(msg){
   }
   else if (msg.make_move){
     game_state = msg.game_state;
-    if (game_state.winner){ game_finished(game_state.winner, true); }
+    winner = game_state.winner;
     make_move(msg.make_move, function(){
       current_turn = game_state.turn;
       next_moves = game_state.next_moves;
-      if (current_turn == player_seat && ! winner){
+      if (current_turn == player_seat && ! game_state.winner){
         reset_timer();
       }
+      if (game_state.winner){ game_finished(winner, true); }
     });
   }
   else if (msg.chat_line){
@@ -186,7 +187,7 @@ function game_finished(w, now){
   show_top_message(msg);
   if (now){
     // Nothing
-    show_message(msg, 'Game Finished');
+    setTimeout(function(){ show_message(msg, 'Game Finished'); }, 1000);
     update_rating();
   }
 }
@@ -202,7 +203,7 @@ function show_replace_black(){
 function hide_replace_white(){
   $('#replace_white').slideUp();
 }
-     
+
 function hide_replace_black(){
   $('#replace_black').slideUp();
 }
@@ -345,7 +346,7 @@ function make_move(move, callback){
   to = move['to'];
   piece1 = move['piece1'];
   piece2 = move['piece2'];
-  if (move['id'] <= last_rendered_move){ return; }  
+  if (move['id'] <= last_rendered_move){ callback(); return; }
   last_rendered_move = move['id'];
   $('#moves_list').append('<div class=\'move_list_element\'>' + move['standard'] + '</div>');
   $("#moves_list")[0].scrollTop = $("#moves_list")[0].scrollHeight;
