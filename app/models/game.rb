@@ -17,7 +17,7 @@ class Game
   # - game_created
   # - game_finished
 
-  Attributes = [:id, :cells, :turn, :players, :moves, :two_steps, :replace_move, :winner, :eaten_pieces, :created_at, :last_move_at, :started_at]
+  Attributes = [:id, :cells, :turn, :players, :moves, :two_steps, :replace_move, :winner, :eaten_pieces, :created_at, :last_move_at, :started_at, :draw_data]
   Attributes += [:state_count]
   Attributes.each do |attrib|
     attr_accessor attrib
@@ -66,33 +66,33 @@ class Game
   def started?
     ! players['W'].nil? && ! players['B'].nil?
   end
-  
+
   def empty?
     players['W'].nil? && players['B'].nil?
   end
-  
+
   def in_game?(player_code)
     return [@players['W'], @players['B']].include?(player_code)
   end
-  
+
   def finished?
     @winner
   end
-  
+
   def players_count
     s = 0
     s += 1 if players['W']
     s += 1 if players['B']
     return s
   end
-  
+
   def self.clear_db
     # Reset Redis Storage, Shouldn't be run on the Production Environment
     REDIS.del 'games'
     REDIS.set 'last_game_id', 0
     (0..100).each{|n| REDIS.del "game_#{n}"; REDIS.lrem 'games', 1, n}
   end
-  
+
   def self.find(id)
     g = Game.new
     redis_data = REDIS.get("game_#{id}")
@@ -101,7 +101,7 @@ class Game
     unless redis_attributes
       g = Game.create
       g.save
-      return g      
+      return g
     end
     #raise Attributes.map(&:to_s).inspect
     Attributes.each do |attribute, value|
@@ -110,24 +110,24 @@ class Game
     g.next_moves = redis_attributes['next_moves'] if redis_attributes['next_moves']
     return g
   end
-  
+
   def self.all
     ids = (REDIS.lrange 'games', 0, (REDIS.LLEN 'games')) rescue []
     ids.map{|id| Game.find id}
   end
-  
+
   def self.all_finished
     ids = (REDIS.lrange 'finished_games', 0, (REDIS.LLEN 'finished_games')) rescue []
-    ids.map{|id| Game.find id} 
+    ids.map{|id| Game.find id}
   end
- 
+
   def save
     hash = {}
     hash['next_moves'] = self.next_moves()
-    Attributes.each{|b| hash[b] = self.send(b) }    
+    Attributes.each{|b| hash[b] = self.send(b) }
     REDIS.set "game_#{@id}", hash.to_json
   end
-  
+
   def self.all_places
     return @all_places if @all_places
     @all_places = []
@@ -138,11 +138,11 @@ class Game
     end
     @all_places
   end
-  
+
   def log(text)
     #@log.info(Time.now.to_s + " : " + text)
   end
-  
+
   def places
     r = {}
     @cells.each_with_index do |row, ind1|
@@ -153,35 +153,35 @@ class Game
     end
     return r
   end
-  
+
   def white_king?
     king_place = places['kW'].first
-    BlackPieces.each do |piece1|      
+    BlackPieces.each do |piece1|
       (places[piece1] || []).each{|from| return true if can_move?({'from' => from, 'to' => king_place, 'piece1' => piece1, 'piece2' => 'kW'}, true)}
     end
     return false
   end
-  
+
   def black_king?
     king_place = places['kB'].first
     WhitePieces.each do |piece1|
       (places[piece1] || []).each{|from| return true if can_move?({'from' => from, 'to' => king_place, 'piece1' => piece1, 'piece2' => 'kB'}, true)}
     end
-    return false  
+    return false
   end
 
   def white_cover?(to)
-    WhitePieces.each do |piece1|      
+    WhitePieces.each do |piece1|
       (places[piece1] || []).each{|from| return true if can_move?({'from' => from, 'to' => to, 'piece1' => piece1, 'piece2' => @cells[to[0]][to[1]]}, true) }
     end
-    return false  
+    return false
   end
 
   def black_cover?(to)
     BlackPieces.each do |piece1|
       (places[piece1] || []).each{|from| return true if can_move?({'from' => from, 'to' => to, 'piece1' => piece1, 'piece2' => @cells[to[0]][to[1]]}, true)}
     end
-    return false  
+    return false
   end
 
   def in_range?(move)
@@ -190,7 +190,7 @@ class Game
     return true if to[1] - from[1] == 0
     return true if ((to[1] * 1.0 - from[1])/(to[0] - from[0])).abs == 1.0
   end
-  
+
   def clear_range?(move)
     from, to, piece1, piece2 = ['from', 'to', 'piece1', 'piece2'].map{|k| move[k] }
     temp = from.clone
@@ -220,7 +220,7 @@ class Game
       return 6 # Castling Black King to Right
     end
   end
- 
+
   def replace(new_piece)
     if @turn == 'replaceW'
       return unless Game::WhitePieces.include?(new_piece)
@@ -266,13 +266,13 @@ class Game
     @cells[from[0]][from[1]] = nil
     @cells[to[0]][to[1]] = piece1
     @turn = @turn == "W" ? "B" : "W"
-    
+
     if special_move == 1
       @cells[to[0] - 1][to[1]] = 'pW'
       @cells[to[0]][to[1]] = nil
     elsif special_move == 2
       @cells[to[0] + 1][to[1]] = 'pB'
-      @cells[to[0]][to[1]] = nil      
+      @cells[to[0]][to[1]] = nil
     elsif special_move == 3
       @cells[7][7] = nil
       @cells[7][5] = 'rW'
@@ -493,7 +493,7 @@ class Game
       end
     end
     @next_moves = moves
-    return moves    
+    return moves
   end
 
   def from_standard(standard_move)
@@ -507,12 +507,12 @@ class Game
     end
     char = arr.shift
     num = arr.shift
-    loc0 = [(1..8).to_a.reverse.map(&:to_s).index(num), ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'].index(char)]  
-    piece = @cells[loc0[0]][loc0[1]] unless piece    
+    loc0 = [(1..8).to_a.reverse.map(&:to_s).index(num), ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'].index(char)]
+    piece = @cells[loc0[0]][loc0[1]] unless piece
     char = arr.shift
     num = arr.shift
-    loc1 = [(1..8).to_a.reverse.map(&:to_s).index(num), ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'].index(char)]    
-    piece2 = @cells[loc1[0]][loc1[1]]    
+    loc1 = [(1..8).to_a.reverse.map(&:to_s).index(num), ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'].index(char)]
+    piece2 = @cells[loc1[0]][loc1[1]]
     move = { 'from' => loc0, 'to' => loc1, 'piece1' => piece, 'piece2' => piece2 }
     # Checking if Special 1
     if (piece2 == nil && (loc1[0] - loc0[0]) == -1 && (loc1[1] - loc0[1]).abs == 1 && @cells[loc1[0] + 1][loc1[1]] == 'pB' ) && (@two_steps == [loc1[0] + 1, loc1[1]])
@@ -524,7 +524,7 @@ class Game
       # Translating to TO field, to the place of the White Pawn
       move['to'][0] -= 1
       move['piece2'] = 'pW'
-    end    
+    end
     # White Replace
     if piece == 'pW' && loc1[0] == 0
       move['replace_piece'] = {'n' => 'n', 'q' => 'q', 'b' => 'b', 'r' => 'r'}[arr.last] + "W"
@@ -534,7 +534,7 @@ class Game
     end
     return move
   end
-  
+
   def to_standard(m)
     move = m.clone
     return "O-O" if [3, 5].include?(move['special_move'])
@@ -548,7 +548,7 @@ class Game
     elsif move['special_move'] == 2
       move['to'] = [move['to'][0] + 1, move['to'][1]]
     end
-    
+
     r += Game.standard_location(move['from']) if (move['piece2'] && piece_type == 'p') || piece_type != 'p'
     r.chop! if move['piece2'] && piece_type == 'p'
     r += "x" if move['piece2']# and piece_type != 'p'
