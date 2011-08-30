@@ -17,7 +17,7 @@ class Game
   # - game_created
   # - game_finished
 
-  Attributes = [:id, :cells, :turn, :players, :moves, :two_steps, :replace_move, :winner, :eaten_pieces, :created_at, :last_move_at, :started_at, :draw_data]
+  Attributes = [:id, :cells, :turn, :players, :moves, :two_steps, :replace_move, :winner, :eaten_pieces, :created_at, :last_move_at, :started_at, :no_pawn_or_capture_moves]
   Attributes += [:state_count]
   Attributes.each do |attrib|
     attr_accessor attrib
@@ -58,18 +58,11 @@ class Game
     g.started_at = nil
     g.eaten_pieces = []
     g.created_at = Time.now.getutc
-    g.draw_data = { 'no_pawn_or_capture_moves' => 0, 'w_positions' => {}, 'b_positions' => {} }
+    g.no_pawn_or_capture_moves = 0
     g.save # Save the game to Redis
     REDIS.publish('game_created', g.json_hash.to_json)
+    REDIS.del("GAME_#{g.id}_REPETITIONS")
     return g
-  end
-
-  def update_3_repetitions
-    key = @turn.downcase + "_positions"
-    board_status = Digest::SHA1.hexdigest(@cells.to_json)
-    current_count = (@draw_data[key][board_status] || 0).to_i + 1
-    @draw_data[key][board_status] = current_count
-    return current_count
   end
 
   def started?
@@ -342,7 +335,16 @@ class Game
   end
 
   def move_finished
-    repetitions_count = update_3_repetitions()
+    # No Pawn or Capture moves counter update
+    last_move = @moves.last
+    if ["pW", "pB"].include?(last_move['piece1']) || last_move['piece2']
+      @no_pawn_or_capture_moves = 0
+    else
+      @no_pawn_or_capture_moves += 1
+    end
+
+    # 3 Repetitions Draw Rule
+    repetitions_count = REDIS.hincrby("GAME_#{@id}_REPETITIONS", "#{@turn}_#{Digest::SHA1.hexdigest(@cells.to_json)}", 1)
     if next_moves().length == 0
       #raise next_moves.inspect
       # Game Finished
@@ -350,6 +352,8 @@ class Game
       REDIS.lrem 'games', 1, @id
       REDIS.lpush 'finished_games', @id
     elsif repetitions_count == 3
+      @winner = 'TIE'
+    elsif @no_pawn_or_capture_moves == 50
       @winner = 'TIE'
     end
     @last_move_at = Time.now.getutc
