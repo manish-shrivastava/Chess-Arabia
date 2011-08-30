@@ -16,8 +16,8 @@ REDIS2.subscribe('game_finished') do |on|
         expected_w = 1.0 / (1 + 10 ** ((player_b_rating - player_w_rating) / 400))
         expected_b = 1.0 / (1 + 10 ** ((player_w_rating - player_b_rating) / 400))
 
-        w_result = ['W', 'resignB'].include?(g.winner) ? 1 : (g.winner == 'TIE' ? 0.5 : 0)
-        b_result = ['B', 'resignW'].include?(g.winner) ? 1 : (g.winner == 'TIE' ? 0.5 : 0)
+        w_result = ['W', 'ResignB'].include?(g.winner) ? 1 : (g.winner == 'TIE' ? 0.5 : 0)
+        b_result = ['B', 'ResignW'].include?(g.winner) ? 1 : (g.winner == 'TIE' ? 0.5 : 0)
 
         unless player_w_guest
           new_w_rating = player_w_rating + (player_w_rating > 2200 ? 16 : 32) * (w_result - expected_w)

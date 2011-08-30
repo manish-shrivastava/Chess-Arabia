@@ -353,8 +353,12 @@ class Game
       REDIS.lpush 'finished_games', @id
     elsif repetitions_count == 3
       @winner = 'TIE'
+      REDIS.lrem 'games', 1, @id
+      REDIS.lpush 'finished_games', @id
     elsif @no_pawn_or_capture_moves == 50
       @winner = 'TIE'
+      REDIS.lrem 'games', 1, @id
+      REDIS.lpush 'finished_games', @id
     end
     @last_move_at = Time.now.getutc
   end
