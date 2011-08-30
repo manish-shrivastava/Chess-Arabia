@@ -153,8 +153,6 @@
 }
 
 .right_box .right_box_body{
-  padding-bottom: 5px;
-  padding-left: 5px;
 }
 
 #board_right .right_box .title{
@@ -163,7 +161,7 @@
   background-color: #56512F;
   padding: 2px;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 #board_right .right_box .title:hover{
@@ -199,11 +197,11 @@
 }
 
 .move_list_element{
-  width: 43%;
-  padding: 3px;
-  margin: 2px;
+  width: 49%;
+  padding: 1px;
+  margin: 0px;
   float: left;
-  border: 1px solid #444;
+  border-bottom: 1px solid #444;
   text-align: center;
   font-size: 14px;
 }
