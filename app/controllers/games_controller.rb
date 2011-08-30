@@ -76,10 +76,7 @@ class GamesController < ApplicationController
       replace_move = @game.replace(params[:piece])
       render :update do |page|
         page << "hide_replace_white()"
-        #page << "current_turn = #{@game.turn.to_json}"
         page << "moves = #{@game.moves.length}"
-        page << "started = #{@game.started?.to_json}"
-        page << "winner = #{@game.finished?.to_json}"
         page << "make_replace_move(#{@game.moves.last.to_json})"
         page << "$('#moves_list').append('<div class=\\'move_list_element\\'>' + #{replace_move['standard'].to_json} + '</div>');"
       end      
@@ -88,10 +85,7 @@ class GamesController < ApplicationController
       replace_move = @game.replace(params[:piece])
       render :update do |page|
         page << "hide_replace_black()"
-        #page << "current_turn = #{@game.turn.to_json}"
         page << "moves = #{@game.moves.length}"
-        page << "started = #{@game.started?.to_json}"
-        page << "winner = #{@game.finished?.to_json}"
         page << "make_replace_move(#{@game.moves.last.to_json})"
         page << "$('#moves_list').append('<div class=\\'move_list_element\\'>' + #{replace_move['standard'].to_json} + '</div>');"
       end

@@ -1,5 +1,9 @@
 .forms_page
   .forms_page_left
+    %h2= "How does rating work?"
+    %p
+      = "To know more about how the rating system in our website work, please click "
+      %a{ :href => "#"}= "here"
   .forms_page_right
     %h2= "Top Players"
     - @players.each do |user|
@@ -11,4 +15,3 @@
             %img.country_flag{ :src => "/images/circle_flags/flag_#{user.country.downcase.gsub(" ", "_")}.png" }
           %span.player_country= user.country || "N/A"
         .clearer
-

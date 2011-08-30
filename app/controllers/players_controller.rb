@@ -11,7 +11,7 @@ class PlayersController < ApplicationController
   def update
     current_user.update_attributes(params[:user])
     sign_in(current_user, :bypass => true)
-    redirect_to edit_player_path(current_user)
+    redirect_to player_path(current_user)
     flash[:notice] = "Profile updated successfully"
   end
 

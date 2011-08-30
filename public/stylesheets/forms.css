@@ -22,8 +22,9 @@ input:focus{
 
 .forms_page_right{
   padding: 10px;
-  margin-left: 310px;
   margin-right: 10px;
+  width: 675px;
+  float: left;
 }
 
 .forms_page h2{
@@ -33,6 +34,7 @@ input:focus{
   padding: 3px 12px;
   border-radius: 7px;
   color: #111;
+  line-height: 25px;
 }
 
 form {

@@ -170,10 +170,12 @@ body{
   border: 1px solid #AEAEAE;
   background-color: #DCDCDC;
   color: #444;
-  padding: 5px 12px;
+  padding: 4px 12px;
   border-radius: 8px;
   margin-bottom: 8px;
   margin-top: 7px;
+  font-size: 14px;
+  clear: both;
 }
 
 .player_info_line .player_name{
@@ -196,7 +198,7 @@ body{
 }
 
 .player_info_line .country{
-  width: 120px;
+  width: 188px;
   margin-left: 8px;
   float: left;
 }

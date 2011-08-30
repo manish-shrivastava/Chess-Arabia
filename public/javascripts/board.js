@@ -122,7 +122,7 @@ function tick_timer(){
     you_lost_sound.play();
     return;
   }
-  console.log("I'm Ticking " + t);
+  //console.log("I'm Ticking " + t);
   timer_id = setTimeout(tick_timer, 1000);
   if (t < 20 && t > 0 && typeof(timer_tick_sound) == 'object'){ timer_tick_sound.play(); $('#seconds').fadeOut(350).fadeIn(200); }
   $('#timer_div #minutes').html(parseInt(t / 60));
@@ -319,14 +319,14 @@ function position_of_piece(piece){
   //return null;
 }
 
-function send_move(from, to){
+function send_move(from, to, to_replace){
   if (your_turn()){
     $.ajax({
       url: "/games/" + game_id + "/move",
       data: "from=" + from[0].toString() + from[1].toString() + "&to=" + to[0].toString() + to[1].toString(),
       dataType: 'script',
       type: "POST",
-      success: function(){ stop_timer(); }
+      success: function(){ if (!to_replace){ stop_timer(); } }
     });
   }
   current_turn = '';
@@ -515,7 +515,7 @@ function piece_moved(from, to){
   show_last_moved(to);
 
   if (! ( (to[0] == 0 && piece == 'pW') || (to[0] == 7 && piece == 'pB') )){
-    send_move(from, to);
+    send_move(from, to, false);
     $('#moves_list').append('<div class=\'move_list_element\'>' + legal_move['standard'] + '</div>');
     $("#moves_list")[0].scrollTop = $("#moves_list")[0].scrollHeight;
     current_turn = current_turn == 'W' ? 'B' : 'W';
@@ -524,9 +524,8 @@ function piece_moved(from, to){
     if (special_move){
       make_special_move({'from': from, 'to': to, 'special_move': special_move});
     }
-    
   } else {
-    send_move(from, to);
+    send_move(from, to, true);
   }
   return true;
 }
