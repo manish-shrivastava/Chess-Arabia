@@ -27,6 +27,17 @@ input:focus{
   float: left;
 }
 
+.forms_page h1{
+  font-size: 20px;
+  background-color: black;
+  font-weight: 300;
+  padding: 3px 12px;
+  border-radius: 12px;
+  color: white;
+  line-height: 30px;
+  margin-bottom: 5px;
+}
+
 .forms_page h2{
   font-size: 16px;
   background-color: #F8E122;
