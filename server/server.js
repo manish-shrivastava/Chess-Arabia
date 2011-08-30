@@ -4,7 +4,7 @@ var underscore = require('./underscore.js');
 
 io.configure(function () {
   io.set('transports', ['websocket', 'flashsocket', 'xhr-polling']);
-  io.set('log level', 3);
+  io.set('log level', w);
 
 });
 

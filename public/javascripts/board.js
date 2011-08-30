@@ -10,11 +10,13 @@ soundManager.onready(function(){
 });
 
 function update_rating(){
-  if (! rated_game()) return;
-  $('#rating').load('/players/my_rating');
-  for (i = 0; i < 5; i++){
-    $('#rating').fadeOut(250 * i).fadeIn(210 * i);
-  }
+  setTimeout(function(){
+    if (! rated_game()) return;
+    $('#rating').load('/players/my_rating');
+    for (i = 0; i < 5; i++){
+      $('#rating').fadeOut(250 * i).fadeIn(210 * i);
+    }
+  }, 1500);
 }
 
 timer_id = 0;
