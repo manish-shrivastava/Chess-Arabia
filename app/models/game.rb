@@ -58,9 +58,18 @@ class Game
     g.started_at = nil
     g.eaten_pieces = []
     g.created_at = Time.now.getutc
+    g.draw_data = { 'no_pawn_or_capture_moves' => 0, 'w_positions' => {}, 'b_positions' => {} }
     g.save # Save the game to Redis
     REDIS.publish('game_created', g.json_hash.to_json)
     return g
+  end
+
+  def update_3_repetitions
+    key = @turn.downcase + "_positions"
+    board_status = Digest::SHA1.hexdigest(@cells.to_json)
+    current_count = (@draw_data[key][board_status] || 0).to_i + 1
+    @draw_data[key][board_status] = current_count
+    return current_count
   end
 
   def started?
@@ -333,12 +342,15 @@ class Game
   end
 
   def move_finished
+    repetitions_count = update_3_repetitions()
     if next_moves().length == 0
       #raise next_moves.inspect
       # Game Finished
       @winner = white_king? ? 'B' : (black_king? ? 'W' : 'TIE')
       REDIS.lrem 'games', 1, @id
       REDIS.lpush 'finished_games', @id
+    elsif repetitions_count == 3
+      @winner = 'TIE'
     end
     @last_move_at = Time.now.getutc
   end
@@ -364,7 +376,7 @@ class Game
   end
 
   def get_computer_next_move
-    game_state_string = [@cells, @moves].inspect
+    game_state_string = [@cells, @moves].to_json
     game_state_string_digest = Digest::SHA1.hexdigest(game_state_string)
     computer_cached_move_key = 'computer_cached_move_' + game_state_string_digest
     computer_cached_move = REDIS.get(computer_cached_move_key)
