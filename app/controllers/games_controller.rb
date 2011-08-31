@@ -57,16 +57,8 @@ class GamesController < ApplicationController
              'piece1' => @game.cells[from[0]][from[1]],
              'piece2' => @game.cells[to[0]][to[1]]
             }
-    if @game.can_move?(move) && @game.commit_move(move)
-      @game.log("User Played #{move.inspect}")
-      render :update do |page|
-        #page << "current_turn = #{@game.turn.to_json}"
-        page << "show_replace_white()" if @game.turn == "replaceW"
-        page << "show_replace_black()" if @game.turn == "replaceB"
-        #page << "next_moves = []"
-        page << "winner = #{@game.finished?.to_json}"
-      end
-    end 
+    @game.can_move?(move) && @game.commit_move(move)
+    render :nothing => true
   end
 
   def replace
@@ -79,7 +71,7 @@ class GamesController < ApplicationController
         page << "moves = #{@game.moves.length}"
         page << "make_replace_move(#{@game.moves.last.to_json})"
         page << "$('#moves_list').append('<div class=\\'move_list_element\\'>' + #{replace_move['standard'].to_json} + '</div>');"
-      end      
+      end
     elsif @game.turn == "replaceB"
       return if @player_seat != "B"
       replace_move = @game.replace(params[:piece])
@@ -89,7 +81,8 @@ class GamesController < ApplicationController
         page << "make_replace_move(#{@game.moves.last.to_json})"
         page << "$('#moves_list').append('<div class=\\'move_list_element\\'>' + #{replace_move['standard'].to_json} + '</div>');"
       end
-    end   
+    end
+    render :nothing => true
   end
 
 end

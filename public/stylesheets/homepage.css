@@ -125,7 +125,7 @@
 
 .game_item{
   background-color: #D5BB11;
-  margin-bottom: 3px;
+  margin-bottom: 0px;
   padding: 4px;
   cursor: pointer;
 }
