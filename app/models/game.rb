@@ -423,8 +423,8 @@ class Game
     lines = response.split("\n")
     move = lines.pop
     move = lines.pop unless move.match /move\s/
-
     f.close
+    REDIS.set(computer_cached_move_key, move)
     return move
   end
 
