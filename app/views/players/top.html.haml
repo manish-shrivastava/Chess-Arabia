@@ -2,8 +2,13 @@
   .forms_page_left
     %h2= "How does rating work?"
     %p
-      = "To know more about how the rating system in our website work, please click "
+      = "To know more about how the rating system in our website works, please click "
       %a{ :href => "#"}= "here"
+    - if user_signed_in?
+      %h2= "Edit your profile"
+      %p
+        = "To edit your profile please press"
+        %a{ :href => edit_player_path(current_user) }= "Here"
   .forms_page_right
     %h2= "Top Players"
     - @players.each do |user|

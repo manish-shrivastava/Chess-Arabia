@@ -44,11 +44,14 @@ class Game
     end
     REDIS.rpush 'games', g.id
     g.cells = []
+    #g.cells << ['kB', 'nB', nil, nil, nil, nil, nil, nil]
     g.cells << ['rB', 'nB', 'bB', 'qB', 'kB', 'bB', 'nB', 'rB']
     g.cells << ['pB', 'pB', 'pB', 'pB', 'pB', 'pB', 'pB', 'pB']
+    #6.times.each{ g.cells << [nil, nil, nil, nil, nil, nil, nil, nil] }
     4.times.each{ g.cells << [nil, nil, nil, nil, nil, nil, nil, nil] }
     g.cells << ['pW', 'pW', 'pW', 'pW', 'pW', 'pW', 'pW', 'pW']
     g.cells << ['rW', 'nW', 'bW', 'qW', 'kW', 'bW', 'nW', 'rW']
+    #g.cells << ['kW', 'nW', nil, nil, nil, nil, nil, nil]
     g.turn = 'W'
     g.players = {}
     g.moves = []
@@ -351,16 +354,23 @@ class Game
       @winner = white_king? ? 'B' : (black_king? ? 'W' : 'TIE')
       REDIS.lrem 'games', 1, @id
       REDIS.lpush 'finished_games', @id
-    elsif repetitions_count == 3
-      @winner = 'TIE'
-      REDIS.lrem 'games', 1, @id
-      REDIS.lpush 'finished_games', @id
-    elsif @no_pawn_or_capture_moves == 50
+    elsif (repetitions_count == 3) || (@no_pawn_or_capture_moves == 50) || (is_tie?)
       @winner = 'TIE'
       REDIS.lrem 'games', 1, @id
       REDIS.lpush 'finished_games', @id
     end
     @last_move_at = Time.now.getutc
+  end
+
+  def is_tie?
+    live_pieces = @cells.flatten.reject(&:blank?)
+    live_pieces_set = live_pieces.to_set
+    return true if live_pieces.length == 2
+    return true if live_pieces.length == 3 && (live_pieces & ['nW', 'nB', 'bW', 'bB']).any?
+    if (live_pieces & ['pW', 'pB', 'nW', 'nB', 'rW', 'rB', 'qW', 'qB']).empty?
+      return true if (places['bW'] + places['bB']).map{|p| (p[0] + p[1]) % 2}.uniq.length < 2
+    end
+    return false
   end
 
   def after_move_finished

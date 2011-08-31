@@ -351,7 +351,7 @@ function legal(from, to){
 function make_move(move, callback){
   if (!winner) hide_top_message();
   if (move.check_mate && !winner){
-    show_top_message('Check Mate', 8000);
+    show_top_message('Check', 8000);
   }
   from = move['from'];
   to = move['to'];
