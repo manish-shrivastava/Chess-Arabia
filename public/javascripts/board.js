@@ -240,7 +240,7 @@ function show_last_moved_from(place){
   $('.cell').removeClass("last_moved_from");
   board_cells[ind].addClass('last_moved_from');
 }
-     
+
 function show_last_moved(place){
   ind = place[0].toString() + place[1].toString();
   $('.cell').removeClass("last_moved");
@@ -256,13 +256,12 @@ function eat_piece(img){
     img.animate({ opacity: 0 }).remove();
   }
 }
-      
+
 function animate_piece(from, to, callback){
   img = pieces[from[0]][from[1]];
   piece = cells[from[0]][from[1]];
   piece2 = cells[to[0]][to[1]];
   img.css('z-index', 1);
-
   if (piece2){
     img2 = pieces[to[0]][to[1]];
   } else {
