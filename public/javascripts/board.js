@@ -1,26 +1,4 @@
-soundManager.debugMode = false;
-soundManager.useHTML5Audio = false;
-soundManager.onready(function(){
-  put_piece_sound = soundManager.createSound({ 'id': 'put_piece', 'url': '/sounds/put_piece.mp3' });
-  moving_piece_sound = soundManager.createSound({ 'id': 'moving_piece', 'url': '/sounds/moving_piece.mp3' });
-  start_game_sound = soundManager.createSound({ 'id': 'start_game', 'url': '/sounds/start_game.mp3' });
-  timer_tick_sound = soundManager.createSound({ 'id': 'timer_tick', 'url': '/sounds/bell.mp3' });
-  you_lost_sound = soundManager.createSound({ 'id': 'you_lost', 'url': '/sounds/you_lost.mp3' });
-  eat_queen_sound = soundManager.createSound({ 'id': 'eat_queen', 'url': '/sounds/eat_queen.mp3' });
-});
-
-function update_rating(){
-  setTimeout(function(){
-    if (! rated_game()) return;
-    $('#rating').load('/players/my_rating');
-    for (i = 0; i < 5; i++){
-      $('#rating').fadeOut(250 * i).fadeIn(210 * i);
-    }
-  }, 1500);
-}
-
-timer_id = 0;
-
+////////////////// DOCUMENT LOAD /////////////////////////////
 $(function(){
   socket = io.connect('http://127.0.0.1:8080');
   show_connecting();
@@ -49,16 +27,52 @@ $(function(){
     right_box_body = $(event.target).parent('.right_box').find('.right_box_body');
     right_box_body.toggle('slow');
   });
-  board_cells = {};
+
+  $('.replace_piece').click(function(event){
+    var piece = $(this).attr('id').match(/replace_(\S+)/)[1];
+    replace_move.replace_piece = piece;
+    moves.push(replace_move);
+    hide_replace();
+    pieces[replace_move.to[0]][replace_move.to[1]].removeClass('p' + player_seat).addClass(piece);
+    cells[replace_move.to[0]][replace_move.to[1]] = piece;
+    turn = turn == 'replaceW' ? 'B' : 'W';
+    replace_move = null;
+    $.post('/games/' + game_id.toString() + "/replace?piece=" + piece);
+  });
 });
+////////////////// END DOCUMENT LOAD /////////////////////////////
+
+soundManager.debugMode = false;
+soundManager.useHTML5Audio = false;
+soundManager.onready(function(){
+  put_piece_sound = soundManager.createSound({ 'id': 'put_piece', 'url': '/sounds/put_piece.mp3' });
+  moving_piece_sound = soundManager.createSound({ 'id': 'moving_piece', 'url': '/sounds/moving_piece.mp3' });
+  start_game_sound = soundManager.createSound({ 'id': 'start_game', 'url': '/sounds/start_game.mp3' });
+  timer_tick_sound = soundManager.createSound({ 'id': 'timer_tick', 'url': '/sounds/bell.mp3' });
+  you_lost_sound = soundManager.createSound({ 'id': 'you_lost', 'url': '/sounds/you_lost.mp3' });
+  eat_queen_sound = soundManager.createSound({ 'id': 'eat_queen', 'url': '/sounds/eat_queen.mp3' });
+});
+
+function update_rating(){
+  setTimeout(function(){
+    if (! rated_game()) return;
+    $('#rating').load('/players/my_rating');
+    for (i = 0; i < 5; i++){
+      $('#rating').fadeOut(250 * i).fadeIn(210 * i);
+    }
+  }, 1500);
+}
+
+timer_id = 0;
+
 
 function msg_received(msg){
   if (msg.load_game){
     // Set Game Information Here
-    current_turn = msg.turn;
+    turn = msg.turn;
     cells = msg.cells;
     players = msg.players;
-
+    replace_move = msg.replace_move;
     next_moves = msg.next_moves;
     last_rendered_move = msg.last_rendered_move;
     moves = msg.moves;
@@ -66,7 +80,7 @@ function msg_received(msg){
     eaten_pieces = msg.eaten_pieces;
     load_game();
 
-    if (player_seat == current_turn && !winner && started()){
+    if (player_seat == turn && !winner && started()){
       t = msg.last_move;
       $('#timer_div').show();
       tick_timer();
@@ -77,9 +91,9 @@ function msg_received(msg){
     game_state = msg.game_state;
     winner = game_state.winner;
     make_move(msg.make_move, function(){
-      current_turn = game_state.turn;
+      turn = game_state.turn;
       next_moves = game_state.next_moves;
-      if (current_turn == player_seat && ! game_state.winner){
+      if (my_turn() && !winner){
         reset_timer();
       }
       if (game_state.winner){ game_finished(winner, true); }
@@ -142,8 +156,8 @@ function load_game(){
     show_last_moved( last_move.to );
   }
 
-  if (current_turn == 'replaceW' && player_seat == 'W'){ show_replace_white(); }
-  if (current_turn == 'replaceB' && player_seat == 'B'){ show_replace_black(); }
+  if (turn == 'replaceW' && player_seat == 'W'){ show_replace(); }
+  if (turn == 'replaceB' && player_seat == 'B'){ show_replace(); }
   if (started()){ game_started(false); }
   if (finished()){ game_finished(winner, false); }
   _.each(eaten_pieces, function(p){
@@ -169,7 +183,7 @@ function game_started(now){
   // Event Handler
   // now means Just Started
   if (now){
-    if (current_turn == player_seat) reset_timer();
+    if (my_turn()) reset_timer();
     show_top_message('Game just started', 6000);
     start_game_sound.play();
   }
@@ -197,26 +211,17 @@ function game_finished(w, now){
   if (w == 'TIE') msg = 'It\' Tie';
   show_top_message(msg);
   if (now){
-    // Nothing
     setTimeout(function(){ show_message(msg, 'Game Finished'); }, 1000);
     update_rating();
   }
 }
 
-function show_replace_white(){
-  $('#replace_white').slideDown();
+function show_replace(){
+  $('#replace').slideDown();
 }
 
-function show_replace_black(){
-  $('#replace_black').slideDown();
-}
-
-function hide_replace_white(){
-  $('#replace_white').slideUp();
-}
-
-function hide_replace_black(){
-  $('#replace_black').slideUp();
+function hide_replace(){
+  $('#replace').slideUp();
 }
 
 function show_connecting(){
@@ -238,17 +243,17 @@ function black(){
 function show_last_moved_from(place){
   ind = place[0].toString() + place[1].toString();
   $('.cell').removeClass("last_moved_from");
-  board_cells[ind].addClass('last_moved_from');
+  $('#cell_' + ind).addClass('last_moved_from');
 }
 
 function show_last_moved(place){
   ind = place[0].toString() + place[1].toString();
   $('.cell').removeClass("last_moved");
-  board_cells[ind].addClass('last_moved');
+  $('#cell_' + ind).addClass('last_moved');
 }
 
-function your_turn(){
-  return (player_seat == current_turn);
+function my_turn(){
+  return (player_seat == turn);
 }
 
 function eat_piece(img){
@@ -321,7 +326,7 @@ function position_of_piece(piece){
 }
 
 function send_move(from, to, to_replace){
-  if (your_turn()){
+  if (my_turn()){
     $.ajax({
       url: "/games/" + game_id + "/move",
       data: "from=" + from[0].toString() + from[1].toString() + "&to=" + to[0].toString() + to[1].toString(),
@@ -330,7 +335,6 @@ function send_move(from, to, to_replace){
       success: function(){ if (!to_replace){ stop_timer(); } }
     });
   }
-  current_turn = '';
 }
 
 function rated_game(){
@@ -356,8 +360,8 @@ function make_move(move, callback){
   to = move['to'];
   piece1 = move['piece1'];
   piece2 = move['piece2'];
-  if (move['id'] <= last_rendered_move){ callback(); return; }
-  last_rendered_move = move['id'];
+  if (move['id'] < moves.length){ callback(); return; }
+  moves.push(move);
   $('#moves_list').append('<div class=\'move_list_element\'>' + move['standard'] + '</div>');
   $("#moves_list")[0].scrollTop = $("#moves_list")[0].scrollHeight;
   special_move = move['special_move'];
@@ -488,19 +492,16 @@ function piece_moved(from, to){
   legal_move = legal(from, to);
   piece = cells[from[0]][from[1]];
   piece2 = cells[to[0]][to[1]];
-  if ( !your_turn() || !started() || finished() || !legal_move ){
+  if ( !my_turn() || !started() || finished() || !legal_move ){
     return false;
   }
 
   // It's 100% Legal
-  if (legal_move.piece2 == 'qW' || legal_move.piece2 == 'qB'){
-    eat_queen_sound.play();
-  }
+  if (legal_move.piece2 == 'qW' || legal_move.piece2 == 'qB') eat_queen_sound.play();
   hide_top_message();
   put_piece_sound.play({ 'onfinish': function(){ } });
   cells[from[0]][from[1]] = null;
   cells[to[0]][to[1]] = piece;
-  last_rendered_move = legal_move.id;
 
   // Removing Piece2
   piece2_image = pieces[to[0]][to[1]];
@@ -515,18 +516,22 @@ function piece_moved(from, to){
   show_last_moved_from(from);
   show_last_moved(to);
 
-  if (! ( (to[0] == 0 && piece == 'pW') || (to[0] == 7 && piece == 'pB') )){
+  if (!((to[0] == 0 && piece == 'pW') || (to[0] == 7 && piece == 'pB') )){
     send_move(from, to, false);
     $('#moves_list').append('<div class=\'move_list_element\'>' + legal_move['standard'] + '</div>');
     $("#moves_list")[0].scrollTop = $("#moves_list")[0].scrollHeight;
-    current_turn = current_turn == 'W' ? 'B' : 'W';
+    turn = turn == 'W' ? 'B' : 'W';
+    moves.push(legal_move);
     // Special Moves
     special_move = legal_move['special_move'];
     if (special_move){
       make_special_move({'from': from, 'to': to, 'special_move': special_move});
     }
   } else {
+    replace_move = legal_move;
     send_move(from, to, true);
+    turn = "replace" + turn;
+    show_replace();
   }
   return true;
 }
@@ -544,12 +549,11 @@ function add_eaten_piece(piece){
 function render_cells(){
   for (var row = 0; row < 8; row++){
     for (var col = 0; col < 8; col++){
-      var cell_div = $('<div>', { 'class': 'cell' });
+      var cell_div = $('<div>', { 'class': 'cell', 'id': 'cell_' + row.toString() + col.toString() });
       cl = (row + col) % 2 == 0 ? 'white_cell' : 'black_cell';
       cell_div.addClass(cl);
       $('#board').append(cell_div);
       var loc = location_of_piece([row, col]);
-      board_cells[row.toString() + col.toString()] = cell_div;
       cell_div.css('top', loc[0]);
       cell_div.css('left', loc[1]);
       cell_div.css('position', 'absolute');

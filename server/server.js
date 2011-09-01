@@ -117,7 +117,7 @@ io.sockets.on('connection', function (client) {
     redis_client.get(game_key, function(err, data){
       //console.log("GAME DATA" + data);
       var game = JSON.parse(data);
-      return_hash = {load_game: game_id, turn: game.turn, players: game.players, cells: game.cells};
+      return_hash = {load_game: game_id, turn: game.turn, players: game.players, cells: game.cells, replace_move: game.replace_move};
       return_hash.next_moves = game.next_moves;
       return_hash.last_rendered_move = game.moves.length - 1;
       return_hash.moves = game.moves;

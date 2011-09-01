@@ -63,25 +63,8 @@ class GamesController < ApplicationController
 
   def replace
     piece = params[:piece]
-    if @game.turn == "replaceW"
-      return if @player_seat != "W"
-      replace_move = @game.replace(params[:piece])
-      render :update do |page|
-        page << "hide_replace_white()"
-        page << "moves = #{@game.moves.length}"
-        page << "make_replace_move(#{@game.moves.last.to_json})"
-        page << "$('#moves_list').append('<div class=\\'move_list_element\\'>' + #{replace_move['standard'].to_json} + '</div>');"
-      end
-    elsif @game.turn == "replaceB"
-      return if @player_seat != "B"
-      replace_move = @game.replace(params[:piece])
-      render :update do |page|
-        page << "hide_replace_black()"
-        page << "moves = #{@game.moves.length}"
-        page << "make_replace_move(#{@game.moves.last.to_json})"
-        page << "$('#moves_list').append('<div class=\\'move_list_element\\'>' + #{replace_move['standard'].to_json} + '</div>');"
-      end
-    end
+    return unless @game.turn.match(/replace/) && @game.turn[-1..-1] == @player_seat
+    replace_move = @game.replace(params[:piece])
     render :nothing => true
   end
 

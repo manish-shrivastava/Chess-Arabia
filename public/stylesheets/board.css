@@ -219,25 +219,30 @@
   background-color: #444;
 }
 
-.replace_box{
+#replace{
   width: 400px;
   height: 240px;
   margin-left: 19%;
   position: fixed;
-  border: 1px solid blue;
+  border: 1px solid red;
+  padding-top: 20px;
   top: 100px;
   text-align: center;
   z-index: 100;
-  background-color: #EFEFEF;
+  background-color: white;
 }
 
-.replace_box .replace_piece img{
+#replace .replace_piece img{
   margin: 10px;
   border: 1px solid black;
 }
 
-.replace_box .replace_piece img:hover{
+#replace .replace_piece img:hover{
   background-color: #777;
+}
+
+#replace .replace_piece img:active{
+  background-color: #333;
 }
 
 #connecting_msg{

@@ -14,7 +14,7 @@ ChessArabia::Application.routes.draw do
     member do
       post :sit
       post :move
-      get :replace
+      post :replace
     end
   end
 
