@@ -11,36 +11,36 @@
 
   .forms_page_right
     %h1= @user.name
-    = form_for current_user, :url => player_path(current_user) do |f|
-      %h2= t(:player_information)
+    %h2= t(:player_information)
+    %form
       %ul.full_column_form
         %li.element
-          = f.label t(:name)
+          = label_tag t(:name)
           %span= @user.name
         - if @user == current_user
           %li.element
-            = f.label t(:email_address)
+            = label_tag t(:email_address)
             %span= @user.email
         %li.element
-          = f.label t(:country)
+          = label_tag t(:country)
           %span= @user.country || "N/A"
         .clearer
         %h2= "Statistics"
+        %li.element
+          %label= "Rating"
+          %span= @user.rating
+        %li.element
+          %label= "Ranking on ChessArabia"
+          %span= User.where("rating > ?", @user.rating).count + 1
+        .clearer
+    - if current_user == @user
+      %h2= "Edit Your profile picture"
+      = form_for current_user, :url => player_path(current_user) do |f|
         %ul.full_column_form
           %li.element
-            %label= "Rating"
-            %span= @user.rating
-          %li.element
-            %label= "Ranking on ChessArabia"
-            %span= User.where("rating > ?", @user.rating).count + 1
+            = f.label 'Profile Picture'
+            = f.file_field :photo
+          %li
+            = f.submit 'Upload Photo'
           .clearer
-        - if current_user == @user
-          %h2= "Edit Your profile picture"
-          %ul.full_column_form
-            %li.element
-              = f.label 'Profile Picture'
-              = f.file_field :photo
-            %li
-              = f.submit 'Upload Photo'
-            .clearer
 

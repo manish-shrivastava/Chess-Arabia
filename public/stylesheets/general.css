@@ -143,6 +143,10 @@ body{
   filter: dropshadow(color=#ffffff, offx=5, offy=5); 
 }
 
+a.image_link{
+  text-decoration: none !important;
+}
+
 #nav-links a.rating{
   background-color: red;
   color: white;
@@ -176,6 +180,11 @@ body{
   margin-top: 7px;
   font-size: 14px;
   clear: both;
+}
+
+
+.player_info_line:hover{
+  background-color: #AEAEAE;
 }
 
 .player_info_line .player_name{

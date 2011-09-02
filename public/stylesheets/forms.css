@@ -15,6 +15,12 @@
 
 .forms_page a{
   color: red;
+  text-decoration: none;
+}
+
+.forms_page a:hover{
+  text-decoration: underline;
+  color: black;
 }
 
 input:focus{
