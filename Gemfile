@@ -23,4 +23,5 @@ gem 'bundler'
 gem 'thin'
 gem 'ruby-debug'
 gem 'eventmachine'
+gem 'paperclip', '2.4.0'
 

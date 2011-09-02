@@ -212,3 +212,7 @@ body{
   float: left;
   margin-right: 10px
 }
+
+.profile_picture{
+  margin: 10px 30px;
+}

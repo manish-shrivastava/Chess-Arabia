@@ -1,5 +1,8 @@
 .forms_page
   .forms_page_left
+    - if @user.photo.exists?
+      %h2= "Profile Picture"
+      %img.profile_picture{ :src => @user.photo.url(:profile) }
     %h2= "Profile Information"
     - if current_user == @user
       %p= "This is your profile, #{link_to 'Edit', edit_player_path(current_user)} it".html_safe
@@ -8,8 +11,8 @@
 
   .forms_page_right
     %h1= @user.name
-    %h2= t(:player_information)
     = form_for current_user, :url => player_path(current_user) do |f|
+      %h2= t(:player_information)
       %ul.full_column_form
         %li.element
           = f.label t(:name)
@@ -22,3 +25,22 @@
           = f.label t(:country)
           %span= @user.country || "N/A"
         .clearer
+        %h2= "Statistics"
+        %ul.full_column_form
+          %li.element
+            %label= "Rating"
+            %span= @user.rating
+          %li.element
+            %label= "Ranking on ChessArabia"
+            %span= User.where("rating > ?", @user.rating).count + 1
+          .clearer
+        - if current_user == @user
+          %h2= "Edit Your profile picture"
+          %ul.full_column_form
+            %li.element
+              = f.label 'Profile Picture'
+              = f.file_field :photo
+            %li
+              = f.submit 'Upload Photo'
+            .clearer
+
