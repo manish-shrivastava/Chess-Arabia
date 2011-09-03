@@ -1,12 +1,13 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  
+
   before_filter :reload_classes, :set_player, :set_locale, :set_current_tab
-  
+
   def reload_classes
-    #load File.join(Rails.root, 'app', 'models', 'game.rb')
+    return if Rails.env == 'development'
+    load File.join(Rails.root, 'app', 'models', 'game.rb')
   end
-  
+
   def set_current_tab
     @current_tab = params[:controller]
     @current_tab = 'about' if params[:controller] == 'home' && params[:action] == 'about'
@@ -14,12 +15,12 @@ class ApplicationController < ActionController::Base
     @current_tab = 'sign_up' if params[:controller] == 'devise/registrations' && params[:action] == 'new'
     @current_tab = 'sign_in' if params[:controller] == 'devise/sessions' && params[:action] == 'new'
   end
-  
+
   def set_locale
     cookies[:locale] = params[:locale] ? params[:locale].to_sym : (cookies[:locale] || 'en')
     I18n.locale = cookies[:locale]
   end
-  
+
   def set_player
     if current_user
       @guest = false

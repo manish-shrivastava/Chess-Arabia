@@ -1,5 +1,3 @@
-#YAML::ENGINE.yamler= 'syck'
-
 class Game
 
   # ------------ REDIS ------------
@@ -38,7 +36,6 @@ class Game
     g.id = REDIS.incr "last_game_id" while REDIS.get("game_#{g.id}")
     if g.id.nil?
       # First Game
-      raise "L"
       g.id = 1
       REDIS.set("last_game_id", g.id)
     end
